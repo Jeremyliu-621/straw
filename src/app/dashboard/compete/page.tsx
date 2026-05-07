@@ -101,7 +101,7 @@ export default function ComputePage() {
               fontSize: "28px",
               fontWeight: 600,
               letterSpacing: "-0.02em",
-              color: "#2a1f12",
+              color: "#0a0e1a",
               lineHeight: 1.1,
             }}
           >
@@ -113,7 +113,7 @@ export default function ComputePage() {
               margin: "6px 0 0",
               fontSize: "14px",
               lineHeight: 1.5,
-              color: "rgba(42,31,18,0.75)",
+              color: "rgba(10,14,26,0.7)",
             }}
           >
             Every open task in one place. Pick one and submit.

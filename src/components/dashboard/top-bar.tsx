@@ -24,7 +24,7 @@ import {
 } from "./sidebar-context";
 import { NotificationsPanel, SEEN_STORAGE_KEY } from "./notifications-panel";
 import { useAskRail } from "./ask-rail-context";
-import { FeedbackDialog } from "./feedback-dialog";
+import { FeedbackDropdown } from "./feedback-dialog";
 import { ThemePicker } from "@/components/theme/theme-picker";
 
 /**
@@ -81,6 +81,7 @@ export function TopBar() {
   const [hasUnread, setHasUnread] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
+  const feedbackRef = useRef<HTMLDivElement>(null);
   const { open: askOpen, toggle: toggleAsk } = useAskRail();
 
   const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
@@ -94,12 +95,15 @@ export function TopBar() {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifOpen(false);
       }
+      if (feedbackRef.current && !feedbackRef.current.contains(e.target as Node)) {
+        setFeedbackOpen(false);
+      }
     }
-    if (menuOpen || notifOpen) {
+    if (menuOpen || notifOpen || feedbackOpen) {
       document.addEventListener("mousedown", onClickOutside);
       return () => document.removeEventListener("mousedown", onClickOutside);
     }
-  }, [menuOpen, notifOpen]);
+  }, [menuOpen, notifOpen, feedbackOpen]);
 
   /**
    * Drives the unread-dot on the bell. Compares the latest
@@ -255,13 +259,29 @@ export function TopBar() {
         {/* Temporary theme picker — Jeremy compares light / warm-dim / dark
             and we drop this once a winner is chosen. */}
         <ThemePicker />
-        <TopBarPillButton
-          icon={<MessageSquare size={13} strokeWidth={2} aria-hidden="true" />}
-          label="Feedback"
-          onClick={() => setFeedbackOpen(true)}
-          ariaExpanded={feedbackOpen}
+        <div ref={feedbackRef} style={{ position: "relative" }}>
+          <TopBarPillButton
+            icon={
+              <span style={{ color: "#e87a6f", display: "inline-flex" }}>
+                <MessageSquare size={13} strokeWidth={2} aria-hidden="true" />
+              </span>
+            }
+            label="Feedback"
+            onClick={() => setFeedbackOpen((v) => !v)}
+            ariaExpanded={feedbackOpen}
+            active={feedbackOpen}
+          />
+          {feedbackOpen && <FeedbackDropdown onClose={() => setFeedbackOpen(false)} />}
+        </div>
+        <TopBarPill
+          icon={
+            <span style={{ color: "#6878a8", display: "inline-flex" }}>
+              <BookOpen size={13} strokeWidth={2} aria-hidden="true" />
+            </span>
+          }
+          label="Docs"
+          href="/dashboard/docs"
         />
-        <TopBarPill icon={<BookOpen size={13} strokeWidth={2} aria-hidden="true" />} label="Docs" href="/dashboard/docs" />
         {/* Ask — toggles the global AskRail (rendered by DashboardShell). */}
         <button
           type="button"
@@ -301,7 +321,9 @@ export function TopBar() {
             }
           }}
         >
-          <WandSparkles size={13} strokeWidth={2} aria-hidden="true" />
+          <span style={{ color: "#8a7dc4", display: "inline-flex" }}>
+            <WandSparkles size={13} strokeWidth={2} aria-hidden="true" />
+          </span>
           <span>Ask</span>
         </button>
 
@@ -480,7 +502,6 @@ export function TopBar() {
           )}
         </div>
       </div>
-      {feedbackOpen && <FeedbackDialog onClose={() => setFeedbackOpen(false)} />}
     </header>
   );
 }
@@ -490,11 +511,13 @@ function TopBarPillButton({
   label,
   onClick,
   ariaExpanded,
+  active,
 }: {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;
   ariaExpanded?: boolean;
+  active?: boolean;
 }) {
   return (
     <button
@@ -508,10 +531,11 @@ function TopBarPillButton({
         gap: "5px",
         height: "30px",
         padding: "0 11px",
-        border: "1px solid var(--border)",
+        border: "1px solid",
+        borderColor: active ? "var(--text-faint)" : "var(--border)",
         borderRadius: "var(--radius)",
-        background: "var(--bg-card)",
-        color: "var(--text-muted)",
+        background: active ? "var(--bg-subtle)" : "var(--bg-card)",
+        color: active ? "var(--text)" : "var(--text-muted)",
         fontSize: "12px",
         fontWeight: 500,
         whiteSpace: "nowrap",
@@ -519,14 +543,18 @@ function TopBarPillButton({
         transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
       }}
       onMouseOver={(e) => {
-        e.currentTarget.style.background = "var(--bg-subtle)";
-        e.currentTarget.style.color = "var(--text)";
-        e.currentTarget.style.borderColor = "var(--text-faint)";
+        if (!active) {
+          e.currentTarget.style.background = "var(--bg-subtle)";
+          e.currentTarget.style.color = "var(--text)";
+          e.currentTarget.style.borderColor = "var(--text-faint)";
+        }
       }}
       onMouseOut={(e) => {
-        e.currentTarget.style.background = "var(--bg-card)";
-        e.currentTarget.style.color = "var(--text-muted)";
-        e.currentTarget.style.borderColor = "var(--border)";
+        if (!active) {
+          e.currentTarget.style.background = "var(--bg-card)";
+          e.currentTarget.style.color = "var(--text-muted)";
+          e.currentTarget.style.borderColor = "var(--border)";
+        }
       }}
     >
       {icon}

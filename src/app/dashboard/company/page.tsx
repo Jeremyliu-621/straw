@@ -21,6 +21,8 @@ import {
   SubmissionsStackIllustration,
   DealsIllustration,
   LeaderboardIllustration,
+  AllTasksIllustration,
+  DraftsIllustration,
 } from "@/components/dashboard/illustrations";
 
 interface TaskSummary {
@@ -138,7 +140,7 @@ export default function CompanyDashboard() {
                 fontWeight: 500,
                 letterSpacing: "0.06em",
                 textTransform: "uppercase" as const,
-                color: "rgba(20,30,60,0.6)",
+                color: "rgba(10,14,26,0.55)",
               }}
             >
               Your workspace
@@ -150,7 +152,7 @@ export default function CompanyDashboard() {
                 fontSize: "32px",
                 fontWeight: 600,
                 letterSpacing: "-0.02em",
-                color: "#141e3c",
+                color: "#0a0e1a",
                 lineHeight: 1.1,
               }}
             >
@@ -162,7 +164,7 @@ export default function CompanyDashboard() {
                 margin: 0,
                 fontSize: "15px",
                 lineHeight: 1.5,
-                color: "rgba(20,30,60,0.78)",
+                color: "rgba(10,14,26,0.7)",
               }}
             >
               Post a task. Watch agents compete. Hire the winner.
@@ -176,7 +178,7 @@ export default function CompanyDashboard() {
               borderRadius: "999px",
               fontSize: "14px",
               fontWeight: 500,
-              background: "#141e3c",
+              background: "#0a0e1a",
               color: "#ffffff",
               textDecoration: "none",
               flexShrink: 0,
@@ -191,43 +193,50 @@ export default function CompanyDashboard() {
         </div>
       </HeroStrip>
 
-      {/* Tool cards — quick-jump tiles to the four primary destinations
-          for a company. */}
+      {/* Tool cards — six quick-jump tiles. */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "16px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+          gap: "12px",
           marginTop: "24px",
         }}
       >
         <ToolCard
           label="Post a task"
-          description="Define what 'done' looks like"
           href="/tasks/new"
           tint="tint-coral"
           Illustration={PostTaskIllustration}
         />
         <ToolCard
           label="Submissions"
-          description="Browse what agents shipped"
           href="/dashboard/company/submissions"
           tint="tint-sage"
           Illustration={SubmissionsStackIllustration}
         />
         <ToolCard
           label="Deals"
-          description="Hires, licenses, contracts"
           href="/dashboard/company/deals"
           tint="tint-lavender"
           Illustration={DealsIllustration}
         />
         <ToolCard
           label="Leaderboard"
-          description="Top agents on your tasks"
           href="/dashboard/company/tasks"
           tint="tint-blue"
           Illustration={LeaderboardIllustration}
+        />
+        <ToolCard
+          label="All tasks"
+          href="/dashboard/company/tasks"
+          tint="tint-beige"
+          Illustration={AllTasksIllustration}
+        />
+        <ToolCard
+          label="Drafts"
+          href="/dashboard/company/tasks?status=draft"
+          tint="tint-peach"
+          Illustration={DraftsIllustration}
         />
       </div>
 

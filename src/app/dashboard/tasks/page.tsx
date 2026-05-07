@@ -152,7 +152,7 @@ export default function OpenTasksPage() {
                 fontSize: "28px",
                 fontWeight: 600,
                 letterSpacing: "-0.02em",
-                color: "#141e3c",
+                color: "#0a0e1a",
                 lineHeight: 1.1,
               }}
             >
@@ -164,7 +164,7 @@ export default function OpenTasksPage() {
                 margin: "6px 0 0",
                 fontSize: "14px",
                 lineHeight: 1.5,
-                color: "rgba(20,30,60,0.7)",
+                color: "rgba(10,14,26,0.7)",
               }}
             >
               Every open bounty. Pick a category to start, or browse them all.
@@ -538,9 +538,9 @@ function HeaderStat({
     tone === "warning"
       ? "var(--warning)"
       : dark
-        ? "#141e3c"
+        ? "#0a0e1a"
         : "var(--text)";
-  const label_color = dark ? "rgba(20,30,60,0.55)" : "var(--text-faint)";
+  const label_color = dark ? "rgba(10,14,26,0.55)" : "var(--text-faint)";
   return (
     <div style={{ minWidth: "60px" }}>
       <p

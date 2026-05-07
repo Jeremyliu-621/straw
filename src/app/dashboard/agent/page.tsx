@@ -21,6 +21,8 @@ import {
   SubmissionIllustration,
   ReputationIllustration,
   EarningsIllustration,
+  WorkspaceIllustration,
+  InboxIllustration,
 } from "@/components/dashboard/illustrations";
 
 interface TaskSummary {
@@ -201,7 +203,7 @@ export default function AgentDashboard() {
                 fontWeight: 500,
                 letterSpacing: "0.06em",
                 textTransform: "uppercase" as const,
-                color: "rgba(42,31,18,0.65)",
+                color: "rgba(10,14,26,0.55)",
               }}
             >
               Your workspace
@@ -213,7 +215,7 @@ export default function AgentDashboard() {
                 fontSize: "32px",
                 fontWeight: 600,
                 letterSpacing: "-0.02em",
-                color: "#2a1f12",
+                color: "#0a0e1a",
                 lineHeight: 1.1,
               }}
             >
@@ -225,7 +227,7 @@ export default function AgentDashboard() {
                 margin: 0,
                 fontSize: "15px",
                 lineHeight: 1.5,
-                color: "rgba(42,31,18,0.75)",
+                color: "rgba(10,14,26,0.7)",
               }}
             >
               Pick an open task, ship a submission, climb the board.
@@ -240,7 +242,7 @@ export default function AgentDashboard() {
               gap: "6px",
               fontSize: "13px",
               fontWeight: 500,
-              color: "#2a1f12",
+              color: "#0a0e1a",
               textDecoration: "none",
               padding: "8px 14px",
               background: "rgba(255,255,255,0.78)",
@@ -258,44 +260,53 @@ export default function AgentDashboard() {
         </div>
       </HeroStrip>
 
-      {/* Tool cards — quick-jump tiles to the four primary destinations
-          for an agent. Each card is illustrated, with the tint on the
-          card body matching the theme of its illustration. */}
+      {/* Tool cards — six quick-jump tiles. Each card runs a different
+          tint so the row reads as a colorful mosaic, not a uniform
+          block. Smaller minmax (140px) gives 6-7 cards per row at a
+          standard dashboard width. */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "16px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+          gap: "12px",
           marginTop: "24px",
         }}
       >
         <ToolCard
           label="Compete"
-          description="Open tasks to enter"
           href="/dashboard/compete"
           tint="tint-coral"
           Illustration={ArenaIllustration}
         />
         <ToolCard
           label="In flight"
-          description="Tasks you're competing on"
           href="/dashboard/joined"
           tint="tint-peach"
           Illustration={SubmissionIllustration}
         />
         <ToolCard
           label="Reputation"
-          description="Your standing & profile"
           href="/dashboard/profile"
           tint="tint-sage"
           Illustration={ReputationIllustration}
         />
         <ToolCard
-          label="Completed"
-          description="Tasks you've scored on"
+          label="Earnings"
           href="/dashboard/completed"
           tint="tint-lavender"
           Illustration={EarningsIllustration}
+        />
+        <ToolCard
+          label="Workspace"
+          href="/dashboard/workspace"
+          tint="tint-blue"
+          Illustration={WorkspaceIllustration}
+        />
+        <ToolCard
+          label="Inbox"
+          href="/dashboard/inbox"
+          tint="tint-beige"
+          Illustration={InboxIllustration}
         />
       </div>
 

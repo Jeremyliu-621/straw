@@ -264,6 +264,96 @@ export function LeaderboardIllustration({ className }: IllustrationProps) {
   );
 }
 
+// ─── Shared (both audiences) ───────────────────────────────────────
+
+/** Stack of database disks — workspace / KV storage. */
+export function WorkspaceIllustration({ className }: IllustrationProps) {
+  return (
+    <svg {...svgProps(className)}>
+      {/* base shadow */}
+      <ellipse cx="100" cy="158" rx="52" ry="6" fill={COLORS.inkSoft} opacity="0.1" />
+      {/* disks */}
+      {[140, 116, 92, 68].map((y, idx) => (
+        <g key={y}>
+          <ellipse cx="100" cy={y + 4} rx="46" ry="11" fill={COLORS.blue} opacity="0.85" />
+          <ellipse cx="100" cy={y} rx="46" ry="11" fill={idx === 0 ? COLORS.lavender : COLORS.beige} />
+          <ellipse cx="100" cy={y} rx="46" ry="11" fill="none" stroke={COLORS.inkSoft} strokeWidth="1" opacity="0.35" />
+        </g>
+      ))}
+      {/* tiny activity dot */}
+      <circle cx="124" cy="68" r="3" fill={COLORS.coral} />
+    </svg>
+  );
+}
+
+/** Envelope with a peeking letter — inbox / messages. */
+export function InboxIllustration({ className }: IllustrationProps) {
+  return (
+    <svg {...svgProps(className)}>
+      {/* envelope back */}
+      <rect x="38" y="72" width="124" height="80" rx="6" fill={COLORS.beige} />
+      {/* letter sticking out */}
+      <rect x="56" y="58" width="88" height="60" rx="3" fill={COLORS.paper} />
+      <rect x="68" y="76" width="58" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
+      <rect x="68" y="86" width="44" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
+      <rect x="68" y="96" width="50" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
+      {/* envelope flap */}
+      <path d="M 38 72 L 100 116 L 162 72 Z" fill={COLORS.coral} />
+      <path d="M 38 72 L 100 116 L 162 72" fill="none" stroke={COLORS.inkSoft} strokeWidth="1" opacity="0.4" />
+      {/* notification dot */}
+      <circle cx="158" cy="78" r="6" fill="#e87a6f" />
+    </svg>
+  );
+}
+
+/** Stacked clipboards — all tasks. */
+export function AllTasksIllustration({ className }: IllustrationProps) {
+  return (
+    <svg {...svgProps(className)}>
+      {/* back clipboard */}
+      <g transform="rotate(-5 100 100)">
+        <rect x="56" y="50" width="88" height="100" rx="6" fill={COLORS.lavender} opacity="0.7" />
+      </g>
+      {/* front clipboard */}
+      <rect x="60" y="54" width="88" height="100" rx="6" fill={COLORS.beige} />
+      <rect x="60" y="54" width="88" height="100" rx="6" fill="none" stroke={COLORS.inkSoft} strokeWidth="1" opacity="0.3" />
+      {/* clip */}
+      <rect x="86" y="46" width="36" height="14" rx="3" fill={COLORS.inkSoft} opacity="0.5" />
+      {/* lines */}
+      <rect x="72" y="78" width="58" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
+      <rect x="72" y="92" width="48" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
+      <rect x="72" y="106" width="62" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
+      <rect x="72" y="120" width="40" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
+      {/* check */}
+      <circle cx="138" cy="80" r="5" fill={COLORS.sage} />
+    </svg>
+  );
+}
+
+/** Sheet with a pencil mid-edit — drafts. */
+export function DraftsIllustration({ className }: IllustrationProps) {
+  return (
+    <svg {...svgProps(className)}>
+      {/* sheet */}
+      <rect x="52" y="50" width="92" height="110" rx="3" fill={COLORS.peach} />
+      <rect x="52" y="50" width="92" height="110" fill="none" stroke={COLORS.inkSoft} strokeWidth="1" opacity="0.4" />
+      {/* lines */}
+      <rect x="64" y="76" width="56" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.35" />
+      <rect x="64" y="90" width="68" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
+      <rect x="64" y="104" width="48" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
+      <rect x="64" y="118" width="60" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
+      {/* pencil at angle, just above paper */}
+      <g transform="rotate(35 138 124)">
+        <rect x="116" y="120" width="44" height="8" rx="1" fill={COLORS.lavender} />
+        <rect x="116" y="120" width="6" height="8" fill={COLORS.coral} />
+        <path d="M 160 120 L 168 124 L 160 128 Z" fill={COLORS.inkSoft} opacity="0.7" />
+      </g>
+      {/* draft dot */}
+      <circle cx="62" cy="58" r="3" fill={COLORS.coral} />
+    </svg>
+  );
+}
+
 /**
  * Map illustration components by id — convenient for the home page
  * tool-card row to look up by name.
@@ -277,6 +367,10 @@ export const ILLUSTRATIONS = {
   "submissions-stack": SubmissionsStackIllustration,
   deals: DealsIllustration,
   leaderboard: LeaderboardIllustration,
+  workspace: WorkspaceIllustration,
+  inbox: InboxIllustration,
+  "all-tasks": AllTasksIllustration,
+  drafts: DraftsIllustration,
 } as const;
 
 export type IllustrationId = keyof typeof ILLUSTRATIONS;
