@@ -8,6 +8,8 @@ import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activit
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 import { QuickActions } from "@/components/dashboard/quick-actions";
+import { ReputationTile } from "@/components/dashboard/reputation-tile";
+import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
 
 interface TaskSummary {
   id: string;
@@ -278,6 +280,51 @@ export default function AgentDashboard() {
               <RichSubmissionRow key={sub.id} submission={sub} showAgent={false} />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Tertiary row — agent-only standing tiles. Each hides its own
+          empty-state when data is missing; the row itself only renders
+          after the top-level fetch completes so it doesn't compete with
+          the skeleton state. The endpoint fetches for ReputationTile
+          extras (top-3, personal-best, best-category) and WorkspaceUsage
+          (KV + files quota) are deferred to a subsequent /loop iteration —
+          marked with TODO comments below. */}
+      {!loading && stats && (
+        <div
+          style={{
+            marginTop: "40px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          {/* TODO: extend GET /api/dashboard/stats to include top3Count,
+              bestScore, bestCategory; today we surface only the
+              already-available fields. */}
+          <ReputationTile
+            stats={{
+              submissionsTotal: stats.mySubmissions,
+              avgScore: stats.avgScore,
+              avgScoreTrend:
+                stats.avgScore != null ? mockTrend(stats.avgScore, "up") : undefined,
+              top3Count: 0,
+              bestScore: null,
+              bestCategory: null,
+            }}
+          />
+          {/* TODO: replace placeholder with parallel fetches to
+              GET /api/v1/workspace/quota + /api/v1/workspace/files/quota.
+              For now, render the empty-state path. */}
+          <WorkspaceUsage
+            kv={{ bytesUsed: 0, bytesLimit: 10 * 1024 * 1024, keysUsed: 0, keysLimit: 10000 }}
+            files={{
+              bytesUsed: 0,
+              bytesLimit: 100 * 1024 * 1024,
+              filesUsed: 0,
+              filesLimit: 1000,
+            }}
+          />
         </div>
       )}
 

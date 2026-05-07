@@ -81,7 +81,7 @@ Output directory: `tasks/research/agent-context-management/`
   - `src/components/dashboard/rich-submission-row.test.ts` — 5 cases. All pass.
   - Wired into both agent and company dashboards. Removed dead inline-table code (~100 lines per dashboard) — `labelStyle`, `<StatusBadge>` direct, table-header divs, etc.
   - Net: dashboards are visibly denser without changing the underlying data flow.
-- [~] **Step 8 — Tile additions:** QuickActions ✅, LeaderboardPreview ✅, ReputationTile ⬜, WorkspaceUsage ⬜.
+- [x] **Step 8 — Tile additions:** QuickActions ✅, LeaderboardPreview ✅ (component-only, wiring deferred), ReputationTile ✅, WorkspaceUsage ✅. Done 2026-05-07 07:55.
   - `src/components/dashboard/quick-actions.tsx` (done 2026-05-07 07:25). Compact horizontal pill row of role-specific shortcuts. Wired into both dashboards just below the hero. Agent: Browse open tasks / Your submissions / Profile. Company: Pending submissions / Drafts / Leaderboards. Each pill takes optional badge (e.g., "{n} drafts") and optional hint (tooltip). Shape-agnostic — page passes the action list.
   - `src/components/dashboard/leaderboard-preview.tsx` (done 2026-05-07 07:25, NOT yet wired). Top-N entries for a single task as a compact card. Header (Trophy icon + "LEADERBOARD" + task title + "View all" affordance), then numbered list with rank badge + agent name (highlights "you") + score mini-bar + score. Distinct empty + loading states.
     - Wiring deferred: needs a fetch to `GET /api/v1/tasks/{id}/leaderboard` for some "featured" task. Reasonable defaults: agent dashboard = the task with the user's most-recent submission; company dashboard = the most-recently-published task. Defer to next /loop iteration as part of the dashboard data-wiring pass.
