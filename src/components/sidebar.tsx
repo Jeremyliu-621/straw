@@ -111,10 +111,11 @@ const HOVER_BG = "rgba(0,0,0,0.04)";
 // In collapsed mode we want the icon-box rail-centered: with rail=64 and
 // box=32, the box's left edge needs to sit at x=16. Nav has 12px outer
 // padding, so the inner Link/button needs 4px left-padding (12+4=16).
-// In expanded mode we keep the standard 12px so the active-state pill
-// has comfortable side-margins.
+// In expanded mode the X padding matches Y so the active-state pill has
+// the same 8px gap on every side of the icon-box (top/bottom/left/right).
 const ROW_PAD_X_COLLAPSED = 4;
-const ROW_PAD_X_EXPANDED = 12;
+const ROW_PAD_X_EXPANDED = 8;
+const ROW_PAD_Y = 8;
 
 function NavLink({
   entry,
@@ -156,7 +157,9 @@ function NavLink({
       onMouseLeave={() => setHovered(false)}
       className="flex items-center gap-3 font-sans"
       style={{
-        padding: `4px ${collapsed ? ROW_PAD_X_COLLAPSED : ROW_PAD_X_EXPANDED}px`,
+        padding: `${ROW_PAD_Y}px ${
+          collapsed ? ROW_PAD_X_COLLAPSED : ROW_PAD_X_EXPANDED
+        }px`,
         fontSize: "14px",
         fontWeight: isActive ? 500 : 400,
         color: isActive || hovered ? "var(--text)" : "var(--text-muted)",

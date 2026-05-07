@@ -23,7 +23,7 @@ import {
   SIDEBAR_WIDTH_COLLAPSED,
 } from "./sidebar-context";
 import { NotificationsPanel, SEEN_STORAGE_KEY } from "./notifications-panel";
-import { AskPanel } from "./ask-panel";
+import { useAskRail } from "./ask-rail-context";
 
 /**
  * Title + optional crumb resolved from the current pathname. The dashboard
@@ -75,11 +75,10 @@ export function TopBar() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  const [askOpen, setAskOpen] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
-  const askRef = useRef<HTMLDivElement>(null);
+  const { open: askOpen, toggle: toggleAsk } = useAskRail();
 
   const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
   const { primary, crumb } = resolvePageTitle(pathname);
@@ -92,15 +91,12 @@ export function TopBar() {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifOpen(false);
       }
-      if (askRef.current && !askRef.current.contains(e.target as Node)) {
-        setAskOpen(false);
-      }
     }
-    if (menuOpen || notifOpen || askOpen) {
+    if (menuOpen || notifOpen) {
       document.addEventListener("mousedown", onClickOutside);
       return () => document.removeEventListener("mousedown", onClickOutside);
     }
-  }, [menuOpen, notifOpen, askOpen]);
+  }, [menuOpen, notifOpen]);
 
   /**
    * Drives the unread-dot on the bell. Compares the latest
@@ -157,19 +153,23 @@ export function TopBar() {
 
   return (
     <header
-      className="fixed top-0 right-0"
+      className="fixed"
       style={{
-        left: `${sidebarWidth}px`,
+        top: "var(--inset-top, 0px)",
+        left: `calc(var(--inset-left, 0px) + ${sidebarWidth}px)`,
+        right: "var(--inset-right, 0px)",
         height: `${TOPBAR_HEIGHT}px`,
         background: "var(--bg)",
         borderBottom: "1px solid var(--border)",
+        borderTopRightRadius: "var(--frame-radius, 0px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         gap: "12px",
         padding: "0 16px",
         zIndex: 30,
-        transition: "left 0.18s ease",
+        transition:
+          "left 0.18s ease, top 0.24s ease, right 0.24s ease, border-radius 0.24s ease",
       }}
     >
       {/* Left — toggle + page title */}
@@ -249,51 +249,48 @@ export function TopBar() {
       <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
         <TopBarPill icon={<MessageSquare size={13} strokeWidth={2} aria-hidden="true" />} label="Feedback" href="mailto:hello@straw.wiki?subject=Straw%20feedback" />
         <TopBarPill icon={<BookOpen size={13} strokeWidth={2} aria-hidden="true" />} label="Docs" href="/dashboard/docs" />
-        {/* Ask — opens the AskPanel chat dropdown (Gemini-backed) */}
-        <div ref={askRef} style={{ position: "relative" }}>
-          <button
-            type="button"
-            onClick={() => setAskOpen((v) => !v)}
-            aria-label="Ask Straw"
-            aria-expanded={askOpen}
-            className="font-sans"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "5px",
-              height: "30px",
-              padding: "0 11px",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              background: askOpen ? "var(--bg-subtle)" : "var(--bg-card)",
-              color: askOpen ? "var(--text)" : "var(--text-muted)",
-              fontSize: "12px",
-              fontWeight: 500,
-              whiteSpace: "nowrap",
-              cursor: "pointer",
-              transition:
-                "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
-            }}
-            onMouseOver={(e) => {
-              if (!askOpen) {
-                e.currentTarget.style.background = "var(--bg-subtle)";
-                e.currentTarget.style.color = "var(--text)";
-                e.currentTarget.style.borderColor = "var(--text-faint)";
-              }
-            }}
-            onMouseOut={(e) => {
-              if (!askOpen) {
-                e.currentTarget.style.background = "var(--bg-card)";
-                e.currentTarget.style.color = "var(--text-muted)";
-                e.currentTarget.style.borderColor = "var(--border)";
-              }
-            }}
-          >
-            <Sparkles size={13} strokeWidth={2} aria-hidden="true" />
-            <span>Ask</span>
-          </button>
-          {askOpen && <AskPanel onClose={() => setAskOpen(false)} />}
-        </div>
+        {/* Ask — toggles the global AskRail (rendered by DashboardShell). */}
+        <button
+          type="button"
+          onClick={toggleAsk}
+          aria-label="Ask Straw"
+          aria-expanded={askOpen}
+          className="font-sans"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "5px",
+            height: "30px",
+            padding: "0 11px",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            background: askOpen ? "var(--bg-subtle)" : "var(--bg-card)",
+            color: askOpen ? "var(--text)" : "var(--text-muted)",
+            fontSize: "12px",
+            fontWeight: 500,
+            whiteSpace: "nowrap",
+            cursor: "pointer",
+            transition:
+              "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
+          }}
+          onMouseOver={(e) => {
+            if (!askOpen) {
+              e.currentTarget.style.background = "var(--bg-subtle)";
+              e.currentTarget.style.color = "var(--text)";
+              e.currentTarget.style.borderColor = "var(--text-faint)";
+            }
+          }}
+          onMouseOut={(e) => {
+            if (!askOpen) {
+              e.currentTarget.style.background = "var(--bg-card)";
+              e.currentTarget.style.color = "var(--text-muted)";
+              e.currentTarget.style.borderColor = "var(--border)";
+            }
+          }}
+        >
+          <Sparkles size={13} strokeWidth={2} aria-hidden="true" />
+          <span>Ask</span>
+        </button>
 
         {/* Notifications bell + panel */}
         <div ref={notifRef} style={{ position: "relative" }}>
