@@ -10,6 +10,7 @@ import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 import { QuickActions } from "@/components/dashboard/quick-actions";
+import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
 
 interface TaskSummary {
   id: string;
@@ -43,6 +44,10 @@ interface RecentSubmission {
 
 export default function CompanyDashboard() {
   const { data: session } = useSession();
+  const activeTrend = useKpiTrend("active");
+  const submissionsRecvTrend = useKpiTrend("submissions_received");
+  const budgetTrend = useKpiTrend("budget");
+  const draftsTrend = useKpiTrend("drafts");
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [stats, setStats] = useState<CompanyStats | null>(null);
   const [recentSubs, setRecentSubs] = useState<RecentSubmission[]>([]);
@@ -189,25 +194,25 @@ export default function CompanyDashboard() {
             marginBottom: "32px",
           }}
         >
-          {/* TODO: wire real per-period deltas when /api/dashboard/kpi-trends
-              ships (direction-doc step 4). Until then sparklines are mocked
-              from the current value via mockTrend(). */}
           <KpiTile
             label="Active Tasks"
             value={stats.activeTasks}
-            sparkline={mockTrend(stats.activeTasks, "up")}
+            sparkline={activeTrend.series}
+            delta={activeTrend.delta}
             href="/dashboard/company"
           />
           <KpiTile
             label="Submissions"
             value={stats.totalSubmissions}
-            sparkline={mockTrend(stats.totalSubmissions, "up")}
+            sparkline={submissionsRecvTrend.series}
+            delta={submissionsRecvTrend.delta}
           />
           <KpiTile
             label="Total Budget"
             value={`$${(stats.totalBudgetCents / 100).toLocaleString()}`}
             mono
-            sparkline={mockTrend(stats.totalBudgetCents / 100, "up")}
+            sparkline={budgetTrend.series}
+            delta={budgetTrend.delta}
           />
           <KpiTile
             label="Drafts"
@@ -215,7 +220,8 @@ export default function CompanyDashboard() {
             // Drafts trending up is BAD — companies shouldn't accumulate
             // unpublished drafts. Coloring follows.
             isGoodWhenHigher={false}
-            sparkline={mockTrend(stats.draftTasks, "flat")}
+            sparkline={draftsTrend.series}
+            delta={draftsTrend.delta}
             href="/dashboard/company"
           />
         </div>

@@ -11,6 +11,7 @@ import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { ReputationTile } from "@/components/dashboard/reputation-tile";
 import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
+import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
 
 interface TaskSummary {
   id: string;
@@ -40,6 +41,8 @@ interface SubmissionSummary {
 
 export default function AgentDashboard() {
   const { data: session } = useSession();
+  const submissionsTrend = useKpiTrend("submissions");
+  const scoreTrend = useKpiTrend("score");
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
   const [stats, setStats] = useState<AgentStats | null>(null);
@@ -149,9 +152,10 @@ export default function AgentDashboard() {
             marginBottom: "32px",
           }}
         >
-          {/* TODO: replace mocked sparklines with real data once
-              GET /api/dashboard/kpi-trends ships (see
-              tasks/dashboard-revamp-direction.md step 4). */}
+          {/* Tasks Entered + Completed still use mockTrend — they need
+              their own metrics on /api/dashboard/kpi-trends (tasks-entered:
+              count distinct task_id per day; completed: count where
+              status=completed per day). Tracked as next /loop iteration. */}
           <KpiTile
             label="Tasks Entered"
             value={stats.tasksEntered}
@@ -161,7 +165,8 @@ export default function AgentDashboard() {
           <KpiTile
             label="Your Submissions"
             value={stats.mySubmissions}
-            sparkline={mockTrend(stats.mySubmissions, "up")}
+            sparkline={submissionsTrend.series}
+            delta={submissionsTrend.delta}
           />
           <KpiTile
             label="Completed"
@@ -172,9 +177,8 @@ export default function AgentDashboard() {
             label="Avg Score"
             value={stats.avgScore != null ? stats.avgScore.toFixed(1) : "—"}
             mono
-            sparkline={
-              stats.avgScore != null ? mockTrend(stats.avgScore, "up") : undefined
-            }
+            sparkline={scoreTrend.series}
+            delta={scoreTrend.delta}
           />
         </div>
       ) : null}
