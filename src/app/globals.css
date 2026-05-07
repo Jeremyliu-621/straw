@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #fafafa;
-  --bg-subtle: #f4f4f4;
-  --border: #e5e5e5;
-  --text: #111111;
-  --text-muted: #737373;
-  --text-faint: #a3a3a3;
-  --inverse-bg: #111111;
+  /* ── Surfaces (per ElevenLabs study) ──────────────────────────── */
+  --bg: #f5f5f5;            /* canvas — page background, off-white */
+  --bg-subtle: #fafafa;     /* canvas-soft — section bands, sidebar */
+  --bg-card: #ffffff;       /* surface-card — actual card body */
+  --bg-strong: #f0efed;     /* surface-strong — chips, sidebar active row */
+
+  /* ── Borders ──────────────────────────────────────────────────── */
+  --border: #e7e5e4;            /* hairline (default) */
+  --border-strong: #d6d3d1;     /* hairline-strong (input fields) */
+
+  /* ── Text ─────────────────────────────────────────────────────── */
+  --text: #0c0a09;          /* ink */
+  --text-body: #4e4e4e;     /* body copy */
+  --text-muted: #777169;    /* secondary */
+  --text-faint: #a8a29e;    /* tertiary */
+  --inverse-bg: #0c0a09;
   --inverse-text: #fafafa;
 
-  /* Semantic — use only for state, never decoration */
+  /* ── Semantic (state only, never decoration) ──────────────────── */
   --success: #16a34a;
   --error: #dc2626;
   --warning: #d97706;
   --info: #2563eb;
 
-  /* Accent — monochrome, shared across roles */
-  --accent: #111111;
-  --accent-subtle: #f4f4f4;
-  --accent-border: #e5e5e5;
-  --accent-muted: #525252;
+  /* ── Primary CTA (saturated coral, single-action — never two) ── */
+  --cta: #e87a6f;            /* peach #f7d4d0 taken to full saturation */
+  --cta-hover: #d96255;
+  --cta-ink: #ffffff;        /* foreground on the coral pill */
+
+  /* ── Atmospheric pastel orbs (decoration only, never fills) ──── */
+  --orb-peach:    #f7d4d0;
+  --orb-lavender: #d9d4f6;
+  --orb-blue:     #cfd5e8;
+  --orb-beige:    #e0d6d0;
+  --orb-coral:    #ecd0cc;
+  --orb-sage:     #d0d7d1;
+
+  /* ── Pastel TINTS for full-card category backgrounds ──────────── */
+  /* Lighter washes (~40% mix with white) so cards stay legible      */
+  /* with text + chips on top. Used on TaskCard / CompletedTaskCard. */
+  --tint-peach:    #fcebe9;
+  --tint-lavender: #ece9fb;
+  --tint-blue:     #e6eaf3;
+  --tint-beige:    #ede5e1;
+  --tint-coral:    #f5e4e1;
+  --tint-sage:     #e3eae4;
+
+  /* ── Radius bands (two only) ──────────────────────────────────── */
+  --radius: 6px;             /* small — chips, badges, inputs */
+  --radius-card: 16px;       /* cards, KPI tiles, task cards */
+  --radius-orb: 24px;        /* hero / orb-backed surfaces */
+
+  /* ── Legacy aliases — keep so existing inline styles don't break */
+  --accent: var(--cta);
+  --accent-subtle: var(--bg-strong);
+  --accent-border: var(--border);
+  --accent-muted: var(--text-muted);
 }
 
 [data-role="company"] {
@@ -40,8 +77,12 @@
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-subtle: var(--bg-subtle);
+  --color-bg-card: var(--bg-card);
+  --color-bg-strong: var(--bg-strong);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-text: var(--text);
+  --color-text-body: var(--text-body);
   --color-text-muted: var(--text-muted);
   --color-text-faint: var(--text-faint);
   --color-inverse-bg: var(--inverse-bg);
@@ -50,9 +91,11 @@
   --color-error: var(--error);
   --color-warning: var(--warning);
   --color-info: var(--info);
-  --font-sans: var(--font-geist-sans);
+  --color-cta: var(--cta);
+  --color-cta-hover: var(--cta-hover);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-display);
   --font-mono: var(--font-geist-mono);
-  --radius: 2.5px;
 }
 
 :focus-visible {
@@ -88,7 +131,31 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  /* Editorial dialect: subtle positive tracking on body text. The
+     "ElevenLabs-y" Inter feel without using their font. */
+  letter-spacing: 0.012em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display serif for h1/h2/h3 — weight 300, never bolded.
+   Single biggest brand move (per ElevenLabs study). Apply
+   automatically; opt out with `.font-sans` on a heading if a
+   page wants the sans treatment. */
+h1, h2, h3 {
+  font-family: var(--font-display), "Cormorant Garamond", "Times New Roman", serif;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+/* Tighter for the small section eyebrow labels — these stay sans. */
+.font-eyebrow {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
