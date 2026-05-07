@@ -31,23 +31,34 @@ Output directory: `tasks/research/agent-context-management/`
 
 **Why this matters for Straw:** D30 mandates a tiered eval funnel (deterministic → cheap-LLM gatekeeper → agent investigator → adversarial guardrails). The "agent investigator" tier needs to look at 500+ submissions on real codebases and rank them — that's 100s of hours of agent thinking time, with deep code understanding required and no human in the loop. The state-of-the-art for this class of agent (Cursor's Composer agent mode, Aider, Claude Code, Codex CLI) has solved a lot of these problems already. Steal the patterns.
 
-### 1a. Cursor / Cline / Aider / Codex CLI — codebase-scale LLM wrappers
-- [x] Spawned subagent. Writes to `tasks/research/agent-context-management/codebase-llm-wrappers.md`.
+### 1a. Cursor / Cline / Aider / Codex CLI — codebase-scale LLM wrappers — [done 2026-05-07 04:55]
+- ~3.1K words, 34 sources. Headline: indexing bifurcates into server-managed embedding shops (Cursor) vs deterministic on-disk PageRank (Aider) vs lazy grep+read (Claude Code, Codex CLI). Anthropic's context-management API (`clear_tool_uses_20250919`, `compact_20260112`, `memory_20250818`) is now first-class. Tool-catalog crowding remains unsolved.
 
-### 1b. Perplexity / Deep Research — long-running, iterative, citation-grounded tools
-- [x] Spawned subagent. Writes to `tasks/research/agent-context-management/perplexity-deep-research.md`.
+### 1b. Perplexity / Deep Research — long-running, iterative, citation-grounded tools — [done 2026-05-07 04:30]
+- ~3.0K words, 22 sources. Headline: orchestrator + isolated-context sub-agents with explicit compression at the tool-output boundary. Single-context loops fail past ~10 hops. Anthropic's CitationAgent runs post-hoc on synthesis output (citation decoupled from generation = anti-hallucination). LangChain Open Deep Research is the cleanest copyable reference.
 
-### 1c. OpenClaw + the autonomous-agent SOTA for hours-long runs
-- [x] Spawned subagent. Writes to `tasks/research/agent-context-management/openclaw-and-autonomous-runs.md`.
+### 1c. OpenClaw + the autonomous-agent SOTA for hours-long runs — [done 2026-05-07 04:55]
+- ~3.4K words, 25+ sources. Headline: **OpenClaw is a real public project** (`github.com/openclaw/openclaw`, MIT, Peter Steinberger), not Straw-internal. ZeroClaw is the Rust rewrite. OpenClaw's heartbeat-and-webhook shape is the **wrong** model for Tier-3. Right model: OpenHands SDK + Claude Code subagent + SWE-agent ACI. Failure modes converge on token snowball, goal drift, premature completion, and compaction lossiness.
 
-### 1d. Synthesis for Straw's eval agents
-- [ ] After 1a–1c finish, I (main thread) write `tasks/research/agent-context-management/synthesis-for-straw-eval-agents.md`. This is the Straw-specific recommendations file: which patterns to adopt, which to skip, concrete API surface and architecture suggestions.
+### 1d. Synthesis for Straw's eval agents — [done 2026-05-07 05:10]
+- Wrote `tasks/research/agent-context-management/synthesis-for-straw-eval-agents.md` — the Straw-specific architecture brief. **Implementation-ready.**
+- TL;DR architecture: orchestrator + N short-lived investigators (batches of 50), SWE-agent ACI tools (≤6), Aider-style PageRank repo maps (no embeddings), Anthropic context-management API verbatim, CitationAgent pattern adapted to code-line citations, two-pass scoring (parallel score + sequential rank-on-contested-boundaries).
+- Cost estimate: ~$10–$20 marginal Tier-3 LLM spend per 500-submission task with prompt caching.
+- Implementation: ~18 engineer-days, parallelizable across 5 components.
+- Open questions surfaced for Jeremy at the bottom of the synthesis.
+- Also wrote `agent-context-management/README.md` index, registered the directory in `tasks/README.md` and `tasks/research/README.md` per CLAUDE.md INDEX-gate rule.
 
 ## Phase 2 — Self-onboarding agent docs / CLI / MCP
 
 [Phase 2 done — see sections 2a/2b/2c/2d below.]
 
+## Phase 3 — Dashboard UI/UX revamp
+
+[Phase 3a (visual direction doc) done — `tasks/dashboard-revamp-direction.md`. Implementation steps 1–12 are in that file as a sequenced list. Each is independently shippable; pick them up from the top in subsequent loop iterations.]
+
 <!-- CURSOR -->
+
+[Next iteration of /loop: start with **direction-doc step 1 — `<KpiTile>` component + tests**. The direction doc has the prop interface, behavior spec, and verification recipe. No API change required for step 1; mocked sparkline data is fine. Land it as a single commit `feat(overnight): KpiTile component`, then advance the cursor to step 2.]
 
 ## Phase 2 — Self-onboarding agent docs / CLI / MCP
 

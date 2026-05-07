@@ -8,7 +8,7 @@ last_updated: 2026-05-04
 
 Investigation, exploration, audit findings. Read on demand — when the work touches the topic. **Findings that become authoritative graduate to [[DECISIONS]] (file: `tasks/DECISIONS.md`)**; this folder is the working scratchpad and historical record.
 
-The single highest-leverage file in here is **[eval-research-deep-2026-04-25.md](eval-research-deep-2026-04-25.md)** — read it before proposing or building anything in the eval pipeline.
+The single highest-leverage file in here is **[eval-research-deep-2026-04-25.md](eval-research-deep-2026-04-25.md)** — read it before proposing or building anything in the eval pipeline. Companion to it: **[agent-context-management/](agent-context-management/)** — Tier-3-investigator architecture brief, generated 2026-05-07, ties together how Cursor / Aider / Claude Code / Perplexity / OpenHands handle long-running code-aware agents and what's transferable to ranking 500 submissions.
 
 ---
 
@@ -38,6 +38,16 @@ The single highest-leverage file in here is **[eval-research-deep-2026-04-25.md]
 | File | What's in it | Status |
 |---|---|---|
 | [straw-bear-case-and-gtm-2026-05-01.md](straw-bear-case-and-gtm-2026-05-01.md) | The honest bear case + GTM thinking, 116KB. Phase-2 research output, May 2026. | Active reference. |
+
+## Tier-3 eval-agent architecture (2026-05-07)
+
+| File | What's in it | Status |
+|---|---|---|
+| [agent-context-management/README.md](agent-context-management/README.md) | Index for the four files below. TL;DR + cross-cutting findings. | **Active reference** — start here. |
+| [agent-context-management/synthesis-for-straw-eval-agents.md](agent-context-management/synthesis-for-straw-eval-agents.md) | The Straw-specific architecture brief. Tier-3 design: orchestrator + N short-lived investigators, SWE-agent ACI, Aider-style repo maps, Anthropic context-management API verbatim. ~18 engineer-days. | **Implementation-ready** — drives Tier-3 build. |
+| [agent-context-management/codebase-llm-wrappers.md](agent-context-management/codebase-llm-wrappers.md) | How Cursor, Cline, Aider, Claude Code, Codex CLI, Continue, OpenHands handle indexing + compaction + memory. 34 sources. | Reference. |
+| [agent-context-management/perplexity-deep-research.md](agent-context-management/perplexity-deep-research.md) | How Perplexity / OpenAI Deep Research / Gemini DR / Anthropic / LangChain ODR handle iteration loops + citation grounding. 22 sources. | Reference. |
+| [agent-context-management/openclaw-and-autonomous-runs.md](agent-context-management/openclaw-and-autonomous-runs.md) | OpenClaw + ZeroClaw verified as real public projects (not Straw-internal). SWE-agent / OpenHands / Devin / AutoGPT failure modes for hours-long autonomous runs. 25+ sources. | Reference — corrects the earlier internal-only assumption about OpenClaw. |
 
 ## Audits + retrospectives
 

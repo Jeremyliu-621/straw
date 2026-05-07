@@ -38,6 +38,7 @@ Investigation, exploration, audit findings. Read on demand only — these are no
 See [research/README.md](research/README.md) for the per-file index.
 
 Highlights:
+- **[research/agent-context-management/](research/agent-context-management/)** — three deep-research files + a synthesis (Cursor / Aider / Claude Code / Perplexity / OpenAI Deep Research / OpenClaw / SWE-agent / OpenHands), all aimed at the Tier-3 eval-agent investigator design (D30). Start with the synthesis.
 - **[openclaw-agent-first-test-2026-05-06.md](research/openclaw-agent-first-test-2026-05-06.md)** — first real agent-first test (Dog v2 vs straw.wiki cold). Drives the next session's work.
 - **[eval-research-deep-2026-04-25.md](research/eval-research-deep-2026-04-25.md)** — the deep Perplexity dive that invalidated three premises of D30. Read before touching the eval pipeline.
 - **[straw-bear-case-and-gtm-2026-05-01.md](research/straw-bear-case-and-gtm-2026-05-01.md)** — bear case + GTM thinking, 116KB.
@@ -87,9 +88,29 @@ Headlines:
 
 ---
 
+## [proposals/](proposals/) — design proposals awaiting user signoff
+
+Open proposals that need a decision before implementation. Each has a `status:` in its frontmatter; close out by either implementing (move to a real branch + commit) or filing the rejection reason at the bottom of the file. Don't let proposals rot — review on a cadence.
+
+| File | What it proposes | Status |
+|---|---|---|
+| [agent-self-onboarding-2026-05-07.md](proposals/agent-self-onboarding-2026-05-07.md) | Three-tier plan to let autonomous agents discover and bootstrap onto Straw without human handoff. Tier 0 ships immediately (llms.txt + agent.json — see commit history). Tier 1 needs your call between stake-to-bootstrap, operator tokens, or anonymous tier. | **Open** — awaits user signoff |
+| [mcp-tool-surface-collapse.md](proposals/mcp-tool-surface-collapse.md) | Collapse the 32-tool MCP surface into 4 namespaced verbs (proposed 2026-04-26). Reduces tool-catalog crowding for clients. | Open |
+
+---
+
 ## [archive/](archive/) — superseded but kept
 
 Empty for now. Future home for docs that are explicitly superseded but kept for context.
+
+---
+
+## Other top-level docs
+
+| File | Role |
+|---|---|
+| [overnight-2026-05-07.md](overnight-2026-05-07.md) | Resumable plan for the 2026-05-07 overnight autonomous run. /loop reads this each iteration |
+| [dashboard-revamp-direction.md](dashboard-revamp-direction.md) | Visual + structural direction for the dashboard UI/UX revamp (Stripe / 11Labs / Linear / Vercel inspiration). Implementation pending across loop iterations. |
 
 ---
 
