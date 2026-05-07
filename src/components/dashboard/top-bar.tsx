@@ -10,7 +10,7 @@ import {
   Bell,
   MessageSquare,
   BookOpen,
-  Sparkles,
+  WandSparkles,
   ChevronRight,
   User,
   Settings,
@@ -290,7 +290,7 @@ export function TopBar() {
             }
           }}
         >
-          <Sparkles size={13} strokeWidth={2} aria-hidden="true" />
+          <WandSparkles size={13} strokeWidth={2} aria-hidden="true" />
           <span>Ask</span>
         </button>
 
