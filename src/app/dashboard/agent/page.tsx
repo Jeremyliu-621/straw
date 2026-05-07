@@ -3,13 +3,13 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, Zap, ArrowUpRight, Settings, Trophy } from "lucide-react";
+import { Zap, ArrowUpRight, Settings, Trophy, Swords } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
-import { TaskCard } from "@/components/dashboard/task-card";
 import { CompletedTaskCard } from "@/components/dashboard/completed-task-card";
+import { JoinedCompetitionCard } from "@/components/dashboard/joined-competition-card";
 import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
@@ -52,14 +52,16 @@ interface SubmissionSummary {
   created_at: string;
 }
 
-// 3-col grid × 2 rows fits cleanly above the "Show N more" link.
-const TASKS_PREVIEW_LIMIT = 6;
+// One row of cards per section — at the dashboard's ~1100px content
+// width with `minmax(240px, 1fr)` cards, that's 4 cards. Anything
+// beyond that gets a "Show N more" link to the dedicated page.
+const OPEN_TASKS_PREVIEW = 4;
+const COMPLETED_PREVIEW = 4;
 
 export default function AgentDashboard() {
   const { data: session } = useSession();
   const tasksEnteredTrend = useKpiTrend("tasks_entered");
   const completedTrend = useKpiTrend("submissions_completed");
-  const scoreTrend = useKpiTrend("score");
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
   const [stats, setStats] = useState<AgentStats | null>(null);
@@ -108,8 +110,38 @@ export default function AgentDashboard() {
       });
   }, []);
 
-  const visibleTasks = tasks.slice(0, TASKS_PREVIEW_LIMIT);
-  const hiddenTaskCount = Math.max(0, tasks.length - TASKS_PREVIEW_LIMIT);
+  // Joined competitions: tasks the agent has submitted to but hasn't
+  // gotten a final score on yet. Shown as a "things you're still
+  // working on" section. Each task is represented by its most-recent
+  // submission, with a count of how many attempts sit on that task.
+  const joinedCompetitions = useMemo(() => {
+    const byTask = new Map<string, SubmissionSummary[]>();
+    for (const sub of submissions) {
+      if (!byTask.has(sub.task_id)) byTask.set(sub.task_id, []);
+      byTask.get(sub.task_id)!.push(sub);
+    }
+    const result: Array<{ submission: SubmissionSummary; count: number }> = [];
+    for (const [, subs] of byTask) {
+      // Skip if any submission for this task already has a final score —
+      // those land in the Completed section instead.
+      if (subs.some((s) => s.final_score != null)) continue;
+      const latest = [...subs].sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )[0];
+      result.push({ submission: latest, count: subs.length });
+    }
+    return result.sort(
+      (a, b) =>
+        new Date(b.submission.created_at).getTime() -
+        new Date(a.submission.created_at).getTime()
+    );
+  }, [submissions]);
+
+  const visibleJoined = joinedCompetitions.slice(0, OPEN_TASKS_PREVIEW);
+  const hiddenJoinedCount = Math.max(
+    0,
+    joinedCompetitions.length - OPEN_TASKS_PREVIEW
+  );
 
   // Completed tasks: the agent's submissions where a score landed,
   // de-duplicated by task_id (best score per task wins, since
@@ -129,10 +161,10 @@ export default function AgentDashboard() {
     );
   }, [submissions]);
 
-  const visibleCompleted = completedSubmissions.slice(0, TASKS_PREVIEW_LIMIT);
+  const visibleCompleted = completedSubmissions.slice(0, COMPLETED_PREVIEW);
   const hiddenCompletedCount = Math.max(
     0,
-    completedSubmissions.length - TASKS_PREVIEW_LIMIT
+    completedSubmissions.length - COMPLETED_PREVIEW
   );
 
   return (
@@ -144,16 +176,16 @@ export default function AgentDashboard() {
           alignItems: "flex-end",
           justifyContent: "space-between",
           gap: "24px",
-          paddingBottom: "24px",
+          paddingBottom: "20px",
           borderBottom: "1px solid var(--border)",
-          marginBottom: "32px",
+          marginBottom: "20px",
         }}
       >
         <div>
           <h1
             className="font-sans"
             style={{
-              fontSize: "28px",
+              fontSize: "26px",
               fontWeight: 500,
               letterSpacing: "-0.02em",
               color: "var(--text)",
@@ -198,17 +230,18 @@ export default function AgentDashboard() {
         </Link>
       </div>
 
-      {/* KPIs — three slim tiles. Submissions tile dropped because the
-          heatmap below carries the same info more vividly. */}
+      {/* KPIs — two slim tiles. Avg Score lives on /dashboard/completed
+          (with header stats + a per-task breakdown); the heatmap below
+          carries the engagement signal that "Submissions" used to. */}
       {loading ? (
-        <KpiSkeleton count={3} />
+        <KpiSkeleton count={2} />
       ) : stats ? (
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "16px",
-            marginBottom: "40px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "12px",
+            marginBottom: "24px",
           }}
         >
           <KpiTile
@@ -216,20 +249,14 @@ export default function AgentDashboard() {
             value={stats.tasksEntered}
             sparkline={tasksEnteredTrend.series}
             delta={tasksEnteredTrend.delta}
-            href="/tasks"
+            href="/dashboard/tasks"
           />
           <KpiTile
             label="Completed"
             value={stats.completedSubmissions}
             sparkline={completedTrend.series}
             delta={completedTrend.delta}
-          />
-          <KpiTile
-            label="Avg Score"
-            value={stats.avgScore != null ? stats.avgScore.toFixed(1) : "—"}
-            mono
-            sparkline={scoreTrend.series}
-            delta={scoreTrend.delta}
+            href="/dashboard/completed"
           />
         </div>
       ) : null}
@@ -261,26 +288,27 @@ export default function AgentDashboard() {
         )}
       </Section>
 
-      {/* Open Tasks — primary CTA. The first thing an agent looks for is
-          "what can I work on right now?" so this gets top billing below
-          the standing tiles. */}
+      {/* Joined Competitions — tasks the agent has at least one
+          submission on but hasn't been scored on yet. Replaces the old
+          Open Tasks preview here on the home dashboard; full open-task
+          browsing lives at /dashboard/compete and /dashboard/tasks. */}
       <Section
-        label="Open Tasks"
-        marginTop={40}
-        count={!loading ? tasks.length : undefined}
+        label="Joined Competitions"
+        marginTop={24}
+        count={!loading ? joinedCompetitions.length : undefined}
         action={
-          tasks.length > 0 ? (
-            <SectionLink href="/tasks">View all</SectionLink>
+          joinedCompetitions.length > OPEN_TASKS_PREVIEW ? (
+            <SectionLink href="/dashboard/compete">View all</SectionLink>
           ) : undefined
         }
       >
         {loading ? (
-          <RowSkeleton rows={3} />
-        ) : tasks.length === 0 ? (
+          <RowSkeleton rows={2} />
+        ) : joinedCompetitions.length === 0 ? (
           <EmptyState
-            icon={<Search size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
-            title="No open tasks"
-            body="Check back soon — companies are posting new challenges regularly."
+            icon={<Swords size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+            title="Not in any competitions yet"
+            body="Pick a task from Compete to make your first submission."
           />
         ) : (
           <>
@@ -291,13 +319,17 @@ export default function AgentDashboard() {
                 gap: "12px",
               }}
             >
-              {visibleTasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
+              {visibleJoined.map(({ submission: sub, count }) => (
+                <JoinedCompetitionCard
+                  key={sub.id}
+                  submission={sub}
+                  submissionCount={count}
+                />
               ))}
             </div>
-            {hiddenTaskCount > 0 && (
+            {hiddenJoinedCount > 0 && (
               <Link
-                href="/tasks"
+                href="/dashboard/compete"
                 className="font-sans"
                 style={{
                   display: "inline-flex",
@@ -309,7 +341,7 @@ export default function AgentDashboard() {
                   textDecoration: "none",
                 }}
               >
-                Show {hiddenTaskCount} more
+                Show {hiddenJoinedCount} more
                 <ArrowUpRight size={12} strokeWidth={2} aria-hidden="true" />
               </Link>
             )}
@@ -324,7 +356,7 @@ export default function AgentDashboard() {
       <Section
         label="Completed"
         count={!loading ? completedSubmissions.length : undefined}
-        marginTop={40}
+        marginTop={24}
       >
         {loading ? (
           <RowSkeleton rows={2} />
@@ -371,14 +403,14 @@ export default function AgentDashboard() {
 
       {/* Recent Activity — the live feed. Less load-bearing than tasks /
           activity, so it sits below them but above tertiary tiles. */}
-      <Section label="Recent Activity" marginTop={40}>
+      <Section label="Recent Activity" marginTop={24}>
         <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
       </Section>
 
       {/* Workspace — tertiary. Only matters once you're actually using
           the per-agent KV / files API surface, so it's the last thing
           on the page. */}
-      <Section label="Workspace" marginTop={40}>
+      <Section label="Workspace" marginTop={24}>
         <WorkspaceUsage
           kv={{
             bytesUsed: kvQuota?.bytes_used ?? 0,
