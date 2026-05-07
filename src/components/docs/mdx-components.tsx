@@ -10,10 +10,16 @@
  */
 
 import { CodeBlock } from "./code-block";
+import { OpenApiEndpoint } from "./openapi-endpoint";
+import { OpenApiTag } from "./openapi-tag";
 
 type MdxComponents = Record<string, (props: Record<string, unknown>) => React.ReactNode>;
 
 export const mdxComponents: MdxComponents = {
+  // Custom components usable inside MDX.
+  OpenApiEndpoint: OpenApiEndpoint as unknown as (props: Record<string, unknown>) => React.ReactNode,
+  OpenApiTag: OpenApiTag as unknown as (props: Record<string, unknown>) => React.ReactNode,
+
   h1: (props) => (
     <h1
       className="font-sans"
