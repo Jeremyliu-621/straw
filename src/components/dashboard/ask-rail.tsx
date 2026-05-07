@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Sparkles,
   AlertCircle,
   Check,
   Loader2,
@@ -518,13 +517,7 @@ function ToolPill({ label, status }: { label: string; status: ToolStatus }) {
 
 function Shimmer({ text }: { text: string }) {
   return (
-    <div style={{ alignSelf: "flex-start", display: "flex", alignItems: "center", gap: "8px" }}>
-      <Sparkles
-        size={13}
-        strokeWidth={2}
-        aria-hidden="true"
-        style={{ color: "var(--text-muted)" }}
-      />
+    <div style={{ alignSelf: "flex-start" }}>
       <span
         className="font-sans"
         style={{

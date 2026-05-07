@@ -61,8 +61,16 @@ function Frame({ role, children }: { role: string; children: React.ReactNode }) 
     <div
       data-role={role}
       data-ask-open={askOpen ? "true" : "false"}
-      className="flex min-h-screen"
+      className="flex"
       style={{
+        // When ask is open we lock the outer frame to viewport
+        // height + clip overflow, so the dashboard contents that
+        // scroll never bleed past the inset pill (topbar's rounded
+        // top, the side gutters, etc.). The <ShellMain> below
+        // becomes the scroll container instead of the body.
+        height: askOpen ? "100vh" : undefined,
+        minHeight: askOpen ? undefined : "100vh",
+        overflow: askOpen ? "hidden" : undefined,
         background: askOpen ? "var(--bg-strong)" : "var(--bg)",
         transition: "background-color 0.24s ease",
         // Expose insets to descendants via custom properties. The
@@ -74,12 +82,17 @@ function Frame({ role, children }: { role: string; children: React.ReactNode }) 
           "--inset-right": `${insetRight}px`,
           "--inset-bottom": `${insetBottom}px`,
           "--frame-radius": `${frameRadius}px`,
+          // Hairline that traces the outer edges of the dashboard
+          // pill when ask-mode is on. Transparent when off, so
+          // sidebar/topbar/main don't paint phantom 1px lines in
+          // normal flush layout.
+          "--frame-border-color": askOpen ? "rgba(0,0,0,0.06)" : "transparent",
         } as React.CSSProperties),
       }}
     >
       <Sidebar />
       <TopBar />
-      <ShellMain>
+      <ShellMain askOpen={askOpen}>
         <OnboardingProvider>{children}</OnboardingProvider>
       </ShellMain>
       <AskRail />
@@ -92,10 +105,21 @@ function Frame({ role, children }: { role: string; children: React.ReactNode }) 
  * state to set its left margin, and reads the ask rail's inset CSS
  * variables to round/inset itself when ask-mode is on.
  */
-function ShellMain({ children }: { children: React.ReactNode }) {
+function ShellMain({
+  askOpen,
+  children,
+}: {
+  askOpen: boolean;
+  children: React.ReactNode;
+}) {
   const { collapsed } = useSidebar();
   const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
 
+  // When ask is open the body is overflow:hidden; main becomes the
+  // scroll container itself with a hard height capped by the inset
+  // bottom + topbar. Content that scrolls past those bounds is
+  // clipped, so nothing ever appears in the gutter or behind the
+  // rounded top corners.
   return (
     <main
       className="flex-1"
@@ -105,11 +129,18 @@ function ShellMain({ children }: { children: React.ReactNode }) {
         marginRight: "var(--inset-right, 0px)",
         marginBottom: "var(--inset-bottom, 0px)",
         background: "var(--bg)",
+        borderRight: "1px solid var(--frame-border-color, transparent)",
+        borderBottom: "1px solid var(--frame-border-color, transparent)",
         borderBottomRightRadius: "var(--frame-radius, 0px)",
         transition:
-          "margin 0.24s ease, border-radius 0.24s ease, background-color 0.24s ease",
-        minHeight:
-          "calc(100vh - var(--inset-top, 0px) - var(--inset-bottom, 0px))",
+          "margin 0.24s ease, border-radius 0.24s ease, background-color 0.24s ease, border-color 0.24s ease",
+        height: askOpen
+          ? `calc(100vh - var(--inset-top, 0px) - var(--inset-bottom, 0px) - ${TOPBAR_HEIGHT}px)`
+          : undefined,
+        minHeight: askOpen
+          ? undefined
+          : "calc(100vh - var(--inset-top, 0px) - var(--inset-bottom, 0px))",
+        overflowY: askOpen ? "auto" : undefined,
       }}
     >
       <div className="mx-auto max-w-[1200px]" style={{ padding: "32px" }}>

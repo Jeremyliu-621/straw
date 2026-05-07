@@ -161,6 +161,8 @@ export function TopBar() {
         height: `${TOPBAR_HEIGHT}px`,
         background: "var(--bg)",
         borderBottom: "1px solid var(--border)",
+        borderTop: "1px solid var(--frame-border-color, transparent)",
+        borderRight: "1px solid var(--frame-border-color, transparent)",
         borderTopRightRadius: "var(--frame-radius, 0px)",
         display: "flex",
         alignItems: "center",
@@ -169,7 +171,7 @@ export function TopBar() {
         padding: "0 16px",
         zIndex: 30,
         transition:
-          "left 0.18s ease, top 0.24s ease, right 0.24s ease, border-radius 0.24s ease",
+          "left 0.18s ease, top 0.24s ease, right 0.24s ease, border-radius 0.24s ease, border-color 0.24s ease",
       }}
     >
       {/* Left — toggle + page title */}

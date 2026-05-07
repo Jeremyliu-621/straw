@@ -105,17 +105,17 @@ const WORKSPACES: WorkspaceOption[] = [
 // highlight can be a clean square in collapsed mode without ever
 // extending past the rail edge.
 const ICON_BOX = 32;
+const NAV_ICON = 18;
+const WORKSPACE_ICON = 16;
 const ACTIVE_BG = "rgba(0,0,0,0.07)";
 const HOVER_BG = "rgba(0,0,0,0.04)";
 
 // In collapsed mode we want the icon-box rail-centered: with rail=64 and
 // box=32, the box's left edge needs to sit at x=16. Nav has 12px outer
 // padding, so the inner Link/button needs 4px left-padding (12+4=16).
-// In expanded mode the X padding matches Y so the active-state pill has
-// the same 8px gap on every side of the icon-box (top/bottom/left/right).
 const ROW_PAD_X_COLLAPSED = 4;
-const ROW_PAD_X_EXPANDED = 8;
-const ROW_PAD_Y = 8;
+const ROW_PAD_X_EXPANDED = 12;
+const ROW_PAD_Y = 4;
 
 function NavLink({
   entry,
@@ -183,7 +183,7 @@ function NavLink({
           transition: "background 0.15s ease",
         }}
       >
-        <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
+        <Icon size={NAV_ICON} strokeWidth={1.5} aria-hidden="true" />
       </span>
       <span
         style={{
@@ -210,7 +210,6 @@ export function Sidebar() {
   const ActiveIcon = activeWorkspace.icon;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [workspaceHovered, setWorkspaceHovered] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
@@ -237,10 +236,13 @@ export function Sidebar() {
         width: `${sidebarWidth}px`,
         background: "var(--bg-subtle)",
         borderRight: "1px solid var(--border)",
+        borderTop: "1px solid var(--frame-border-color, transparent)",
+        borderLeft: "1px solid var(--frame-border-color, transparent)",
+        borderBottom: "1px solid var(--frame-border-color, transparent)",
         borderTopLeftRadius: "var(--frame-radius, 0px)",
         borderBottomLeftRadius: "var(--frame-radius, 0px)",
         transition:
-          "width 0.18s ease, background-color 0.3s ease, top 0.24s ease, left 0.24s ease, height 0.24s ease, border-radius 0.24s ease",
+          "width 0.18s ease, background-color 0.3s ease, top 0.24s ease, left 0.24s ease, height 0.24s ease, border-radius 0.24s ease, border-color 0.24s ease",
         overflow: "hidden",
       }}
       aria-label="Primary navigation"
@@ -293,30 +295,26 @@ export function Sidebar() {
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
           aria-label={`Workspace: ${activeWorkspace.label}. Click to switch.`}
-          onMouseEnter={() => setWorkspaceHovered(true)}
-          onMouseLeave={() => setWorkspaceHovered(false)}
           className="flex items-center gap-3 font-sans"
           style={{
             width: "100%",
             // Padding matches NavLink so the avatar's x-position is
             // identical to the nav icon-boxes below in both states.
-            padding: `4px ${
+            padding: `${ROW_PAD_Y}px ${
               collapsed ? ROW_PAD_X_COLLAPSED : ROW_PAD_X_EXPANDED
             }px`,
             fontSize: "14px",
             fontWeight: 500,
             color: "var(--text)",
-            // Inset box-shadow border (instead of `border: 1px solid`) so
-            // adding/removing the outline never shifts inner content by 1px.
-            // Visible only in expanded mode; in collapsed mode the rail clip
-            // would make the right edge disappear awkwardly, so we drop it.
-            background:
-              !collapsed && (dropdownOpen || workspaceHovered)
-                ? "var(--bg)"
-                : "transparent",
-            boxShadow: !collapsed
-              ? "inset 0 0 0 1px var(--border)"
-              : "none",
+            // Pill carries the main-content background tone (var(--bg))
+            // against the slightly-darker sidebar (var(--bg-subtle)),
+            // matching the ElevenLabs workspace switcher.
+            // Inset box-shadow border (instead of `border: 1px solid`)
+            // so showing/hiding the outline never shifts inner content
+            // by 1px. Dropped in collapsed mode where the rail clip
+            // would make the right edge disappear awkwardly.
+            background: !collapsed ? "var(--bg)" : "transparent",
+            boxShadow: !collapsed ? "inset 0 0 0 1px var(--border)" : "none",
             border: "none",
             borderRadius: "var(--radius)",
             cursor: "pointer",
@@ -336,7 +334,7 @@ export function Sidebar() {
               flexShrink: 0,
             }}
           >
-            <ActiveIcon size={16} strokeWidth={1.5} />
+            <ActiveIcon size={WORKSPACE_ICON} strokeWidth={1.5} />
           </div>
           {/* Label + chevron stay in the markup so screen readers can
               still read the workspace name; they're just clipped out
@@ -490,7 +488,9 @@ export function Sidebar() {
                 style={{
                   marginTop: idx === 0 ? "0" : "16px",
                   marginBottom: "4px",
-                  paddingLeft: "12px",
+                  // Aligns the section caption with the x-position of the
+                  // icon-boxes below (nav-pad 12 + ROW_PAD_X_EXPANDED).
+                  paddingLeft: `${ROW_PAD_X_EXPANDED}px`,
                   fontSize: "10px",
                   // Lock line-height so the text block is deterministically
                   // 12px tall — the collapsed divider's marginBottom math
