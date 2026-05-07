@@ -48,10 +48,8 @@
   --tint-coral:    #f5e4e1;
   --tint-sage:     #e3eae4;
 
-  /* ── Radius bands (two only) ──────────────────────────────────── */
-  --radius: 6px;             /* small — chips, badges, inputs */
-  --radius-card: 16px;       /* cards, KPI tiles, task cards */
-  --radius-orb: 24px;        /* hero / orb-backed surfaces */
+  /* ── Radius (unchanged from before — revisit after pastels land) ── */
+  --radius: 2.5px;
 
   /* ── Legacy aliases — keep so existing inline styles don't break */
   --accent: var(--cta);
@@ -94,7 +92,6 @@
   --color-cta: var(--cta);
   --color-cta-hover: var(--cta-hover);
   --font-sans: var(--font-inter);
-  --font-display: var(--font-display);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -132,30 +129,6 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-inter), system-ui, sans-serif;
-  /* Editorial dialect: subtle positive tracking on body text. The
-     "ElevenLabs-y" Inter feel without using their font. */
-  letter-spacing: 0.012em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Display serif for h1/h2/h3 — weight 300, never bolded.
-   Single biggest brand move (per ElevenLabs study). Apply
-   automatically; opt out with `.font-sans` on a heading if a
-   page wants the sans treatment. */
-h1, h2, h3 {
-  font-family: var(--font-display), "Cormorant Garamond", "Times New Roman", serif;
-  font-weight: 300;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
-}
-
-/* Tighter for the small section eyebrow labels — these stay sans. */
-.font-eyebrow {
-  font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
 }
