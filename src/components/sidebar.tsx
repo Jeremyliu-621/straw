@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import {
-  LogOut,
+  useSidebar,
+  SIDEBAR_WIDTH_EXPANDED,
+  SIDEBAR_WIDTH_COLLAPSED,
+} from "@/components/dashboard/sidebar-context";
+import {
   ClipboardList,
   User,
   Inbox,
@@ -95,19 +99,10 @@ const WORKSPACES: WorkspaceOption[] = [
   },
 ];
 
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
-
 export function Sidebar() {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
+  const { collapsed } = useSidebar();
 
   // Derive active view from URL path, not session role
   const isCompanyView = pathname.startsWith("/dashboard/company") || pathname.startsWith("/tasks/new");
@@ -117,6 +112,8 @@ export function Sidebar() {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -134,31 +131,50 @@ export function Sidebar() {
     <aside
       className="fixed left-0 top-0 flex h-screen flex-col"
       style={{
-        width: "240px",
+        width: `${sidebarWidth}px`,
         background: "var(--bg-subtle)",
         borderRight: "1px solid var(--border)",
-        transition: "background-color 0.3s ease",
+        transition: "width 0.18s ease, background-color 0.3s ease",
+        overflow: "hidden",
       }}
+      aria-label="Primary navigation"
     >
       {/* Logo */}
-      <div style={{ padding: "24px 20px 12px" }}>
+      <div
+        style={{
+          padding: collapsed ? "20px 0 12px" : "24px 20px 12px",
+          display: "flex",
+          justifyContent: collapsed ? "center" : "flex-start",
+        }}
+      >
         <Link
           href="/dashboard"
           className="font-sans"
           style={{ fontSize: "16px", fontWeight: 600, color: "var(--text)", textDecoration: "none" }}
         >
-          <img src="/strawlonglogo.png" alt="Straw Logo" className="h-5 w-auto" />
+          {collapsed ? (
+            <img src="/strawshortlogo.png" alt="Straw" className="h-5 w-5" />
+          ) : (
+            <img src="/strawlonglogo.png" alt="Straw" className="h-5 w-auto" />
+          )}
         </Link>
       </div>
 
       {/* Workspace switcher */}
-      <div ref={dropdownRef} style={{ padding: "0 12px", position: "relative" }}>
+      <div
+        ref={dropdownRef}
+        style={{
+          padding: collapsed ? "0 8px" : "0 12px",
+          position: "relative",
+        }}
+      >
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
+          aria-label={`Workspace: ${activeWorkspace.label}. Click to switch.`}
           className="flex items-center gap-3 font-sans transition-colors"
           style={{
             width: "100%",
-            padding: "10px 12px",
+            padding: collapsed ? "10px 12px" : "10px 12px",
             fontSize: "14px",
             fontWeight: 500,
             color: "var(--text)",
@@ -169,6 +185,7 @@ export function Sidebar() {
             cursor: "pointer",
             textAlign: "left",
             transition: "all 0.15s ease",
+            justifyContent: collapsed ? "center" : "flex-start",
           }}
           onMouseOver={(e) => {
             if (!dropdownOpen) {
@@ -194,8 +211,12 @@ export function Sidebar() {
           >
             <ActiveIcon size={14} strokeWidth={1.5} />
           </div>
-          <span className="flex-1 truncate">{activeWorkspace.label}</span>
-          <ChevronsUpDown size={14} strokeWidth={1.5} style={{ color: "var(--text-faint)", flexShrink: 0 }} />
+          {!collapsed && (
+            <>
+              <span className="flex-1 truncate">{activeWorkspace.label}</span>
+              <ChevronsUpDown size={14} strokeWidth={1.5} style={{ color: "var(--text-faint)", flexShrink: 0 }} />
+            </>
+          )}
         </button>
 
         {/* Dropdown */}
@@ -205,8 +226,9 @@ export function Sidebar() {
             style={{
               position: "absolute",
               top: "calc(100% + 4px)",
-              left: "12px",
-              right: "12px",
+              left: collapsed ? "calc(100% + 4px)" : "12px",
+              right: collapsed ? "auto" : "12px",
+              width: collapsed ? "240px" : "auto",
               background: "var(--bg)",
               border: "1px solid var(--border)",
               borderRadius: "var(--radius)",
@@ -282,9 +304,27 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1" style={{ padding: "0 12px", marginTop: "8px" }}>
+      <nav
+        className="flex-1"
+        style={{ padding: collapsed ? "0 8px" : "0 12px", marginTop: "8px" }}
+      >
         {navItems.map((entry, idx) => {
           if (entry.kind === "section") {
+            // Collapsed mode: render section breaks as a thin divider
+            // instead of a text label, since labels would be clipped.
+            if (collapsed) {
+              return (
+                <div
+                  key={`section-${idx}-${entry.label}`}
+                  aria-hidden="true"
+                  style={{
+                    height: "1px",
+                    background: "var(--border)",
+                    margin: idx === 0 ? "0 8px 8px" : "12px 8px 8px",
+                  }}
+                />
+              );
+            }
             return (
               <p
                 key={`section-${idx}-${entry.label}`}
@@ -310,9 +350,11 @@ export function Sidebar() {
             <Link
               key={entry.href}
               href={entry.href}
+              title={collapsed ? entry.label : undefined}
+              aria-label={collapsed ? entry.label : undefined}
               className="flex items-center gap-3 font-sans transition-colors"
               style={{
-                padding: "8px 12px",
+                padding: collapsed ? "8px" : "8px 12px",
                 fontSize: "14px",
                 fontWeight: isActive ? 500 : 400,
                 color: isActive ? "var(--text)" : "var(--text-muted)",
@@ -320,6 +362,7 @@ export function Sidebar() {
                 background: isActive ? "rgba(0,0,0,0.07)" : "transparent",
                 borderRadius: "var(--radius)",
                 transition: "all 0.15s ease",
+                justifyContent: collapsed ? "center" : "flex-start",
               }}
               onMouseOver={(e) => {
                 if (!isActive) {
@@ -335,78 +378,15 @@ export function Sidebar() {
               }}
             >
               <Icon size={18} strokeWidth={1.5} aria-hidden="true" />
-              {entry.label}
+              {!collapsed && entry.label}
             </Link>
           );
         })}
       </nav>
 
-      {/* User section */}
-      <div
-        style={{
-          padding: "16px 20px",
-          borderTop: "1px solid var(--border)",
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-        }}
-      >
-        {session?.user?.image ? (
-          <img
-            src={session.user.image}
-            alt=""
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              flexShrink: 0,
-            }}
-          />
-        ) : (
-          <div
-            className="flex items-center justify-center font-sans"
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              background: "var(--accent-subtle)",
-              color: "var(--accent)",
-              fontSize: "12px",
-              fontWeight: 600,
-              flexShrink: 0,
-            }}
-          >
-            {getInitials(session?.user?.name ?? "U")}
-          </div>
-        )}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p
-            className="font-sans truncate"
-            style={{ fontSize: "13px", fontWeight: 500, color: "var(--text)" }}
-          >
-            {session?.user?.name}
-          </p>
-          <button
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-1 font-sans transition-colors"
-            style={{
-              fontSize: "12px",
-              color: "var(--text-faint)",
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-              marginTop: "2px",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
-            onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-faint)")}
-          >
-            <LogOut size={12} strokeWidth={1.5} />
-            Sign out
-          </button>
-        </div>
-      </div>
+      {/* User block intentionally removed — moved to TopBar avatar
+          dropdown so the sidebar bottom can host other content
+          (e.g. usage meter / upgrade CTA) later. */}
     </aside>
   );
 }
