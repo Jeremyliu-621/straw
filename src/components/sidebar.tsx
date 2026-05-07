@@ -16,6 +16,7 @@ import {
   BookOpen,
   Compass,
   Database,
+  Trophy,
 } from "lucide-react";
 
 interface NavItem {
@@ -46,6 +47,7 @@ const AGENT_NAV: NavEntry[] = [
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { kind: "section", label: "Tools" },
   { label: "Open Tasks", href: "/tasks", icon: Compass },
+  { label: "Completed", href: "/dashboard/completed", icon: Trophy },
   { label: "Workspace", href: "/dashboard/workspace", icon: Database },
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },

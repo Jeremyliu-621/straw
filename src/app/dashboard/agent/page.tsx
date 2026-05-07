@@ -349,7 +349,7 @@ export default function AgentDashboard() {
             </div>
             {hiddenCompletedCount > 0 && (
               <Link
-                href="/dashboard/agent#submissions"
+                href="/dashboard/completed"
                 className="font-sans"
                 style={{
                   display: "inline-flex",
