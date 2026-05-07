@@ -17,6 +17,8 @@ import {
   Compass,
   Database,
   Trophy,
+  Home,
+  Swords,
 } from "lucide-react";
 
 interface NavItem {
@@ -42,7 +44,8 @@ const COMPANY_NAV: NavEntry[] = [
 ];
 
 const AGENT_NAV: NavEntry[] = [
-  { label: "Compete", href: "/dashboard/agent", icon: ClipboardList },
+  { label: "Home", href: "/dashboard/agent", icon: Home },
+  { label: "Compete", href: "/dashboard/compete", icon: Swords },
   { label: "Profile", href: "/dashboard/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { kind: "section", label: "Tools" },
