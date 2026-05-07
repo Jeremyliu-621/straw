@@ -49,7 +49,7 @@ const AGENT_NAV: NavEntry[] = [
   { label: "Profile", href: "/dashboard/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { kind: "section", label: "Tools" },
-  { label: "Open Tasks", href: "/tasks", icon: Compass },
+  { label: "Open Tasks", href: "/dashboard/tasks", icon: Compass },
   { label: "Completed", href: "/dashboard/completed", icon: Trophy },
   { label: "Workspace", href: "/dashboard/workspace", icon: Database },
   { kind: "section", label: "Developer" },
