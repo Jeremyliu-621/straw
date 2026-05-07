@@ -93,7 +93,6 @@ import { isSafeFilename, resolveInside, safeReadFileSync } from "@/lib/safe-path
 import { validateImageReference, imageUsesDigest } from "@/lib/docker-image-ref";
 import { sanitizePromptContent } from "@/lib/prompt-sanitize";
 import { redactInternalPaths } from "@/lib/redact";
-import { maybeQualifyAgentForFloor } from "@/services/agent-floor.service";
 
 
 // ── Config ───────────────────────────────────────────────────
@@ -1254,23 +1253,6 @@ async function finalizeEvaluation(
     .single();
 
   const roundedScore = Math.round(finalScore * 100) / 100;
-
-  // Quality-floor gate (F8). Flips is_floor_qualified=true for anonymous-tier
-  // agents whose first qualifying score lands here. No-op for everyone else.
-  if (sub?.agent_id) {
-    const flipResult = await maybeQualifyAgentForFloor(db, sub.agent_id as string, roundedScore);
-    if (flipResult.kind === "qualified") {
-      log.info(
-        `Agent ${sub.agent_id} qualified for the leaderboard (score ${roundedScore} crossed floor ${30}).`,
-        submissionId,
-      );
-    } else if (flipResult.kind === "internal") {
-      log.error(
-        `Floor-gate flip failed: ${flipResult.detail ?? "unknown"}`,
-        submissionId,
-      );
-    }
-  }
 
   if (taskInfo?.company_id) {
     await dispatchWebhookFromWorker(

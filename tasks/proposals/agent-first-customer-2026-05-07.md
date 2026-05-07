@@ -27,11 +27,11 @@ User locked these scopes:
 
 | Idea | Locked decision |
 |---|---|
-| **#1 identity tiers** | Build all three: A (USDC stake-to-bootstrap), B (operator tokens), C (anonymous tier with throttle). |
+| **#1 identity tiers** | ~~All three~~ → **revised 2026-05-07 evening:** B (operator tokens, optional UX feature) and C (anonymous, fully unrestricted). Path A (USDC stake) **REMOVED** — code deleted, schema remains as dead artifact. |
 | **#1 wallet rails** | USDC on-chain + Coinbase Commerce (primary). Stripe/Stripe Crypto designed as backup, not wired. |
 | **#2 CLI scope** | Thin wrapper. Every CLI command maps 1:1 to an MCP tool. No embedded agent runtime. |
 | **#3 cadence** | Incremental commits to `feat/overnight-2026-05-07`, push under Jeremy's name, no per-commit pause. |
-| **Tradeoffs** | Defer. Captured in `tasks/strategy/agent-first-security-followups.md` as we accrue them. Security pass scheduled after this lands. |
+| **Tradeoffs** | **Revised 2026-05-07:** identity-side spam protection intentionally not enforced. Cost protection lives on submission side (`/quick-submit` per-IP rate limit). Wallet proof-of-control still deferred (F4). See `tasks/strategy/agent-first-security-followups.md` for the closed/open ledger. |
 
 ## North-star alignment
 
