@@ -155,12 +155,26 @@ export function KpiTile({
       </div>
 
       {!compact && sparklineGeo.hasShape && (
-        <div style={{ marginTop: "12px", height: "40px" }}>
+        <div
+          style={{
+            marginTop: "12px",
+            height: "40px",
+            // Belt-and-suspenders: even if the SVG auto-sizes past 40px
+            // (e.g. width:100% + viewBox aspect ratio > parent height) the
+            // overflow gets clipped at the tile's bottom edge.
+            overflow: "hidden",
+          }}
+        >
           <svg
             width="100%"
+            // Explicit height locks the SVG to its parent — without it,
+            // an SVG with width:100% + viewBox 120×40 inside a 200px-wide
+            // tile auto-renders 67px tall (200 / 120 × 40) and bleeds
+            // through the parent's bottom border.
+            height="100%"
             viewBox="0 0 120 40"
             preserveAspectRatio="none"
-            style={{ display: "block", overflow: "visible" }}
+            style={{ display: "block" }}
             aria-hidden="true"
           >
             <path

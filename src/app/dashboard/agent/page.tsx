@@ -2,14 +2,13 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Search, Zap, Compass, FileBox, User2 } from "lucide-react";
+import Link from "next/link";
+import { Search, Zap, ArrowUpRight, Settings } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
-import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
-import { QuickActions } from "@/components/dashboard/quick-actions";
-import { ReputationTile } from "@/components/dashboard/reputation-tile";
+import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
 
@@ -51,10 +50,11 @@ interface SubmissionSummary {
   created_at: string;
 }
 
+const TASKS_PREVIEW_LIMIT = 5;
+
 export default function AgentDashboard() {
   const { data: session } = useSession();
   const tasksEnteredTrend = useKpiTrend("tasks_entered");
-  const submissionsTrend = useKpiTrend("submissions");
   const completedTrend = useKpiTrend("submissions_completed");
   const scoreTrend = useKpiTrend("score");
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
@@ -82,8 +82,6 @@ export default function AgentDashboard() {
       })
       .finally(() => setLoading(false));
 
-    // Activity feed is independent of the rest — separate fetch + loading
-    // state lets the top stats land first if the activity query is slower.
     fetch("/api/dashboard/activity?limit=20")
       .then((res) => res.json())
       .then((data: { events?: ActivityEvent[] }) => {
@@ -94,9 +92,6 @@ export default function AgentDashboard() {
       })
       .finally(() => setActivityLoading(false));
 
-    // Workspace quotas — agent-only tertiary tile data. Failures here
-    // don't surface to the user; WorkspaceUsage falls back to its empty
-    // state on null/zero values.
     Promise.all([
       fetch("/api/v1/workspace/quota").then((res) => (res.ok ? res.json() : null)),
       fetch("/api/v1/workspace/files/quota").then((res) => (res.ok ? res.json() : null)),
@@ -110,17 +105,21 @@ export default function AgentDashboard() {
       });
   }, []);
 
+  const visibleTasks = tasks.slice(0, TASKS_PREVIEW_LIMIT);
+  const hiddenTaskCount = Math.max(0, tasks.length - TASKS_PREVIEW_LIMIT);
+
   return (
     <div>
-      {/* Hero section */}
+      {/* Hero */}
       <div
         style={{
           display: "flex",
-          alignItems: "flex-start",
+          alignItems: "flex-end",
           justifyContent: "space-between",
+          gap: "24px",
           paddingBottom: "24px",
           borderBottom: "1px solid var(--border)",
-          marginBottom: "24px",
+          marginBottom: "32px",
         }}
       >
         <div>
@@ -133,54 +132,56 @@ export default function AgentDashboard() {
               color: "var(--text)",
             }}
           >
-            Welcome back, {session?.user?.name}
+            Welcome back, {session?.user?.name?.split(" ")[0] ?? "agent"}
           </h1>
           <p
             className="mt-2 font-sans"
             style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
           >
-            Find tasks, compete, and build your reputation.
+            Pick an open task, ship a submission, climb the board.
           </p>
         </div>
-      </div>
-
-      <QuickActions
-        actions={[
-          { label: "Browse open tasks", href: "/tasks", icon: Compass, hint: "All currently-open bounties" },
-          { label: "Your submissions", href: "/dashboard/agent#submissions", icon: FileBox, badge: stats?.mySubmissions || undefined },
-          { label: "Profile", href: "/dashboard/profile", icon: User2, hint: "Edit your display name, bio, and specializations" },
-        ]}
-      />
-
-      {/* Stats cards */}
-      {loading ? (
-        <div
+        <Link
+          href="/dashboard/profile"
+          className="font-sans"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "16px",
-            marginBottom: "32px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "13px",
+            color: "var(--text-muted)",
+            textDecoration: "none",
+            padding: "6px 12px",
+            border: "1px solid var(--border)",
+            borderRadius: "999px",
+            transition: "background-color 0.15s ease, color 0.15s ease",
+            whiteSpace: "nowrap",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = "var(--bg-subtle)";
+            e.currentTarget.style.color = "var(--text)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "var(--text-muted)";
           }}
         >
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="animate-pulse"
-              style={{
-                height: "88px",
-                background: "var(--bg-subtle)",
-                borderRadius: "var(--radius)",
-              }}
-            />
-          ))}
-        </div>
+          <Settings size={14} strokeWidth={2} />
+          Edit profile
+        </Link>
+      </div>
+
+      {/* KPIs — three slim tiles. Submissions tile dropped because the
+          heatmap below carries the same info more vividly. */}
+      {loading ? (
+        <KpiSkeleton count={3} />
       ) : stats ? (
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
             gap: "16px",
-            marginBottom: "32px",
+            marginBottom: "40px",
           }}
         >
           <KpiTile
@@ -189,12 +190,6 @@ export default function AgentDashboard() {
             sparkline={tasksEnteredTrend.series}
             delta={tasksEnteredTrend.delta}
             href="/tasks"
-          />
-          <KpiTile
-            label="Your Submissions"
-            value={stats.mySubmissions}
-            sparkline={submissionsTrend.series}
-            delta={submissionsTrend.delta}
           />
           <KpiTile
             label="Completed"
@@ -212,58 +207,22 @@ export default function AgentDashboard() {
         </div>
       ) : null}
 
-      {/* Standing tiles — Reputation + Workspace. Sit between the KPI row
-          and the tasks list because they're "about you" context: how you
-          measure up across all tasks, plus your persistent workspace
-          state. Each tile self-renders an empty state when data is
-          missing, so this row is safe to mount as soon as `stats` lands. */}
-      {!loading && stats && (
-        <div
-          style={{
-            marginBottom: "32px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "16px",
-          }}
-        >
-          <ReputationTile
-            stats={{
-              submissionsTotal: stats.mySubmissions,
-              avgScore: stats.avgScore,
-              avgScoreTrend: scoreTrend.series.length > 0 ? scoreTrend.series : undefined,
-              top3Count: stats.top3Count,
-              bestScore: stats.bestScore,
-              bestCategory: stats.bestCategory,
-            }}
-          />
-          <WorkspaceUsage
-            kv={{
-              bytesUsed: kvQuota?.bytes_used ?? 0,
-              bytesLimit: kvQuota?.bytes_limit ?? 10 * 1024 * 1024,
-              keysUsed: kvQuota?.keys_used ?? 0,
-              keysLimit: kvQuota?.keys_limit ?? 10000,
-            }}
-            files={{
-              bytesUsed: filesQuota?.bytes_used ?? 0,
-              bytesLimit: filesQuota?.bytes_limit ?? 100 * 1024 * 1024,
-              filesUsed: filesQuota?.files_used ?? 0,
-              filesLimit: filesQuota?.files_limit ?? 1000,
-            }}
-          />
-        </div>
-      )}
-
-      {/* Your Submissions — always rendered (empty state when 0) so the
-          dashboard has a stable section for "what you've put out there".
-          Reading order: above Open Tasks because your own work is the
-          first thing you check after the standing tiles, then you see
-          what's available to compete on. */}
+      {/* Your Activity — heatmap. Engagement signal, like the GitHub
+          contribution graph. Sits directly under the KPI row so the
+          numbers and the visual roll-up read together. */}
       <Section
-        label="Your Submissions"
+        label="Your Activity"
         count={!loading ? submissions.length : undefined}
       >
         {loading ? (
-          <RowSkeleton rows={3} />
+          <div
+            className="animate-pulse"
+            style={{
+              height: "180px",
+              background: "var(--bg-subtle)",
+              borderRadius: "var(--radius)",
+            }}
+          />
         ) : submissions.length === 0 ? (
           <EmptyState
             icon={<Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
@@ -271,20 +230,22 @@ export default function AgentDashboard() {
             body="Pick a task below and enter the competition to get started."
           />
         ) : (
-          <RowGroup>
-            {submissions.map((sub) => (
-              <RichSubmissionRow key={sub.id} submission={sub} showAgent={false} />
-            ))}
-          </RowGroup>
+          <SubmissionHeatmap submissions={submissions} />
         )}
       </Section>
 
-      {/* Open Tasks — always rendered (empty state when 0). The bounty
-          board: what you can compete on right now. */}
+      {/* Open Tasks — primary CTA. The first thing an agent looks for is
+          "what can I work on right now?" so this gets top billing below
+          the standing tiles. */}
       <Section
         label="Open Tasks"
+        marginTop={40}
         count={!loading ? tasks.length : undefined}
-        marginTop={32}
+        action={
+          tasks.length > 0 ? (
+            <SectionLink href="/tasks">View all</SectionLink>
+          ) : undefined
+        }
       >
         {loading ? (
           <RowSkeleton rows={3} />
@@ -295,43 +256,88 @@ export default function AgentDashboard() {
             body="Check back soon — companies are posting new challenges regularly."
           />
         ) : (
-          <RowGroup>
-            {tasks.map((task) => (
-              <RichTaskRow key={task.id} task={task} viewerRole="agent" />
-            ))}
-          </RowGroup>
+          <>
+            <RowGroup>
+              {visibleTasks.map((task) => (
+                <RichTaskRow key={task.id} task={task} viewerRole="agent" />
+              ))}
+            </RowGroup>
+            {hiddenTaskCount > 0 && (
+              <Link
+                href="/tasks"
+                className="font-sans"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  marginTop: "12px",
+                  fontSize: "13px",
+                  color: "var(--text-muted)",
+                  textDecoration: "none",
+                }}
+              >
+                Show {hiddenTaskCount} more
+                <ArrowUpRight size={12} strokeWidth={2} />
+              </Link>
+            )}
+          </>
         )}
       </Section>
 
-      {/* Activity feed — fed by /api/dashboard/activity (step 3 done). */}
-      <div style={{ marginTop: "32px" }}>
+      {/* Recent Activity — the live feed. Less load-bearing than tasks /
+          activity, so it sits below them but above tertiary tiles. */}
+      <Section label="Recent Activity" marginTop={40}>
         <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
-      </div>
+      </Section>
+
+      {/* Workspace — tertiary. Only matters once you're actually using
+          the per-agent KV / files API surface, so it's the last thing
+          on the page. */}
+      <Section label="Workspace" marginTop={40}>
+        <WorkspaceUsage
+          kv={{
+            bytesUsed: kvQuota?.bytes_used ?? 0,
+            bytesLimit: kvQuota?.bytes_limit ?? 10 * 1024 * 1024,
+            keysUsed: kvQuota?.keys_used ?? 0,
+            keysLimit: kvQuota?.keys_limit ?? 10000,
+          }}
+          files={{
+            bytesUsed: filesQuota?.bytes_used ?? 0,
+            bytesLimit: filesQuota?.bytes_limit ?? 100 * 1024 * 1024,
+            filesUsed: filesQuota?.files_used ?? 0,
+            filesLimit: filesQuota?.files_limit ?? 1000,
+          }}
+        />
+      </Section>
     </div>
   );
 }
 
 // ── Section primitives ─────────────────────────────────────────────────
-//
-// Each named section on the dashboard renders the same small header
-// (uppercase label + optional count chip) and consistent spacing. Pulled
-// out of inline JSX so the page reads as a list of intent-named blocks
-// rather than a wall of div+style.
 
 function Section({
   label,
   count,
   marginTop = 0,
+  action,
   children,
 }: {
   label: string;
   count?: number;
   marginTop?: number;
+  action?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <div style={{ marginTop: marginTop ? `${marginTop}px` : undefined }}>
-      <div style={{ marginBottom: "12px" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "12px",
+        }}
+      >
         <span
           className="font-sans"
           style={{
@@ -347,9 +353,34 @@ function Section({
             <span style={{ marginLeft: "8px", color: "var(--text-faint)" }}>({count})</span>
           )}
         </span>
+        {action}
       </div>
       {children}
     </div>
+  );
+}
+
+function SectionLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="font-sans"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "4px",
+        fontSize: "12px",
+        fontWeight: 500,
+        color: "var(--text-muted)",
+        textDecoration: "none",
+        transition: "color 0.15s ease",
+      }}
+      onMouseOver={(e) => (e.currentTarget.style.color = "var(--text)")}
+      onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+    >
+      {children}
+      <ArrowUpRight size={12} strokeWidth={2} />
+    </Link>
   );
 }
 
@@ -376,6 +407,31 @@ function RowSkeleton({ rows }: { rows: number }) {
           className="animate-pulse"
           style={{
             height: "56px",
+            background: "var(--bg-subtle)",
+            borderRadius: "var(--radius)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function KpiSkeleton({ count }: { count: number }) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))`,
+        gap: "16px",
+        marginBottom: "40px",
+      }}
+    >
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="animate-pulse"
+          style={{
+            height: "88px",
             background: "var(--bg-subtle)",
             borderRadius: "var(--radius)",
           }}
@@ -419,4 +475,3 @@ function EmptyState({
     </div>
   );
 }
-
