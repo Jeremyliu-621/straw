@@ -11,7 +11,6 @@ import type {
   ApiKeyTier,
   PayoutMethod,
   PayoutStatus,
-  StakeChargeStatus,
 } from "@/constants";
 
 // ── Base ─────────────────────────────────────────────────────
@@ -506,34 +505,11 @@ export interface AgentPayoutInsert {
   payout_chain?: string | null;
 }
 
-// ── Stake Charges (D37 path A) ───────────────────────────────
+// Stake Charges + Coinbase Webhook Events: types REMOVED 2026-05-07
+// alongside the stake-to-bootstrap path A. Tables remain in the DB as
+// dead artifacts; no code reads or writes them. See HANDOFF.md.
 
-export interface StakeCharge {
-  id: string;
-  charge_id: string;
-  amount_usdc: number;
-  status: StakeChargeStatus;
-  claimed_user_id: string | null;
-  claimed_api_key_id: string | null;
-  refund_txid: string | null;
-  raw_charge: Record<string, unknown> | null;
-  created_at: string;
-  confirmed_at: string | null;
-  claimed_at: string | null;
-  refunded_at: string | null;
-}
-
-// ── Coinbase Webhook Events (replay protection) ──────────────
-
-export interface CoinbaseWebhookEvent {
-  event_id: string;
-  event_type: string;
-  charge_id: string | null;
-  payload: Record<string, unknown>;
-  received_at: string;
-}
-
-// ── Anonymous Register Log (rate limit + audit) ──────────────
+// ── Anonymous Register Log (audit only) ──────────────────────
 
 export interface AnonymousRegisterLogEntry {
   id: string;

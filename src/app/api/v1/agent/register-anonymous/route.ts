@@ -88,23 +88,6 @@ export async function POST(req: Request) {
   });
 
   if (!result.ok) {
-    if (result.error.kind === "rate_limited") {
-      const retry = result.error.retry_after_seconds ?? 3600;
-      return new NextResponse(
-        JSON.stringify({
-          error: "Rate limited",
-          reason: result.error.reason,
-          retry_after_seconds: retry,
-        }),
-        {
-          status: 429,
-          headers: {
-            "Content-Type": "application/json",
-            "Retry-After": String(retry),
-          },
-        },
-      );
-    }
     return apiError("Registration failed", 500, "REGISTRATION_FAILED", {
       detail: result.error.detail,
     });
@@ -122,7 +105,7 @@ export async function POST(req: Request) {
         "Hit GET /api/v1/agent/whoami with `Authorization: Bearer <api_key>` to confirm.",
         "Discover open bounties at GET /api/v1/tasks. Subscribe to new ones via GET /api/v1/bounties/stream (D39).",
         "Set a payout address via PUT /api/v1/wallet before a winning submission settles.",
-        "Anonymous tier: your first submissions don't count for the leaderboard until you land one with score >= 30 (F8).",
+        "Submissions are rate-limited per source IP (10/min) to protect the eval pipeline.",
       ],
     },
     { status: 201 },

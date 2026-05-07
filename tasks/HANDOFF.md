@@ -58,60 +58,50 @@ an MCP tool and an SDK method.
 
 In rough priority order:
 
-1. **Apply migration 040 to live DB.**
-   ```sh
-   npx supabase link --project-ref ptvipiqorbqxoypbfeoj
-   npx supabase db query --linked --file supabase/migrations/040_agent_identity_and_wallet.sql
-   ```
-   Until this runs, the new routes will fail at the DB layer.
+1. ✅ **Apply migration 040 to live DB.** **Done 2026-05-07**, verified via `information_schema` query.
 
-2. **D37 path A — USDC stake-to-bootstrap.**
-   - Coinbase Commerce client (charge create + webhook handler).
-   - `POST /api/v1/agent/stake/charge` (creates a charge, returns hosted URL).
-   - `POST /api/v1/wallet/webhooks/coinbase` (verifies signature, marks
-     stake_charges row as confirmed). Idempotent on event_id (F7).
-   - `POST /api/v1/agent/stake/claim` (after confirmed, mints api_key).
-   - Schema is already there (stake_charges + coinbase_webhook_events
-     tables, stake_charge_status enum).
+2. ~~**D37 path A — USDC stake-to-bootstrap.**~~ **REMOVED 2026-05-07** per user. Code deleted (`stake/charge`, `stake/claim`, `webhooks/coinbase` routes; `coinbase-commerce.service`); schema (`stake_charges`, `coinbase_webhook_events`) remains as dead artifact of migration 040.
 
-3. **Wallet payout pipeline.**
+3. **Wallet payout pipeline (settlement worker).**
    - On submission win → enqueue payout job → settle via the agent's
-     declared rail (onchain_usdc via viem + base RPC, or Coinbase
-     Commerce sender API). Worker reads `agent_payouts WHERE status =
-     'pending'`, transitions through queued / sent / confirmed.
-   - Schema is there (agent_payouts table). Service layer + worker is not.
+     declared rail (onchain_usdc via viem + base RPC). Worker reads
+     `agent_payouts WHERE status = 'pending'`, transitions through
+     queued / sent / confirmed.
+   - Service layer (`enqueuePayout`, status helpers) + the deal-create
+     hook are shipped. Worker is not.
+   - Coinbase Commerce sender API is no longer needed (webhook side
+     was removed); on-chain via viem is the path forward.
 
-4. **F8 floor-gate enforcement in submission flow.**
-   - `users.is_floor_qualified` defaults true; `registerAnonymous` sets
-     it false. The submission flow needs to check and flag
-     `quality_floor_pending` for leaderboard exclusion until it flips
-     true. Today the flag is read by `whoami` but not by submit.
-   - Tracked as F8 in `tasks/strategy/agent-first-security-followups.md`.
+4. ~~**F8 floor-gate enforcement.**~~ **CLOSED 2026-05-07** — gate intentionally removed; every agent counts on the leaderboard from day one. Companies can filter by `tier` if they want a cleaner signal.
 
-5. **Publish SDK + MCP + CLI to npm.**
+5. **Build the docs site** at `straw.wiki/docs`. Plan in `tasks/research/docs-platform-research-2026-05-07.md`. ~6 days of focused work.
+
+6. **Publish SDK + MCP + CLI to npm.**
    - `cd packages/agent-sdk && npm publish` (0.4.0)
    - `cd ../mcp-server && npm install && npm publish` (1.4.0)
-   - `cd ../cli && npm publish` (0.2.0; first publish — needs `--access public`)
+   - `cd ../cli && npm publish --access public` (0.2.0; first publish)
 
-6. **Smoke test the full vertical**, then capture findings in
-   `tasks/research/agent-first-customer-smoke-2026-05-XX.md`.
+7. **Smoke test the full vertical** against straw.wiki post-deploy. Initial smoke against local dev :3010 ran 2026-05-07 and passed (see `tasks/research/agent-first-customer-smoke-2026-05-07.md`).
 
-7. **TASKS.md sweep** — see updates this commit; add anything missing.
+8. **TASKS.md sweep** — keep current as work lands.
 
 ## Risks worth flagging
 
-- **Migration 040 has not been applied.** Existing `register-anonymous`,
-  `whoami`, `wallet`, `operator-tokens`, `mint-child` routes will fail
-  on missing columns/tables/enums until the migration lands.
+- **Migration 040 is applied to live DB** (verified 2026-05-07).
 - **CLI is unpublished.** `npx @strawai/cli` works locally if the package
   is built, but `npm i -g @strawai/cli` won't resolve until publish.
 - **mcp-server 1.4.0 typecheck depends on local SDK build.** The
   package.json declares `^0.4.0` but the installed `node_modules` was
   hand-patched. Running `npm install` in mcp-server/ before publish
-  will fail until 0.4.0 is on npm.
-- **Trust-delegation gap.** Anonymous tier registers without any
-  attestation. F1 fingerprinting is UA-only; sybil-resistant
-  mitigations (TLS fingerprint, ASN, Cloudflare Turnstile) are deferred.
+  will fail until 0.4.0 is on npm. **Publish SDK first.**
+- **No identity-side spam protection.** Per user decision, registration
+  is unrestricted. If a sybil flood meaningfully degrades the leaderboard
+  signal, the tier filter (now in the leaderboard response) is the
+  mitigation.
+- **Dead schema artifacts from removed stake-to-bootstrap.**
+  `stake_charges`, `coinbase_webhook_events`, `stake_charge_status` enum,
+  `STAKED` value in `api_key_tier` enum. Additive cost is zero; cleanup
+  migration would be ~3 lines if we ever care.
 
 ---
 

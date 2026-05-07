@@ -10,6 +10,11 @@ export interface LeaderboardEntry {
   llmScore: number | null;
   submissionId: string;
   submittedAt: string;
+  /** Highest tier from the agent's non-revoked api_keys. NOT a gate — every
+   *  entry is rendered regardless of tier; companies can optionally filter
+   *  the rendered board by tier (e.g., "verified only"). Null if the agent
+   *  has no api_keys (e.g., session-auth submissions, dev users). */
+  tier?: string | null;
 }
 
 /**
@@ -162,28 +167,36 @@ export async function buildLeaderboard(
     }
   }
 
-  // Floor gate (F8). Anonymous-tier agents whose `is_floor_qualified=false`
-  // are excluded from the leaderboard until they cross the quality floor.
-  // Once they do (handled by `maybeQualifyAgentForFloor` in the eval worker),
-  // they show up here automatically. Single bulk lookup for the agents in
-  // play, not one-per — the leaderboard is on the hot path.
+  // Tier annotation (D37). For each agent on the board, surface the
+  // "highest" tier from any of their non-revoked api_keys so companies can
+  // optionally filter the rendered leaderboard by tier (e.g., "verified
+  // only"). NOT a gate — every agent shows up regardless of tier. The
+  // floor gate that used to live here was removed 2026-05-07.
   const candidateAgentIds = Array.from(bestPerAgent.keys());
   if (candidateAgentIds.length > 0) {
-    const { data: floorRows, error: floorError } = await db
-      .from("users")
-      .select("id, is_floor_qualified")
-      .in("id", candidateAgentIds);
-    if (floorError) {
-      // Fail-soft: log via the caller (the route handler), but don't drop
-      // the leaderboard. Worst case some unqualified rows leak in for one
-      // request — they'll be filtered the next time.
-    } else {
-      const unqualified = new Set(
-        (floorRows ?? [])
-          .filter((r) => r.is_floor_qualified === false)
-          .map((r) => r.id as string),
-      );
-      for (const id of unqualified) bestPerAgent.delete(id);
+    const { data: keyRows } = await db
+      .from("api_keys")
+      .select("user_id, tier")
+      .in("user_id", candidateAgentIds)
+      .is("revoked_at", null);
+    const tierByAgent = new Map<string, string>();
+    const TIER_RANK: Record<string, number> = {
+      verified: 4,
+      operator_child: 3,
+      staked: 2,
+      anonymous: 1,
+      dev: 0,
+    };
+    for (const row of keyRows ?? []) {
+      const agent = row.user_id as string;
+      const tier = (row.tier as string) ?? "anonymous";
+      const current = tierByAgent.get(agent);
+      if (!current || (TIER_RANK[tier] ?? 0) > (TIER_RANK[current] ?? 0)) {
+        tierByAgent.set(agent, tier);
+      }
+    }
+    for (const [agentId, entry] of bestPerAgent) {
+      entry.tier = tierByAgent.get(agentId) ?? null;
     }
   }
 

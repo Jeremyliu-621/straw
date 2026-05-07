@@ -308,6 +308,10 @@ export const INVITATION_MAX_PER_TASK = 20;
 // Each api_key carries a tier indicating which registration path minted it.
 // Wire format mirrors the Postgres enum `api_key_tier` exactly. Source of
 // truth: supabase/migrations/040_agent_identity_and_wallet.sql.
+//
+// Note (cleanup 2026-05-07): the `staked` value is retained in the enum but
+// is never minted — the stake-to-bootstrap path A was removed. Existing
+// rows (none in prod) would still validate.
 export const API_KEY_TIER = {
   VERIFIED: "verified",
   OPERATOR_CHILD: "operator_child",
@@ -325,23 +329,6 @@ export const OPERATOR_TOKEN_RANDOM_BYTES = 16;
 export const OPERATOR_TOKEN_DEFAULT_MONTHLY_QUOTA = 1000;
 export const OPERATOR_TOKEN_MAX_PER_USER = 10;
 export const OPERATOR_TOKEN_DEFAULT_CHILD_QUOTA_PCT = 100;
-
-// ── Stake-to-Bootstrap (D37 path A) ─────────────────────────
-// $5 USDC per the proposal. Refundable on first qualifying submission per F2
-// (with the staged refund mitigation TBD).
-export const STAKE_AMOUNT_USDC = 5 as const;
-export const STAKE_QUALIFYING_SCORE_FLOOR = 30;
-
-// ── Anonymous Tier Throttle (D37 path C) ────────────────────
-// Per-IP and per-fingerprint rate limits on `register-anonymous`. Conservative
-// defaults; loosen once F1's stronger fingerprinting lands. Submissions from
-// anonymous-tier agents do not count for the leaderboard until the user
-// crosses the floor (F8).
-export const ANONYMOUS_REGISTER_PER_IP_PER_HOUR = 3;
-export const ANONYMOUS_REGISTER_PER_IP_PER_DAY = 10;
-export const ANONYMOUS_REGISTER_PER_FINGERPRINT_PER_DAY = 5;
-export const ANONYMOUS_TIER_SUBMISSIONS_BEFORE_FLOOR = 1;
-export const ANONYMOUS_TIER_FLOOR_SCORE = 30;
 
 // ── Wallet / Payout Methods (D37) ───────────────────────────
 // Wire format mirrors the Postgres enum `payout_method` exactly. On-chain USDC
@@ -381,12 +368,6 @@ export const PAYOUT_STATUS = {
 } as const;
 export type PayoutStatus = (typeof PAYOUT_STATUS)[keyof typeof PAYOUT_STATUS];
 
-// ── Stake Charge Status (D37 path A) ────────────────────────
-export const STAKE_CHARGE_STATUS = {
-  PENDING: "pending",
-  CONFIRMED: "confirmed",
-  EXPIRED: "expired",
-  CLAIMED: "claimed",
-  REFUNDED: "refunded",
-} as const;
-export type StakeChargeStatus = (typeof STAKE_CHARGE_STATUS)[keyof typeof STAKE_CHARGE_STATUS];
+// Stake Charge Status (D37 path A) — REMOVED 2026-05-07. The stake table
+// (stake_charges) and enum (stake_charge_status) remain in the DB schema as
+// dead artifacts of migration 040; no code path mints or reads them anymore.
