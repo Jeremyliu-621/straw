@@ -253,145 +253,169 @@ export default function AgentDashboard() {
         </div>
       )}
 
-      {/* Task table */}
-      {loading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="animate-pulse"
-              style={{
-                height: "56px",
-                background: "var(--bg-subtle)",
-                borderRadius: "var(--radius)",
-              }}
-            />
-          ))}
-        </div>
-      ) : tasks.length === 0 ? (
-        <div
-          className="flex flex-col items-center justify-center"
-          style={{
-            padding: "64px 20px",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-          }}
-        >
-          <Search size={48} strokeWidth={1} style={{ color: "var(--accent)" }} />
-          <p
-            className="mt-4 font-sans"
-            style={{ fontSize: "22px", fontWeight: 500, color: "var(--text)" }}
-          >
-            No open tasks
-          </p>
-          <p
-            className="mt-2 font-sans text-center"
-            style={{ fontSize: "15px", color: "var(--text-muted)", maxWidth: "320px" }}
-          >
-            Check back soon &mdash; companies are posting new challenges regularly.
-          </p>
-        </div>
-      ) : (
-        <div>
-          {/* Section header */}
-          <div style={{ marginBottom: "12px" }}>
-            <span
-              className="font-sans"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
-              Open Tasks ({tasks.length})
-            </span>
-          </div>
-
-          <div
-            style={{
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              overflow: "hidden",
-            }}
-          >
-            {tasks.map((task, i) => (
-              <div
-                key={task.id}
-                style={{
-                  // Last row: drop the bottom border the row would otherwise paint.
-                  ...(i === tasks.length - 1 ? { borderBottom: "none" } : {}),
-                }}
-              >
-                <RichTaskRow task={task} viewerRole="agent" />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {/* Activity feed — fed by /api/dashboard/activity (step 3 done). */}
-      <div style={{ marginTop: "40px" }}>
-        <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
-      </div>
-
-      {/* Your Submissions */}
-      {!loading && submissions.length > 0 && (
-        <div style={{ marginTop: "40px" }}>
-          <div style={{ marginBottom: "12px" }}>
-            <span
-              className="font-sans"
-              style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "var(--text-muted)",
-              }}
-            >
-              Your Submissions ({submissions.length})
-            </span>
-          </div>
-
-          <div
-            style={{
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              overflow: "hidden",
-            }}
-          >
+      {/* Your Submissions — always rendered (empty state when 0) so the
+          dashboard has a stable section for "what you've put out there".
+          Reading order: above Open Tasks because your own work is the
+          first thing you check after the standing tiles, then you see
+          what's available to compete on. */}
+      <Section
+        label="Your Submissions"
+        count={!loading ? submissions.length : undefined}
+      >
+        {loading ? (
+          <RowSkeleton rows={3} />
+        ) : submissions.length === 0 ? (
+          <EmptyState
+            icon={<Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+            title="No submissions yet"
+            body="Pick a task below and enter the competition to get started."
+          />
+        ) : (
+          <RowGroup>
             {submissions.map((sub) => (
               <RichSubmissionRow key={sub.id} submission={sub} showAgent={false} />
             ))}
-          </div>
-        </div>
-      )}
+          </RowGroup>
+        )}
+      </Section>
 
-      {!loading && submissions.length === 0 && tasks.length > 0 && (
-        <div
-          className="flex flex-col items-center justify-center"
+      {/* Open Tasks — always rendered (empty state when 0). The bounty
+          board: what you can compete on right now. */}
+      <Section
+        label="Open Tasks"
+        count={!loading ? tasks.length : undefined}
+        marginTop={32}
+      >
+        {loading ? (
+          <RowSkeleton rows={3} />
+        ) : tasks.length === 0 ? (
+          <EmptyState
+            icon={<Search size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+            title="No open tasks"
+            body="Check back soon — companies are posting new challenges regularly."
+          />
+        ) : (
+          <RowGroup>
+            {tasks.map((task) => (
+              <RichTaskRow key={task.id} task={task} viewerRole="agent" />
+            ))}
+          </RowGroup>
+        )}
+      </Section>
+
+      {/* Activity feed — fed by /api/dashboard/activity (step 3 done). */}
+      <div style={{ marginTop: "32px" }}>
+        <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
+      </div>
+    </div>
+  );
+}
+
+// ── Section primitives ─────────────────────────────────────────────────
+//
+// Each named section on the dashboard renders the same small header
+// (uppercase label + optional count chip) and consistent spacing. Pulled
+// out of inline JSX so the page reads as a list of intent-named blocks
+// rather than a wall of div+style.
+
+function Section({
+  label,
+  count,
+  marginTop = 0,
+  children,
+}: {
+  label: string;
+  count?: number;
+  marginTop?: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <div style={{ marginTop: marginTop ? `${marginTop}px` : undefined }}>
+      <div style={{ marginBottom: "12px" }}>
+        <span
+          className="font-sans"
           style={{
-            marginTop: "40px",
-            padding: "40px 20px",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase" as const,
+            color: "var(--text-muted)",
           }}
         >
-          <Zap size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />
-          <p
-            className="mt-3 font-sans"
-            style={{ fontSize: "16px", fontWeight: 500, color: "var(--text)" }}
-          >
-            No submissions yet
-          </p>
-          <p
-            className="mt-1 font-sans text-center"
-            style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "320px" }}
-          >
-            Pick a task above and enter the competition to get started.
-          </p>
-        </div>
-      )}
+          {label}
+          {typeof count === "number" && (
+            <span style={{ marginLeft: "8px", color: "var(--text-faint)" }}>({count})</span>
+          )}
+        </span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function RowGroup({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        overflow: "hidden",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function RowSkeleton({ rows }: { rows: number }) {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div
+          key={i}
+          className="animate-pulse"
+          style={{
+            height: "56px",
+            background: "var(--bg-subtle)",
+            borderRadius: "var(--radius)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function EmptyState({
+  icon,
+  title,
+  body,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  body: string;
+}) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center"
+      style={{
+        padding: "40px 20px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+      }}
+    >
+      {icon}
+      <p
+        className="mt-3 font-sans"
+        style={{ fontSize: "16px", fontWeight: 500, color: "var(--text)" }}
+      >
+        {title}
+      </p>
+      <p
+        className="mt-1 font-sans text-center"
+        style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "320px" }}
+      >
+        {body}
+      </p>
     </div>
   );
 }
