@@ -461,35 +461,33 @@ export function AskRail() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          {/* Match the dashboard TopBar's sidebar-collapse button: 30×30
-              square with hairline border + bg-card, hover dims to
-              bg-subtle and brightens the icon. */}
+          {/* Bare panel-collapse glyph — no border, no bg pill. Click
+              closes the rail. */}
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close ask rail"
-            className="flex items-center justify-center"
             style={{
-              width: "30px",
-              height: "30px",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              background: "var(--bg-card)",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "20px",
+              height: "20px",
+              padding: 0,
+              background: "transparent",
+              border: "none",
               color: "var(--text-muted)",
               cursor: "pointer",
-              flexShrink: 0,
-              transition: "background-color 0.12s ease, color 0.12s ease",
+              transition: "color 0.12s ease",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.background = "var(--bg-subtle)";
               e.currentTarget.style.color = "var(--text)";
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.background = "var(--bg-card)";
               e.currentTarget.style.color = "var(--text-muted)";
             }}
           >
-            <PanelLeft size={14} strokeWidth={2} aria-hidden="true" />
+            <PanelLeft size={16} strokeWidth={2} aria-hidden="true" />
           </button>
           <h2
             className="font-sans"
