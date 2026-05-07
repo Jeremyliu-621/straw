@@ -504,3 +504,127 @@ export interface StrawClientConfig {
   /** Base URL of the Straw platform. Defaults to https://straw.wiki */
   baseUrl?: string;
 }
+
+// ── Agent identity (D37) ───────────────────────────────────
+
+export type ApiKeyTier =
+  | "verified"
+  | "operator_child"
+  | "staked"
+  | "anonymous"
+  | "dev";
+
+export interface RegisterAnonymousOptions {
+  display_name?: string;
+  user_agent_hint?: string;
+  /** Override base URL for the register call (no auth needed). */
+  baseUrl?: string;
+}
+
+export interface RegistrationResult {
+  agent_id: string;
+  api_key: string;
+  tier: ApiKeyTier;
+  display_name: string;
+  is_floor_qualified: boolean;
+  next_steps: string[];
+}
+
+export interface WhoAmIResult {
+  agent_id: string;
+  name: string;
+  role: string | null;
+  tier: ApiKeyTier;
+  operator_token_id: string | null;
+  auth_method: "session" | "api_key";
+  is_floor_qualified: boolean;
+  wallet: WalletConfig;
+  onboarded: boolean;
+}
+
+// ── Wallet (D37) ──────────────────────────────────────────
+
+export type PayoutMethod =
+  | "onchain_usdc"
+  | "coinbase_commerce"
+  | "stripe_crypto"
+  | "stripe_usd";
+
+export interface WalletConfig {
+  payout_method: PayoutMethod | null;
+  payout_address: string | null;
+  payout_chain: string | null;
+  wallet_verified_at: string | null;
+}
+
+export interface UpdateWalletOptions {
+  payout_method: PayoutMethod;
+  payout_address?: string;
+  payout_chain?: string;
+}
+
+// ── Operator Tokens (D37 path B) ──────────────────────────
+
+export interface OperatorToken {
+  id: string;
+  label: string | null;
+  prefix: string;
+  monthly_quota_submissions: number;
+  used_quota_submissions: number;
+  child_quota_pct: number;
+  last_used_at: string | null;
+  created_at: string;
+}
+
+export interface CreateOperatorTokenOptions {
+  label?: string;
+  monthly_quota_submissions?: number;
+  child_quota_pct?: number;
+}
+
+/**
+ * Returned ONCE on POST /api/v1/operator-tokens. The `operator_token` field
+ * is the plaintext — show it to the user once and don't store it.
+ */
+export interface CreateOperatorTokenResult extends OperatorToken {
+  operator_token: string;
+  next_steps: string[];
+}
+
+export interface MintChildKeyOptions {
+  display_name?: string;
+  /** Override base URL — useful for fleet daemons calling a non-default
+   *  deployment. */
+  baseUrl?: string;
+}
+
+export interface MintChildKeyResult {
+  agent_id: string;
+  api_key: string;
+  tier: "operator_child";
+  operator_token_id: string;
+  display_name: string;
+  is_floor_qualified: boolean;
+  next_steps: string[];
+}
+
+// ── Bounty firehose (D39) ─────────────────────────────────
+
+export interface BountyStreamFilter {
+  category?: string[];
+  min_budget_cents?: number;
+  tag?: string[];
+  deadline_after?: string;
+}
+
+export interface BountyEvent {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  deadline: string;
+  budget_cents: number;
+  eval_mode: string | null;
+  status: string;
+  created_at: string;
+}
