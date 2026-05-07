@@ -187,29 +187,31 @@ Both dashboards ship using `mockTrend()` for sparklines and synthesized events (
 ### 2026-05-07 — No React-component RTL setup added
 The project doesn't have jsdom + react-testing-library configured for client components. Adding it for these tiles would be disproportionate. We tested the pure-function helpers (sparkline-points, relative-time, computeDeadlineState, scoreSeverity, formatBytes) — 35 unit tests passing. Visual verification is browser-only and pending.
 
-## Final summary (2026-05-07 ~07:55)
+## Final summary (2026-05-07 ~12:30)
 
-Eight substantive commits on `feat/overnight-2026-05-07`, all type-checked, with 35 new unit tests covering all pure-function helpers.
+**Twelve commits** on `feat/overnight-2026-05-07`, all type-checked, with **50 new unit tests** covering all pure-function helpers + the `/api/dashboard/activity` route.
 
 | Commit | What |
 |---|---|
 | `ce363ba` | Phase 2 — agent self-onboarding (llms.txt + agent.json + proposal). Verified live on the worktree dev server. |
 | `e462c1c` | Phase 1 — three deep research files + synthesis + index registration. Synthesis is implementation-ready for Tier-3 eval agent (~18 engineer-day roadmap). Phase 3a — visual direction doc. |
-| `07c8740` | Phase 3 step 1 — KpiTile + sparkline-points helper + 11 tests. Wired into agent dashboard. |
-| `50f2927` | Phase 3 step 2 — ActivityFeed + relative-time helper + 10 tests. Wired into agent dashboard. |
+| `07c8740` | Phase 3 step 1 — KpiTile + sparkline-points helper + 11 tests. |
+| `50f2927` | Phase 3 step 2 — ActivityFeed + relative-time helper + 10 tests. |
 | `1f1507e` | Mirror onto company dashboard. |
-| `9f5ace2` | Phase 3 step 7 — RichTaskRow + RichSubmissionRow + 13 tests. Wired into both dashboards. |
-| `7f36fc4` | Phase 3 step 8 — QuickActions + LeaderboardPreview. QuickActions wired; LeaderboardPreview pending data wiring. |
-| `b207d3f` | Phase 3 step 8 done — ReputationTile + WorkspaceUsage + 6 tests. Both wired into agent tertiary row. |
+| `9f5ace2` | Phase 3 step 7 — RichTaskRow + RichSubmissionRow + 13 tests. |
+| `7f36fc4` | Phase 3 step 8 — QuickActions + LeaderboardPreview. |
+| `b207d3f` | Phase 3 step 8 done — ReputationTile + WorkspaceUsage + 6 tests. |
+| `8bcc01e` | First final-summary block. |
+| `22128c4` | **Step 3** — `/api/dashboard/activity` endpoint + 8 route tests + dashboard wiring. Replaces the `buildActivityEventsFrom*` shims with real data on both dashboards. |
+| `2fac538` | **Step 4** — `/api/dashboard/kpi-trends` endpoint + 7 bucketing tests + `useKpiTrend` hook. 5 of 8 KpiTiles now show real per-day series + period-over-period delta. |
+| `3009be4` | ReputationTile + WorkspaceUsage real data — extended `/api/dashboard/stats` with `top3Count`/`bestScore`/`bestCategory`; agent dashboard parallel-fetches `/api/v1/workspace/quota` + `/api/v1/workspace/files/quota`. |
 
-What's open for the next /loop iteration (in priority order):
+What's open (in priority order):
 
-1. **Step 3 — `GET /api/dashboard/activity` endpoint** — replaces `buildActivityEventsFrom*` mocks. Union over submissions + evaluation_results + deals. Cursor pagination.
-2. **Step 4 — `GET /api/dashboard/kpi-trends?metric=&days=14` endpoint** — replaces `mockTrend()` calls.
-3. **LeaderboardPreview wiring** — agent dashboard fetches leaderboard for user's most-recent task; company dashboard for most-recently-published task.
-4. **Extend `/api/dashboard/stats`** with `top3Count`, `bestScore`, `bestCategory` for ReputationTile.
-5. **Wire `WorkspaceUsage`** to `/api/v1/workspace/quota` + `/api/v1/workspace/files/quota`.
-6. **Visual verification** — start dev server in worktree, sign in, screenshot both dashboards. Adjust spacing / sizes as needed.
-7. **Steps 9–12** — empty/loading/error polish, mobile responsive, a11y, animations.
+1. **Tasks-Entered + Completed (agent) KPI metrics** — add `tasks_entered` (count distinct task_id per day) and `submissions_completed` (count where status=completed per day) to `/api/dashboard/kpi-trends`, then the remaining 2 of 8 tiles get real trends.
+2. **LeaderboardPreview wiring** — agent dashboard fetches leaderboard for user's most-recent task; company dashboard for most-recently-published task. Product call: confirm the "featured task" choice.
+3. **Visual verification** — start dev server in worktree, sign in, screenshot both dashboards. Adjust spacing / sizes as needed.
+4. **Status-history table** — drafts + active KPI metrics flatline because we don't have historical status data. Migration + worker hook.
+5. **Steps 9–12** — empty/loading/error polish, mobile responsive, a11y, animations.
 
-Worktree onboarded: `../mop-overnight/node_modules` is installed (this branch). Running the dev server requires `.env.local` from master (copy or pull from Vercel: `vercel env pull .env.local`).
+Worktree onboarded: `../mop-overnight/node_modules` is installed. Running the dev server requires `.env.local` from master (copy or pull: `vercel env pull .env.local`).
