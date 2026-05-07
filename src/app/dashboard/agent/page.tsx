@@ -27,6 +27,18 @@ interface AgentStats {
   mySubmissions: number;
   completedSubmissions: number;
   avgScore: number | null;
+  bestScore: number | null;
+  top3Count: number;
+  bestCategory: string | null;
+}
+
+interface WorkspaceQuota {
+  bytes_used: number;
+  bytes_limit: number;
+  keys_used?: number;
+  keys_limit?: number;
+  files_used?: number;
+  files_limit?: number;
 }
 
 interface SubmissionSummary {
@@ -47,6 +59,8 @@ export default function AgentDashboard() {
   const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
   const [stats, setStats] = useState<AgentStats | null>(null);
   const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>([]);
+  const [kvQuota, setKvQuota] = useState<WorkspaceQuota | null>(null);
+  const [filesQuota, setFilesQuota] = useState<WorkspaceQuota | null>(null);
   const [loading, setLoading] = useState(true);
   const [activityLoading, setActivityLoading] = useState(true);
 
@@ -77,6 +91,21 @@ export default function AgentDashboard() {
         setActivityEvents([]);
       })
       .finally(() => setActivityLoading(false));
+
+    // Workspace quotas — agent-only tertiary tile data. Failures here
+    // don't surface to the user; WorkspaceUsage falls back to its empty
+    // state on null/zero values.
+    Promise.all([
+      fetch("/api/v1/workspace/quota").then((res) => (res.ok ? res.json() : null)),
+      fetch("/api/v1/workspace/files/quota").then((res) => (res.ok ? res.json() : null)),
+    ])
+      .then(([kv, files]) => {
+        setKvQuota(kv as WorkspaceQuota | null);
+        setFilesQuota(files as WorkspaceQuota | null);
+      })
+      .catch(() => {
+        // swallow — empty state is fine
+      });
   }, []);
 
   return (
@@ -313,30 +342,28 @@ export default function AgentDashboard() {
             gap: "16px",
           }}
         >
-          {/* TODO: extend GET /api/dashboard/stats to include top3Count,
-              bestScore, bestCategory; today we surface only the
-              already-available fields. */}
           <ReputationTile
             stats={{
               submissionsTotal: stats.mySubmissions,
               avgScore: stats.avgScore,
-              avgScoreTrend:
-                stats.avgScore != null ? mockTrend(stats.avgScore, "up") : undefined,
-              top3Count: 0,
-              bestScore: null,
-              bestCategory: null,
+              avgScoreTrend: scoreTrend.series.length > 0 ? scoreTrend.series : undefined,
+              top3Count: stats.top3Count,
+              bestScore: stats.bestScore,
+              bestCategory: stats.bestCategory,
             }}
           />
-          {/* TODO: replace placeholder with parallel fetches to
-              GET /api/v1/workspace/quota + /api/v1/workspace/files/quota.
-              For now, render the empty-state path. */}
           <WorkspaceUsage
-            kv={{ bytesUsed: 0, bytesLimit: 10 * 1024 * 1024, keysUsed: 0, keysLimit: 10000 }}
+            kv={{
+              bytesUsed: kvQuota?.bytes_used ?? 0,
+              bytesLimit: kvQuota?.bytes_limit ?? 10 * 1024 * 1024,
+              keysUsed: kvQuota?.keys_used ?? 0,
+              keysLimit: kvQuota?.keys_limit ?? 10000,
+            }}
             files={{
-              bytesUsed: 0,
-              bytesLimit: 100 * 1024 * 1024,
-              filesUsed: 0,
-              filesLimit: 1000,
+              bytesUsed: filesQuota?.bytes_used ?? 0,
+              bytesLimit: filesQuota?.bytes_limit ?? 100 * 1024 * 1024,
+              filesUsed: filesQuota?.files_used ?? 0,
+              filesLimit: filesQuota?.files_limit ?? 1000,
             }}
           />
         </div>
