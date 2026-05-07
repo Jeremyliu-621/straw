@@ -4,7 +4,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Search, Zap, Compass, FileBox, User2 } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
-import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
+import { ActivityFeed } from "@/components/dashboard/activity-feed";
+import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 import { QuickActions } from "@/components/dashboard/quick-actions";
@@ -42,7 +43,9 @@ export default function AgentDashboard() {
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
   const [stats, setStats] = useState<AgentStats | null>(null);
+  const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activityLoading, setActivityLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -59,6 +62,18 @@ export default function AgentDashboard() {
         setTasks([]);
       })
       .finally(() => setLoading(false));
+
+    // Activity feed is independent of the rest — separate fetch + loading
+    // state lets the top stats land first if the activity query is slower.
+    fetch("/api/dashboard/activity?limit=20")
+      .then((res) => res.json())
+      .then((data: { events?: ActivityEvent[] }) => {
+        setActivityEvents(Array.isArray(data?.events) ? data.events : []);
+      })
+      .catch(() => {
+        setActivityEvents([]);
+      })
+      .finally(() => setActivityLoading(false));
   }, []);
 
   return (
@@ -241,14 +256,9 @@ export default function AgentDashboard() {
           </div>
         </div>
       )}
-      {/* Activity feed — currently mocked from real submissions until
-          /api/dashboard/activity ships (direction-doc step 3). */}
+      {/* Activity feed — fed by /api/dashboard/activity (step 3 done). */}
       <div style={{ marginTop: "40px" }}>
-        <ActivityFeed
-          events={buildActivityEventsFromSubmissions(submissions)}
-          loading={loading}
-          limit={10}
-        />
+        <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
       </div>
 
       {/* Your Submissions */}
@@ -355,35 +365,6 @@ export default function AgentDashboard() {
       )}
     </div>
   );
-}
-
-/**
- * Convert the dashboard's existing submissions list into ActivityEvent shape.
- *
- * This is a stand-in until `GET /api/dashboard/activity` (direction-doc step
- * 3) ships — that endpoint will union submissions / evaluation_results /
- * deals / audit_log into a true event stream. For now we synthesize one
- * event per submission, choosing the type based on whether scoring landed.
- */
-function buildActivityEventsFromSubmissions(
-  submissions: SubmissionSummary[]
-): ActivityEvent[] {
-  return submissions.map((sub) => {
-    const scored = sub.final_score != null;
-    return {
-      id: sub.id,
-      type: scored ? "submission_scored" : "submission_created",
-      timestamp: sub.created_at,
-      actor: { type: "agent", name: sub.agent_display_name ?? "You" },
-      target: {
-        type: "submission",
-        id: sub.id,
-        title: sub.task_title ?? "Untitled task",
-      },
-      delta: scored ? `scored ${sub.final_score?.toFixed(0)}` : undefined,
-      href: `/tasks/${sub.task_id}`,
-    };
-  });
 }
 
 /**

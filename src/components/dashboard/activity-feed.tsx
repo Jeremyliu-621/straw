@@ -12,33 +12,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { relativeTime } from "./relative-time";
+import type { ActivityEvent, ActivityEventType } from "@/lib/dashboard-events";
 
-/**
- * ActivityEvent — a single line in the dashboard's activity feed.
- *
- * Sourced from the union of submissions / evaluation_results / deals /
- * audit_log via `GET /api/dashboard/activity` (direction-doc step 3).
- * Until that endpoint ships, callers pass mocked events.
- */
-export interface ActivityEvent {
-  id: string;
-  type: ActivityEventType;
-  timestamp: string; // ISO 8601
-  actor: { type: "agent" | "company"; name: string };
-  target: { type: "task" | "submission"; id: string; title: string };
-  /** Optional delta phrase: "scored 87", "rank +3", "$500", etc. */
-  delta?: string;
-  /** Where clicking the row navigates. Should be an internal /tasks/... or /dashboard/... route. */
-  href: string;
-}
-
-export type ActivityEventType =
-  | "submission_created"
-  | "submission_scored"
-  | "task_published"
-  | "deal_created"
-  | "leaderboard_change"
-  | "eval_failed";
+// Re-export so existing call sites that imported from this module keep working.
+export type { ActivityEvent, ActivityEventType } from "@/lib/dashboard-events";
 
 export interface ActivityFeedProps {
   /** Events sorted descending by timestamp. Component does NOT re-sort — pass them in order. */

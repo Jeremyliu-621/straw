@@ -70,7 +70,11 @@ Output directory: `tasks/research/agent-context-management/`
   - `src/components/dashboard/relative-time.test.ts` — 10 cases. All pass.
   - `src/components/dashboard/activity-feed.tsx` — visual component. Filter chips (All / Submissions / Tasks / Deals / Failures), one event per row with role-coloured icon (FileText, CheckCircle2, Flag, Handshake, TrendingUp, CircleAlert) + actor + verb + target + optional delta + relative time. Loading and empty states distinct. Truncation cap with "View all" affordance.
   - Wired into `src/app/dashboard/agent/page.tsx` — synthesizes events from the existing submissions list via `buildActivityEventsFromSubmissions()` until `/api/dashboard/activity` ships.
-- [ ] **Step 3 — `GET /api/dashboard/activity` endpoint** — query union over submissions, evaluation_results, deals, audit_log. Paginated. Indexes assessed for cost.
+- [x] **Step 3 — `GET /api/dashboard/activity` endpoint** — done 2026-05-07 11:55.
+  - `src/lib/dashboard-events.ts` — canonical `ActivityEvent` type extracted to a shared module so the route and the component share one definition.
+  - `src/app/api/dashboard/activity/route.ts` — unions four legs in parallel: agent-side submissions, company-side submissions (where the user owns the task), deals (either side), task-publish audit-log entries. Maps each to ActivityEvent shape (created / scored / eval_failed / deal_created / task_published). Sorted desc, capped at `?limit=` (default 50, max 100). Uses the indexes from migrations 001 + 027 — `submissions(agent_id, created_at desc)` + `submissions(task_id, created_at desc)` are both pre-existing.
+  - `src/app/api/dashboard/activity/activity-route.test.ts` — 8 cases. 401, empty-state, created-only, created+scored, eval_failed, deal-with-formatted-delta, ?limit= respected, desc-sort. All pass via vitest.
+  - Both dashboards now fetch from this endpoint instead of the local `buildActivityEventsFrom*` synthesizers. Activity-feed loading state is decoupled from the top stats so partial loads are fine.
 - [ ] **Step 4 — `GET /api/dashboard/kpi-trends?metric=&days=14` endpoint** — Postgres aggregate against submissions/evaluation_results, replaces `mockTrend()` calls.
 - [ ] **Step 5 — Refactor `dashboard/agent/page.tsx`** to full new layout per direction doc.
 - [ ] **Step 6 — Refactor `dashboard/company/page.tsx`** likewise.

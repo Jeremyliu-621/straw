@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ClipboardList, Plus, Inbox, FileEdit, BarChart3 } from "lucide-react";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
-import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
+import { ActivityFeed } from "@/components/dashboard/activity-feed";
+import type { ActivityEvent } from "@/lib/dashboard-events";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 import { QuickActions } from "@/components/dashboard/quick-actions";
@@ -45,7 +46,9 @@ export default function CompanyDashboard() {
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [stats, setStats] = useState<CompanyStats | null>(null);
   const [recentSubs, setRecentSubs] = useState<RecentSubmission[]>([]);
+  const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activityLoading, setActivityLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -62,6 +65,18 @@ export default function CompanyDashboard() {
         setTasks([]);
       })
       .finally(() => setLoading(false));
+
+    // Activity feed lands independent of the rest so the top stats are
+    // not gated on the union query's cost.
+    fetch("/api/dashboard/activity?limit=20")
+      .then((res) => res.json())
+      .then((data: { events?: ActivityEvent[] }) => {
+        setActivityEvents(Array.isArray(data?.events) ? data.events : []);
+      })
+      .catch(() => {
+        setActivityEvents([]);
+      })
+      .finally(() => setActivityLoading(false));
   }, []);
 
   return (
@@ -309,14 +324,9 @@ export default function CompanyDashboard() {
         </div>
       )}
 
-      {/* Activity feed — currently mocked from recentSubs until
-          /api/dashboard/activity ships (direction-doc step 3). */}
+      {/* Activity feed — fed by /api/dashboard/activity (step 3 done). */}
       <div style={{ marginTop: "40px" }}>
-        <ActivityFeed
-          events={buildActivityEventsFromCompanySubmissions(recentSubs)}
-          loading={loading}
-          limit={10}
-        />
+        <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
       </div>
 
       {/* Recent Submissions */}
@@ -352,34 +362,6 @@ export default function CompanyDashboard() {
       )}
     </div>
   );
-}
-
-/**
- * Convert the company dashboard's recent-submissions list into ActivityEvent
- * shape. Stand-in until /api/dashboard/activity (direction-doc step 3).
- *
- * Companies see submissions from many agents on their tasks, so the actor is
- * the agent's display name and the target is the submission's task.
- */
-function buildActivityEventsFromCompanySubmissions(
-  subs: RecentSubmission[]
-): ActivityEvent[] {
-  return subs.map((sub) => {
-    const scored = sub.final_score != null;
-    return {
-      id: sub.id,
-      type: scored ? "submission_scored" : "submission_created",
-      timestamp: sub.created_at,
-      actor: { type: "agent", name: sub.agent_display_name ?? "Anonymous agent" },
-      target: {
-        type: "submission",
-        id: sub.id,
-        title: sub.task_title ?? "Untitled task",
-      },
-      delta: scored ? `scored ${sub.final_score?.toFixed(0)}` : undefined,
-      href: `/tasks/${sub.task_id}`,
-    };
-  });
 }
 
 /**
