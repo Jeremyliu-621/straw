@@ -212,6 +212,47 @@ export default function AgentDashboard() {
         </div>
       ) : null}
 
+      {/* Standing tiles — Reputation + Workspace. Sit between the KPI row
+          and the tasks list because they're "about you" context: how you
+          measure up across all tasks, plus your persistent workspace
+          state. Each tile self-renders an empty state when data is
+          missing, so this row is safe to mount as soon as `stats` lands. */}
+      {!loading && stats && (
+        <div
+          style={{
+            marginBottom: "32px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          <ReputationTile
+            stats={{
+              submissionsTotal: stats.mySubmissions,
+              avgScore: stats.avgScore,
+              avgScoreTrend: scoreTrend.series.length > 0 ? scoreTrend.series : undefined,
+              top3Count: stats.top3Count,
+              bestScore: stats.bestScore,
+              bestCategory: stats.bestCategory,
+            }}
+          />
+          <WorkspaceUsage
+            kv={{
+              bytesUsed: kvQuota?.bytes_used ?? 0,
+              bytesLimit: kvQuota?.bytes_limit ?? 10 * 1024 * 1024,
+              keysUsed: kvQuota?.keys_used ?? 0,
+              keysLimit: kvQuota?.keys_limit ?? 10000,
+            }}
+            files={{
+              bytesUsed: filesQuota?.bytes_used ?? 0,
+              bytesLimit: filesQuota?.bytes_limit ?? 100 * 1024 * 1024,
+              filesUsed: filesQuota?.files_used ?? 0,
+              filesLimit: filesQuota?.files_limit ?? 1000,
+            }}
+          />
+        </div>
+      )}
+
       {/* Task table */}
       {loading ? (
         <div className="space-y-3">
@@ -323,49 +364,6 @@ export default function AgentDashboard() {
               <RichSubmissionRow key={sub.id} submission={sub} showAgent={false} />
             ))}
           </div>
-        </div>
-      )}
-
-      {/* Tertiary row — agent-only standing tiles. Each hides its own
-          empty-state when data is missing; the row itself only renders
-          after the top-level fetch completes so it doesn't compete with
-          the skeleton state. The endpoint fetches for ReputationTile
-          extras (top-3, personal-best, best-category) and WorkspaceUsage
-          (KV + files quota) are deferred to a subsequent /loop iteration —
-          marked with TODO comments below. */}
-      {!loading && stats && (
-        <div
-          style={{
-            marginTop: "40px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "16px",
-          }}
-        >
-          <ReputationTile
-            stats={{
-              submissionsTotal: stats.mySubmissions,
-              avgScore: stats.avgScore,
-              avgScoreTrend: scoreTrend.series.length > 0 ? scoreTrend.series : undefined,
-              top3Count: stats.top3Count,
-              bestScore: stats.bestScore,
-              bestCategory: stats.bestCategory,
-            }}
-          />
-          <WorkspaceUsage
-            kv={{
-              bytesUsed: kvQuota?.bytes_used ?? 0,
-              bytesLimit: kvQuota?.bytes_limit ?? 10 * 1024 * 1024,
-              keysUsed: kvQuota?.keys_used ?? 0,
-              keysLimit: kvQuota?.keys_limit ?? 10000,
-            }}
-            files={{
-              bytesUsed: filesQuota?.bytes_used ?? 0,
-              bytesLimit: filesQuota?.bytes_limit ?? 100 * 1024 * 1024,
-              filesUsed: filesQuota?.files_used ?? 0,
-              filesLimit: filesQuota?.files_limit ?? 1000,
-            }}
-          />
         </div>
       )}
 
