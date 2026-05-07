@@ -1,4 +1,121 @@
-# Overnight Handoff — feat/collab-philosophy
+# Handoff — feat/overnight-2026-05-07 (current)
+
+> **You are here.** Below this section is the older handoff from
+> `feat/collab-philosophy` (2026-04-24) — kept for context but historical.
+
+**Started:** 2026-05-07, afternoon
+**Last commit:** 2026-05-07, evening
+**Branch:** `feat/overnight-2026-05-07`
+**Authoritative spec:** `tasks/proposals/agent-first-customer-2026-05-07.md`
+**Doctrine:** `tasks/AGENT_FIRST_DREAM.md` (D40 reset)
+**Security followups:** `tasks/strategy/agent-first-security-followups.md`
+
+## Where we ended
+
+The agent-first-customer epic (D37 + D38 + D39 + D40) is mostly shipped.
+An autonomous agent can now go from zero → registered → wallet set →
+discovered task → submitted → scored, with no human in the loop.
+
+**Live end-to-end via CLI:**
+```sh
+npx @strawai/cli register
+npx @strawai/cli wallet set --method onchain_usdc --address 0x...
+npx @strawai/cli tasks --category python
+npx @strawai/cli submit <task-id> --dir ./solution
+npx @strawai/cli watch <submission-id>
+```
+
+**Live via API/MCP/SDK:** identical surface — every CLI command maps 1:1 to
+an MCP tool and an SDK method.
+
+## Commits in order (oldest → newest)
+
+| # | SHA | What |
+|---|---|---|
+| 1 | `dfe80c0` | Dashboard polish — submission heatmap + dropdown trim. |
+| 2 | `bb030f1` | **D40 doctrine reset** + D37/D38/D39 specs + security followups doc. |
+| 3 | `79b400a` | Migration 040 — agent identity + wallet schema (8 tables/columns). NOT YET APPLIED to live DB. |
+| 4 | `30fb482` | operator-token service + wallet validation lib + 45 tests. |
+| 5 | `89c0a5c` | agent-identity service `registerAnonymous` + 13 tests. |
+| 6 | `390e0cb` | Routes: `POST /agent/register-anonymous` + `GET /agent/whoami`; auth surfaces tier. |
+| 7 | `4be9fca` | Routes: wallet GET/PUT + operator-tokens; service `mintOperatorChildKey` + 4 tests. |
+| 8 | `8451a9e` | `@strawai/cli` v0.1.0 — register / login / whoami / wallet. |
+| 9 | `53d0505` | D39 bounty firehose route — `GET /api/v1/bounties/stream`. |
+| 10 | `f3d6019` | Docs: agent.json + llms.txt advertise the new surface. |
+| 11 | `ab49dbf` | `@strawai/agent-sdk` 0.4.0 — `agent`, `wallet`, `operatorTokens`, `bounties` resources + standalone `registerAnonymous` / `mintChildKey`. |
+| 12 | `9bac56c` | `@strawai/mcp-server` 1.4.0 — 5 new tools (whoami, wallet_get/set, operator_tokens_list/create, subscribe_bounties). |
+| 13 | `0c143f0` | `@strawai/cli` 0.2.0 — `tasks`, `submit`, `watch`, `subscribe`. |
+
+## What's verified
+
+- TypeScript: clean across the new code (sidebar.tsx errors are parallel
+  in-flight work, not mine).
+- Tests: ~1057 passing, 0 regressions. Includes 62 new tests.
+- Local SDK was built + dropped into node_modules so mcp-server source
+  typechecks against 0.4.0. Not committed (just node_modules state).
+
+## What's NOT shipped — natural pickup points
+
+In rough priority order:
+
+1. **Apply migration 040 to live DB.**
+   ```sh
+   npx supabase link --project-ref ptvipiqorbqxoypbfeoj
+   npx supabase db query --linked --file supabase/migrations/040_agent_identity_and_wallet.sql
+   ```
+   Until this runs, the new routes will fail at the DB layer.
+
+2. **D37 path A — USDC stake-to-bootstrap.**
+   - Coinbase Commerce client (charge create + webhook handler).
+   - `POST /api/v1/agent/stake/charge` (creates a charge, returns hosted URL).
+   - `POST /api/v1/wallet/webhooks/coinbase` (verifies signature, marks
+     stake_charges row as confirmed). Idempotent on event_id (F7).
+   - `POST /api/v1/agent/stake/claim` (after confirmed, mints api_key).
+   - Schema is already there (stake_charges + coinbase_webhook_events
+     tables, stake_charge_status enum).
+
+3. **Wallet payout pipeline.**
+   - On submission win → enqueue payout job → settle via the agent's
+     declared rail (onchain_usdc via viem + base RPC, or Coinbase
+     Commerce sender API). Worker reads `agent_payouts WHERE status =
+     'pending'`, transitions through queued / sent / confirmed.
+   - Schema is there (agent_payouts table). Service layer + worker is not.
+
+4. **F8 floor-gate enforcement in submission flow.**
+   - `users.is_floor_qualified` defaults true; `registerAnonymous` sets
+     it false. The submission flow needs to check and flag
+     `quality_floor_pending` for leaderboard exclusion until it flips
+     true. Today the flag is read by `whoami` but not by submit.
+   - Tracked as F8 in `tasks/strategy/agent-first-security-followups.md`.
+
+5. **Publish SDK + MCP + CLI to npm.**
+   - `cd packages/agent-sdk && npm publish` (0.4.0)
+   - `cd ../mcp-server && npm install && npm publish` (1.4.0)
+   - `cd ../cli && npm publish` (0.2.0; first publish — needs `--access public`)
+
+6. **Smoke test the full vertical**, then capture findings in
+   `tasks/research/agent-first-customer-smoke-2026-05-XX.md`.
+
+7. **TASKS.md sweep** — see updates this commit; add anything missing.
+
+## Risks worth flagging
+
+- **Migration 040 has not been applied.** Existing `register-anonymous`,
+  `whoami`, `wallet`, `operator-tokens`, `mint-child` routes will fail
+  on missing columns/tables/enums until the migration lands.
+- **CLI is unpublished.** `npx @strawai/cli` works locally if the package
+  is built, but `npm i -g @strawai/cli` won't resolve until publish.
+- **mcp-server 1.4.0 typecheck depends on local SDK build.** The
+  package.json declares `^0.4.0` but the installed `node_modules` was
+  hand-patched. Running `npm install` in mcp-server/ before publish
+  will fail until 0.4.0 is on npm.
+- **Trust-delegation gap.** Anonymous tier registers without any
+  attestation. F1 fingerprinting is UA-only; sybil-resistant
+  mitigations (TLS fingerprint, ASN, Cloudflare Turnstile) are deferred.
+
+---
+
+# Older Handoff — feat/collab-philosophy (2026-04-24, archived)
 
 **Started:** 2026-04-24, evening
 **Last commit:** 2026-04-25, early am
