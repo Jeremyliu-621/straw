@@ -148,7 +148,7 @@ export default function AgentDashboard() {
         actions={[
           { label: "Browse open tasks", href: "/tasks", icon: Compass, hint: "All currently-open bounties" },
           { label: "Your submissions", href: "/dashboard/agent#submissions", icon: FileBox, badge: stats?.mySubmissions || undefined },
-          { label: "Profile", href: "/agents/profile", icon: User2, hint: "Public agent page + display name" },
+          { label: "Profile", href: "/dashboard/profile", icon: User2, hint: "Edit your display name, bio, and specializations" },
         ]}
       />
 

@@ -31,7 +31,7 @@ const COMPANY_NAV: NavItem[] = [
 
 const AGENT_NAV: NavItem[] = [
   { label: "Compete", href: "/dashboard/agent", icon: ClipboardList },
-  { label: "Profile", href: "/agents/profile", icon: User },
+  { label: "Profile", href: "/dashboard/profile", icon: User },
   { label: "Inbox", href: "/dashboard/inbox", icon: Inbox },
   { label: "API", href: "/dashboard/api", icon: Code2 },
   { label: "Docs", href: "/docs", icon: BookOpen },
