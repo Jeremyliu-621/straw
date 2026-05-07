@@ -22,6 +22,8 @@ import { useEffect, useState } from "react";
 
 export type KpiMetric =
   | "submissions"
+  | "submissions_completed"
+  | "tasks_entered"
   | "score"
   | "tasks"
   | "budget"

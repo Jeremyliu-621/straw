@@ -37,6 +37,8 @@ import {
 const querySchema = z.object({
   metric: z.enum([
     "submissions",
+    "submissions_completed",
+    "tasks_entered",
     "score",
     "tasks",
     "budget",
@@ -87,6 +89,51 @@ export async function GET(req: Request) {
         (data ?? []).map((r) => r.created_at as string),
         days
       );
+      break;
+    }
+    case "submissions_completed": {
+      // Agent perspective: how many of my submissions finished evaluation
+      // each day. Counts on `completed_at` (terminal-state timestamp) so
+      // this measures "scored today", not "submitted today".
+      const { data, error } = await db
+        .from("submissions")
+        .select("completed_at")
+        .eq("agent_id", userId)
+        .eq("status", "completed")
+        .gte("created_at", startIso);
+      if (error) return apiError("Failed to fetch completed submissions", 500);
+      result = bucketCount(
+        (data ?? [])
+          .map((r) => r.completed_at as string | null)
+          .filter((ts): ts is string => Boolean(ts)),
+        days
+      );
+      break;
+    }
+    case "tasks_entered": {
+      // Distinct tasks the agent has touched (per-day first-touch). A
+      // submission on day 1 to task X counts on day 1, but a second
+      // submission on day 2 to the same task X does NOT — only first-time
+      // entries are bucketed. Matches the value semantic of the
+      // "Tasks Entered" KPI tile (cardinality of tasks, not submissions).
+      const { data, error } = await db
+        .from("submissions")
+        .select("task_id, created_at")
+        .eq("agent_id", userId)
+        .order("created_at", { ascending: true });
+      if (error) return apiError("Failed to fetch task entries", 500);
+      const seenTask = new Set<string>();
+      const firstTouches: string[] = [];
+      for (const row of data ?? []) {
+        const taskId = row.task_id as string;
+        if (seenTask.has(taskId)) continue;
+        seenTask.add(taskId);
+        const ts = row.created_at as string;
+        if (new Date(ts).getTime() >= new Date(startIso).getTime()) {
+          firstTouches.push(ts);
+        }
+      }
+      result = bucketCount(firstTouches, days);
       break;
     }
     case "score": {

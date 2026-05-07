@@ -70,11 +70,12 @@ export function KpiTile({
   compact = false,
 }: KpiTileProps) {
   const sparklineGeo = sparkline
-    ? // padding=5 keeps min/max points off the SVG edges so the area-fill
-      // doesn't crash into the tile's bottom border, and so flat-line series
-      // sit visibly clear of both edges. Default padding=1 would render data
-      // 1px from each edge, which read as "too low" in the dashboard.
-      computeSparkline(sparkline, { width: 120, height: 36, padding: 5 })
+    ? // Generous padding keeps the data range comfortably inside the SVG
+      // so the chart doesn't visually crash into the tile's bottom border.
+      // viewBox 40 tall × padding 8 = 24px-tall data band with 8px clearance
+      // top + bottom — the lowest point sits ~16px above the tile edge once
+      // tile padding is added.
+      computeSparkline(sparkline, { width: 120, height: 40, padding: 8 })
     : { hasShape: false, points: "", areaPath: "", trendDirection: "flat" as const };
 
   const tile = (
@@ -154,10 +155,10 @@ export function KpiTile({
       </div>
 
       {!compact && sparklineGeo.hasShape && (
-        <div style={{ marginTop: "12px", height: "36px" }}>
+        <div style={{ marginTop: "12px", height: "40px" }}>
           <svg
             width="100%"
-            viewBox="0 0 120 36"
+            viewBox="0 0 120 40"
             preserveAspectRatio="none"
             style={{ display: "block", overflow: "visible" }}
             aria-hidden="true"

@@ -370,36 +370,3 @@ export default function CompanyDashboard() {
   );
 }
 
-/**
- * Synthesize a plausible 14-point trending series. Stand-in until
- * /api/dashboard/kpi-trends ships (direction-doc step 4).
- *
- * Deterministic per `endValue` so the sparkline doesn't flicker between
- * renders. Same logic as the agent dashboard.
- */
-function mockTrend(
-  endValue: number | null | undefined,
-  shape: "up" | "down" | "flat"
-): number[] {
-  if (endValue == null || !Number.isFinite(endValue)) return [];
-  const N = 14;
-  if (shape === "flat") return Array.from({ length: N }, () => endValue);
-
-  let seed = Math.abs(Math.floor(endValue * 31)) || 1;
-  const next = () => {
-    seed = (seed * 1664525 + 1013904223) % 4294967296;
-    return seed / 4294967296;
-  };
-
-  const span = Math.max(1, Math.abs(endValue) * 0.25);
-  const startValue = shape === "up" ? endValue - span : endValue + span;
-  const series: number[] = [];
-  for (let i = 0; i < N; i++) {
-    const t = i / (N - 1);
-    const linear = startValue + (endValue - startValue) * t;
-    const jitter = (next() - 0.5) * span * 0.15;
-    series.push(linear + jitter);
-  }
-  series[N - 1] = endValue;
-  return series;
-}

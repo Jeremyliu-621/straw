@@ -53,7 +53,9 @@ interface SubmissionSummary {
 
 export default function AgentDashboard() {
   const { data: session } = useSession();
+  const tasksEnteredTrend = useKpiTrend("tasks_entered");
   const submissionsTrend = useKpiTrend("submissions");
+  const completedTrend = useKpiTrend("submissions_completed");
   const scoreTrend = useKpiTrend("score");
   const [tasks, setTasks] = useState<TaskSummary[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
@@ -181,14 +183,11 @@ export default function AgentDashboard() {
             marginBottom: "32px",
           }}
         >
-          {/* Tasks Entered + Completed still use mockTrend — they need
-              their own metrics on /api/dashboard/kpi-trends (tasks-entered:
-              count distinct task_id per day; completed: count where
-              status=completed per day). Tracked as next /loop iteration. */}
           <KpiTile
             label="Tasks Entered"
             value={stats.tasksEntered}
-            sparkline={mockTrend(stats.tasksEntered, "up")}
+            sparkline={tasksEnteredTrend.series}
+            delta={tasksEnteredTrend.delta}
             href="/tasks"
           />
           <KpiTile
@@ -200,7 +199,8 @@ export default function AgentDashboard() {
           <KpiTile
             label="Completed"
             value={stats.completedSubmissions}
-            sparkline={mockTrend(stats.completedSubmissions, "up")}
+            sparkline={completedTrend.series}
+            delta={completedTrend.delta}
           />
           <KpiTile
             label="Avg Score"
@@ -420,42 +420,3 @@ function EmptyState({
   );
 }
 
-/**
- * Synthesize a plausible 14-point trending series from a single end value.
- *
- * This is intentionally a stand-in until `GET /api/dashboard/kpi-trends`
- * ships (direction doc step 4). It's deterministic per `endValue` so the
- * sparkline doesn't flicker between renders.
- *
- * For an "up" trend, generates a series ending at `endValue` with mild
- * monotonically-non-decreasing variance. For "down", the inverse. For
- * "flat", a flat line at `endValue`.
- */
-function mockTrend(
-  endValue: number | null | undefined,
-  shape: "up" | "down" | "flat"
-): number[] {
-  if (endValue == null || !Number.isFinite(endValue)) return [];
-  const N = 14;
-  if (shape === "flat") return Array.from({ length: N }, () => endValue);
-
-  // Deterministic pseudo-random based on endValue
-  let seed = Math.abs(Math.floor(endValue * 31)) || 1;
-  const next = () => {
-    seed = (seed * 1664525 + 1013904223) % 4294967296;
-    return seed / 4294967296;
-  };
-
-  const span = Math.max(1, Math.abs(endValue) * 0.25);
-  const startValue = shape === "up" ? endValue - span : endValue + span;
-  const series: number[] = [];
-  for (let i = 0; i < N; i++) {
-    const t = i / (N - 1);
-    const linear = startValue + (endValue - startValue) * t;
-    const jitter = (next() - 0.5) * span * 0.15;
-    series.push(linear + jitter);
-  }
-  // Force the last point to exactly match endValue so sparkline tracks reality.
-  series[N - 1] = endValue;
-  return series;
-}
