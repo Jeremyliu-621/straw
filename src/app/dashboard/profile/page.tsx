@@ -103,7 +103,7 @@ export default function DashboardProfilePage() {
     .toUpperCase();
 
   return (
-    <div style={{ maxWidth: "760px" }}>
+    <div>
       {/* Hero */}
       <div
         style={{
@@ -172,185 +172,234 @@ export default function DashboardProfilePage() {
           onSubmit={handleSave}
           style={{ display: "flex", flexDirection: "column", gap: "16px" }}
         >
-          {/* Identity card */}
-          <Card
-            label="Identity"
-            description="Display name is the only required field. Everything else is for context."
+          {/* Top row — Identity (primary, wider) + side rail (Specializations + Live Preview) */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 5fr) minmax(0, 3fr)",
+              gap: "16px",
+              alignItems: "start",
+            }}
           >
-            {/* Avatar + name row */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "16px",
-                marginBottom: "16px",
-                paddingBottom: "16px",
-                borderBottom: "1px solid var(--border)",
-              }}
+            {/* ── Identity card ────────────────────────────── */}
+            <Card
+              label="Identity"
+              description="Display name is the only required field. Everything else is context companies use to decide if they want to hire you."
             >
-              {session?.user?.image ? (
-                <img
-                  src={session.user.image}
-                  alt=""
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    flexShrink: 0,
-                    border: "1px solid var(--border)",
-                  }}
-                />
-              ) : (
-                <div
-                  className="flex items-center justify-center font-sans"
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "50%",
-                    background: "var(--accent-subtle)",
-                    color: "var(--accent)",
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    flexShrink: 0,
-                    border: "1px solid var(--border)",
-                  }}
-                >
-                  {initials}
-                </div>
-              )}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p
-                  className="font-sans"
-                  style={{
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase" as const,
-                    color: "var(--text-faint)",
-                    marginBottom: "2px",
-                  }}
-                >
-                  Avatar
-                </p>
-                <p
-                  className="font-sans"
-                  style={{ fontSize: "13px", color: "var(--text-muted)" }}
-                >
-                  Pulled from your sign-in provider. Update there to change it here.
-                </p>
-              </div>
-            </div>
-
-            {/* Name + GitHub side by side */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-                marginBottom: "16px",
-              }}
-            >
-              <Field
-                id="profile-display-name"
-                label="Display Name"
-                required
-                value={displayName}
-                onChange={setDisplayName}
-                placeholder="Your name or handle"
-                helper="Shown on leaderboards and in messages."
-              />
-              <Field
-                id="profile-github-url"
-                label="GitHub URL"
-                value={githubUrl}
-                onChange={setGithubUrl}
-                placeholder="https://github.com/you"
-                helper="Optional — companies use this to vet your work."
-              />
-            </div>
-
-            {/* Bio */}
-            <div>
-              <label
-                htmlFor="profile-bio"
-                className="mb-1 block font-sans"
-                style={{ fontSize: "13px", color: "var(--text-muted)" }}
-              >
-                Bio
-              </label>
-              <textarea
-                id="profile-bio"
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                placeholder="What kind of agents do you build?"
-                rows={4}
-                className="w-full resize-none font-sans outline-none"
+              {/* Avatar + name row */}
+              <div
                 style={{
-                  padding: "9px 12px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  background: "var(--bg)",
-                  lineHeight: 1.5,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "16px",
+                  marginBottom: "20px",
+                  paddingBottom: "20px",
+                  borderBottom: "1px solid var(--border)",
                 }}
-              />
-              <p
-                className="mt-1 font-sans"
-                style={{ fontSize: "12px", color: "var(--text-faint)" }}
               >
-                A short paragraph helps companies understand your strengths.
-              </p>
-            </div>
-          </Card>
-
-          {/* Specializations card */}
-          <Card
-            label="Specializations"
-            description="Tasks matching these categories surface to you first."
-          >
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {CATEGORY_OPTIONS.map((cat) => {
-                const active = categories.includes(cat);
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => toggleCategory(cat)}
-                    className="font-sans"
+                {session?.user?.image ? (
+                  <img
+                    src={session.user.image}
+                    alt=""
                     style={{
-                      padding: "6px 14px",
-                      borderRadius: "999px",
-                      fontSize: "13px",
-                      fontWeight: active ? 500 : 400,
-                      border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
-                      background: active ? "var(--text)" : "transparent",
-                      color: active ? "var(--inverse-text)" : "var(--text-muted)",
-                      cursor: "pointer",
-                      transition: "all 0.12s",
+                      width: "56px",
+                      height: "56px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      flexShrink: 0,
+                      border: "1px solid var(--border)",
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="flex items-center justify-center font-sans"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      borderRadius: "50%",
+                      background: "var(--accent-subtle)",
+                      color: "var(--accent)",
+                      fontSize: "18px",
+                      fontWeight: 600,
+                      flexShrink: 0,
+                      border: "1px solid var(--border)",
                     }}
                   >
-                    {cat}
-                  </button>
-                );
-              })}
-            </div>
-            {categories.includes("other") && (
-              <div style={{ marginTop: "12px" }}>
+                    {initials}
+                  </div>
+                )}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 500,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase" as const,
+                      color: "var(--text-faint)",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    Avatar
+                  </p>
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.45 }}
+                  >
+                    Pulled from your sign-in provider. Update there to change it here.
+                  </p>
+                </div>
+              </div>
+
+              {/* Name + GitHub side by side */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                  marginBottom: "16px",
+                }}
+              >
                 <Field
-                  id="profile-other-category"
-                  label="Custom specialization"
-                  value={otherCategory}
-                  onChange={setOtherCategory}
-                  placeholder="e.g. medical-imaging, ml-ops"
-                  helper="Comma-separated if you want more than one."
+                  id="profile-display-name"
+                  label="Display Name"
+                  required
+                  value={displayName}
+                  onChange={setDisplayName}
+                  placeholder="Your name or handle"
+                  helper="Shown on leaderboards and in messages."
+                />
+                <Field
+                  id="profile-github-url"
+                  label="GitHub URL"
+                  value={githubUrl}
+                  onChange={setGithubUrl}
+                  placeholder="https://github.com/you"
+                  helper="Optional — companies use this to vet your work."
                 />
               </div>
-            )}
-          </Card>
 
-          {/* Save row */}
+              {/* Bio */}
+              <div>
+                <label
+                  htmlFor="profile-bio"
+                  className="mb-1 block font-sans"
+                  style={{ fontSize: "13px", color: "var(--text-muted)" }}
+                >
+                  Bio
+                </label>
+                <textarea
+                  id="profile-bio"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder="What kind of agents do you build?"
+                  rows={5}
+                  className="w-full resize-none font-sans outline-none"
+                  style={{
+                    padding: "10px 12px",
+                    borderRadius: "var(--radius)",
+                    fontSize: "14px",
+                    color: "var(--text)",
+                    border: "1px solid var(--border)",
+                    background: "var(--bg)",
+                    lineHeight: 1.55,
+                  }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: "4px",
+                    gap: "8px",
+                  }}
+                >
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "12px", color: "var(--text-faint)", margin: 0 }}
+                  >
+                    A short paragraph helps companies understand your strengths.
+                  </p>
+                  <span
+                    className="font-mono"
+                    style={{
+                      fontSize: "11px",
+                      color: bio.length > 280 ? "var(--warning)" : "var(--text-faint)",
+                      fontVariantNumeric: "tabular-nums",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {bio.length} / 300
+                  </span>
+                </div>
+              </div>
+            </Card>
+
+            {/* ── Side rail: Specializations + Live Preview ─── */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <Card
+                label="Specializations"
+                description="Tasks matching these surface to you first."
+              >
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {CATEGORY_OPTIONS.map((cat) => {
+                    const active = categories.includes(cat);
+                    return (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => toggleCategory(cat)}
+                        className="font-sans"
+                        style={{
+                          padding: "5px 11px",
+                          borderRadius: "999px",
+                          fontSize: "12px",
+                          fontWeight: active ? 500 : 400,
+                          border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
+                          background: active ? "var(--text)" : "transparent",
+                          color: active ? "var(--inverse-text)" : "var(--text-muted)",
+                          cursor: "pointer",
+                          transition: "all 0.12s",
+                        }}
+                      >
+                        {cat}
+                      </button>
+                    );
+                  })}
+                </div>
+                {categories.includes("other") && (
+                  <div style={{ marginTop: "12px" }}>
+                    <Field
+                      id="profile-other-category"
+                      label="Custom"
+                      value={otherCategory}
+                      onChange={setOtherCategory}
+                      placeholder="medical-imaging, ml-ops"
+                      helper="Comma-separated if more than one."
+                    />
+                  </div>
+                )}
+              </Card>
+
+              {/* Live preview — what companies see on the leaderboard */}
+              <Card
+                label="Live preview"
+                description="How your row appears on a company's leaderboard."
+              >
+                <PublicPreview
+                  displayName={displayName}
+                  bio={bio}
+                  categories={categories
+                    .map((c) => (c === "other" ? otherCategory.trim() : c))
+                    .filter(Boolean)}
+                  initials={initials}
+                  avatarUrl={session?.user?.image ?? null}
+                />
+              </Card>
+            </div>
+          </div>
+
+          {/* ── Save row ─────────────────────────────────────── */}
           <div
             style={{
               display: "flex",
@@ -423,6 +472,137 @@ export default function DashboardProfilePage() {
   );
 }
 
+// ── PublicPreview ────────────────────────────────────────────────────
+//
+// Live preview of how the agent's row appears to companies. Updates as
+// the user edits — that's the value of putting it on the right rail
+// instead of "View public profile" being a one-way link out of the
+// editor.
+
+function PublicPreview({
+  displayName,
+  bio,
+  categories,
+  initials,
+  avatarUrl,
+}: {
+  displayName: string;
+  bio: string;
+  categories: string[];
+  initials: string;
+  avatarUrl: string | null;
+}) {
+  const visibleName = displayName.trim() || "Your name";
+  const visibleBio = bio.trim() || "Your bio will appear here.";
+  const visibleCats = categories.slice(0, 5);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "12px",
+        alignItems: "flex-start",
+        padding: "12px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        background: "var(--bg-subtle)",
+      }}
+    >
+      {avatarUrl ? (
+        <img
+          src={avatarUrl}
+          alt=""
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            flexShrink: 0,
+            border: "1px solid var(--border)",
+          }}
+        />
+      ) : (
+        <div
+          className="flex items-center justify-center font-sans"
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            background: "var(--accent-subtle)",
+            color: "var(--accent)",
+            fontSize: "12px",
+            fontWeight: 600,
+            flexShrink: 0,
+            border: "1px solid var(--border)",
+          }}
+        >
+          {initials}
+        </div>
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p
+          className="font-sans"
+          style={{
+            fontSize: "14px",
+            fontWeight: 500,
+            color: displayName.trim() ? "var(--text)" : "var(--text-faint)",
+            margin: 0,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {visibleName}
+        </p>
+        <p
+          className="font-sans"
+          style={{
+            marginTop: "3px",
+            fontSize: "12px",
+            color: bio.trim() ? "var(--text-muted)" : "var(--text-faint)",
+            lineHeight: 1.45,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical" as const,
+            overflow: "hidden",
+            margin: "3px 0 0 0",
+          }}
+        >
+          {visibleBio}
+        </p>
+        {visibleCats.length > 0 && (
+          <div
+            style={{
+              marginTop: "8px",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "4px",
+            }}
+          >
+            {visibleCats.map((cat) => (
+              <span
+                key={cat}
+                className="font-sans"
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  background: "var(--bg)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "4px",
+                  padding: "1px 6px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── Card primitive ─────────────────────────────────────────────────────
 //
 // Each form section sits in a bordered card with a small label header,
@@ -477,19 +657,37 @@ function Card({
 
 function SectionSkeleton() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      {[1, 2].map((i) => (
-        <div
-          key={i}
-          className="animate-pulse"
-          style={{
-            height: i === 1 ? "240px" : "120px",
-            background: "var(--bg-subtle)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-          }}
-        />
-      ))}
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 5fr) minmax(0, 3fr)",
+        gap: "16px",
+        alignItems: "start",
+      }}
+    >
+      <div
+        className="animate-pulse"
+        style={{
+          height: "440px",
+          background: "var(--bg-subtle)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
+        }}
+      />
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {[160, 220].map((h, i) => (
+          <div
+            key={i}
+            className="animate-pulse"
+            style={{
+              height: `${h}px`,
+              background: "var(--bg-subtle)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
