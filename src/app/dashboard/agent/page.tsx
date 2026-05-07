@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Search, Zap } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
+import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
 
 interface TaskSummary {
   id: string;
@@ -274,6 +275,16 @@ export default function AgentDashboard() {
           ))}
         </div>
       )}
+      {/* Activity feed — currently mocked from real submissions until
+          /api/dashboard/activity ships (direction-doc step 3). */}
+      <div style={{ marginTop: "40px" }}>
+        <ActivityFeed
+          events={buildActivityEventsFromSubmissions(submissions)}
+          loading={loading}
+          limit={10}
+        />
+      </div>
+
       {/* Your Submissions */}
       {!loading && submissions.length > 0 && (
         <div style={{ marginTop: "40px" }}>
@@ -380,6 +391,35 @@ export default function AgentDashboard() {
       )}
     </div>
   );
+}
+
+/**
+ * Convert the dashboard's existing submissions list into ActivityEvent shape.
+ *
+ * This is a stand-in until `GET /api/dashboard/activity` (direction-doc step
+ * 3) ships — that endpoint will union submissions / evaluation_results /
+ * deals / audit_log into a true event stream. For now we synthesize one
+ * event per submission, choosing the type based on whether scoring landed.
+ */
+function buildActivityEventsFromSubmissions(
+  submissions: SubmissionSummary[]
+): ActivityEvent[] {
+  return submissions.map((sub) => {
+    const scored = sub.final_score != null;
+    return {
+      id: sub.id,
+      type: scored ? "submission_scored" : "submission_created",
+      timestamp: sub.created_at,
+      actor: { type: "agent", name: sub.agent_display_name ?? "You" },
+      target: {
+        type: "submission",
+        id: sub.id,
+        title: sub.task_title ?? "Untitled task",
+      },
+      delta: scored ? `scored ${sub.final_score?.toFixed(0)}` : undefined,
+      href: `/tasks/${sub.task_id}`,
+    };
+  });
 }
 
 /**

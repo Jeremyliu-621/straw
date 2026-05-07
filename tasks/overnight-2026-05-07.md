@@ -65,7 +65,11 @@ Output directory: `tasks/research/agent-context-management/`
   - Wired into `src/app/dashboard/agent/page.tsx` — replaces the four `StatCard` instances. Sparkline currently mocked via deterministic `mockTrend()` helper until step 4 (`/api/dashboard/kpi-trends`) ships.
   - TypeScript strict mode clean. Type-checked against master tree's `node_modules` since worktree doesn't have its own install yet.
   - Pending: visual verification in browser. Worktree doesn't have node_modules yet — next iteration should `cd ../mop-overnight && npm install` once and run `npm run dev` from the worktree to verify.
-- [ ] **Step 2 — `<ActivityFeed>` component + mocked-data render.**
+- [x] **Step 2 — `<ActivityFeed>` component + mocked-data render** — done 2026-05-07 06:10.
+  - `src/components/dashboard/relative-time.ts` — pure helper, formats absolute timestamp as "5m ago" / "in 3h" / "1y ago". 7 thresholds (sec/min/hr/day/wk/mo/yr) + future-time "in X" prefix + invalid-input fallback.
+  - `src/components/dashboard/relative-time.test.ts` — 10 cases. All pass.
+  - `src/components/dashboard/activity-feed.tsx` — visual component. Filter chips (All / Submissions / Tasks / Deals / Failures), one event per row with role-coloured icon (FileText, CheckCircle2, Flag, Handshake, TrendingUp, CircleAlert) + actor + verb + target + optional delta + relative time. Loading and empty states distinct. Truncation cap with "View all" affordance.
+  - Wired into `src/app/dashboard/agent/page.tsx` — synthesizes events from the existing submissions list via `buildActivityEventsFromSubmissions()` until `/api/dashboard/activity` ships.
 - [ ] **Step 3 — `GET /api/dashboard/activity` endpoint** — query union over submissions, evaluation_results, deals, audit_log. Paginated. Indexes assessed for cost.
 - [ ] **Step 4 — `GET /api/dashboard/kpi-trends?metric=&days=14` endpoint** — Postgres aggregate against submissions/evaluation_results, replaces `mockTrend()` calls.
 - [ ] **Step 5 — Refactor `dashboard/agent/page.tsx`** to full new layout per direction doc.
@@ -79,9 +83,9 @@ Output directory: `tasks/research/agent-context-management/`
 
 <!-- CURSOR -->
 
-[Next iteration of /loop: **Phase 3 step 2 — `<ActivityFeed>` component**. Direction doc names the props (`ActivityEvent[]`, filter chips, relative timestamps, ~50 events max). For now use mocked event data; step 3 wires the real endpoint. Land as `feat(overnight): ActivityFeed component`, then advance to step 3.]
+[Next iteration of /loop: **Phase 3 step 3 — `GET /api/dashboard/activity` endpoint**. Should union over `submissions`, `evaluation_results`, `deals`, and the `audit_log` (or `audit_logs`?) tables. Pagination via `cursor + limit`. Owner-only — call `authenticateRequest` then filter to events where the user is `actor.id` OR `target.task.company_id`. Return events shaped like the `ActivityEvent` interface in `src/components/dashboard/activity-feed.tsx`. Indexes: should be cheap on `submissions(agent_id, created_at desc)` and `submissions(task_id, created_at desc)` (already exist? grep migrations to verify). Land as `feat(overnight): /api/dashboard/activity endpoint + wire`, then advance to step 4.]
 
-[Worktree onboarding for next iteration: `cd ../mop-overnight && npm install` once. Then `npm run dev` from the worktree on port 3001 (master tree dev server is on 3000). Visual-verify the four KpiTiles render with sparklines on `/dashboard/agent` before moving to step 2.]
+[Worktree onboarding before next iteration starts code work: `cd ../mop-overnight && npm install` (5 min, one-time). Then `npm run dev` from the worktree on a non-3000 port (master tree dev server is on 3000). Visual-verify KpiTile + ActivityFeed render correctly on `/dashboard/agent` BEFORE writing the new endpoint.]
 
 ## Phase 2 — Self-onboarding agent docs / CLI / MCP
 
