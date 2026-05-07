@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ClipboardList, Plus } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
+import { KpiTile } from "@/components/dashboard/kpi-tile";
+import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
 
 interface TaskSummary {
   id: string;
@@ -145,14 +147,35 @@ export default function CompanyDashboard() {
             marginBottom: "32px",
           }}
         >
-          <StatCard label="Active Tasks" value={stats.activeTasks} />
-          <StatCard label="Submissions" value={stats.totalSubmissions} />
-          <StatCard
+          {/* TODO: wire real per-period deltas when /api/dashboard/kpi-trends
+              ships (direction-doc step 4). Until then sparklines are mocked
+              from the current value via mockTrend(). */}
+          <KpiTile
+            label="Active Tasks"
+            value={stats.activeTasks}
+            sparkline={mockTrend(stats.activeTasks, "up")}
+            href="/dashboard/company"
+          />
+          <KpiTile
+            label="Submissions"
+            value={stats.totalSubmissions}
+            sparkline={mockTrend(stats.totalSubmissions, "up")}
+          />
+          <KpiTile
             label="Total Budget"
             value={`$${(stats.totalBudgetCents / 100).toLocaleString()}`}
             mono
+            sparkline={mockTrend(stats.totalBudgetCents / 100, "up")}
           />
-          <StatCard label="Draft" value={stats.draftTasks} />
+          <KpiTile
+            label="Drafts"
+            value={stats.draftTasks}
+            // Drafts trending up is BAD — companies shouldn't accumulate
+            // unpublished drafts. Coloring follows.
+            isGoodWhenHigher={false}
+            sparkline={mockTrend(stats.draftTasks, "flat")}
+            href="/dashboard/company"
+          />
         </div>
       ) : null}
 
@@ -328,6 +351,16 @@ export default function CompanyDashboard() {
         </div>
       )}
 
+      {/* Activity feed — currently mocked from recentSubs until
+          /api/dashboard/activity ships (direction-doc step 3). */}
+      <div style={{ marginTop: "40px" }}>
+        <ActivityFeed
+          events={buildActivityEventsFromCompanySubmissions(recentSubs)}
+          loading={loading}
+          limit={10}
+        />
+      </div>
+
       {/* Recent Submissions */}
       {!loading && recentSubs.length > 0 && (
         <div style={{ marginTop: "40px" }}>
@@ -418,50 +451,66 @@ export default function CompanyDashboard() {
   );
 }
 
-function StatCard({
-  label,
-  value,
-  mono,
-}: {
-  label: string;
-  value: string | number;
-  mono?: boolean;
-}) {
-  return (
-    <div
-      style={{
-        padding: "20px",
-        borderRadius: "var(--radius)",
-        border: "1px solid var(--border)",
-        background: "var(--bg)",
-      }}
-    >
-      <p
-        className="font-sans"
-        style={{
-          fontSize: "11px",
-          fontWeight: 500,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase" as const,
-          color: "var(--text-muted)",
-          marginBottom: "8px",
-        }}
-      >
-        {label}
-      </p>
-      <p
-        className={mono ? "font-mono" : "font-sans"}
-        style={{
-          fontSize: "28px",
-          fontWeight: 600,
-          color: "var(--text)",
-          letterSpacing: "-0.02em",
-        }}
-      >
-        {value}
-      </p>
-    </div>
-  );
+/**
+ * Convert the company dashboard's recent-submissions list into ActivityEvent
+ * shape. Stand-in until /api/dashboard/activity (direction-doc step 3).
+ *
+ * Companies see submissions from many agents on their tasks, so the actor is
+ * the agent's display name and the target is the submission's task.
+ */
+function buildActivityEventsFromCompanySubmissions(
+  subs: RecentSubmission[]
+): ActivityEvent[] {
+  return subs.map((sub) => {
+    const scored = sub.final_score != null;
+    return {
+      id: sub.id,
+      type: scored ? "submission_scored" : "submission_created",
+      timestamp: sub.created_at,
+      actor: { type: "agent", name: sub.agent_display_name ?? "Anonymous agent" },
+      target: {
+        type: "submission",
+        id: sub.id,
+        title: sub.task_title ?? "Untitled task",
+      },
+      delta: scored ? `scored ${sub.final_score?.toFixed(0)}` : undefined,
+      href: `/tasks/${sub.task_id}`,
+    };
+  });
+}
+
+/**
+ * Synthesize a plausible 14-point trending series. Stand-in until
+ * /api/dashboard/kpi-trends ships (direction-doc step 4).
+ *
+ * Deterministic per `endValue` so the sparkline doesn't flicker between
+ * renders. Same logic as the agent dashboard.
+ */
+function mockTrend(
+  endValue: number | null | undefined,
+  shape: "up" | "down" | "flat"
+): number[] {
+  if (endValue == null || !Number.isFinite(endValue)) return [];
+  const N = 14;
+  if (shape === "flat") return Array.from({ length: N }, () => endValue);
+
+  let seed = Math.abs(Math.floor(endValue * 31)) || 1;
+  const next = () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+
+  const span = Math.max(1, Math.abs(endValue) * 0.25);
+  const startValue = shape === "up" ? endValue - span : endValue + span;
+  const series: number[] = [];
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    const linear = startValue + (endValue - startValue) * t;
+    const jitter = (next() - 0.5) * span * 0.15;
+    series.push(linear + jitter);
+  }
+  series[N - 1] = endValue;
+  return series;
 }
 
 const labelStyle = {
