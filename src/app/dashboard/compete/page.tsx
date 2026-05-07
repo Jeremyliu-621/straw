@@ -1,9 +1,40 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import {
+  Search,
+  Code2,
+  Bot,
+  Database,
+  CheckSquare,
+  Sparkles,
+  MoreHorizontal,
+} from "lucide-react";
+import type { LucideProps } from "lucide-react";
+import type { ComponentType } from "react";
 import { TaskCard } from "@/components/dashboard/task-card";
 import { Section, EmptyState } from "@/components/dashboard/section";
+import { HeroStrip, HERO_GRADIENTS } from "@/components/common/hero-strip";
+import {
+  CategoryTile,
+  CATEGORY_GRADIENTS,
+  type CategoryKey,
+} from "@/components/common/category-tile";
+
+interface CategoryDef {
+  key: CategoryKey;
+  label: string;
+  Icon: ComponentType<LucideProps>;
+}
+
+const CATEGORIES: CategoryDef[] = [
+  { key: "code-generation", label: "Code generation", Icon: Code2 },
+  { key: "automation", label: "Automation", Icon: Bot },
+  { key: "data-extraction", label: "Data extraction", Icon: Database },
+  { key: "evaluation", label: "Evaluation", Icon: CheckSquare },
+  { key: "creative", label: "Creative", Icon: Sparkles },
+  { key: "other", label: "Other", Icon: MoreHorizontal },
+];
 
 interface TaskSummary {
   id: string;
@@ -60,37 +91,56 @@ export default function ComputePage() {
 
   return (
     <div>
-      {/* Hero */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          paddingBottom: "24px",
-          borderBottom: "1px solid var(--border)",
-          marginBottom: "24px",
-          gap: "16px",
-        }}
-      >
+      {/* Hero strip — warm coral, action-oriented for the compete view. */}
+      <HeroStrip gradient={HERO_GRADIENTS.warmCoral} height={150}>
         <div style={{ minWidth: 0 }}>
           <h1
             className="font-sans"
             style={{
+              margin: 0,
               fontSize: "28px",
-              fontWeight: 500,
+              fontWeight: 600,
               letterSpacing: "-0.02em",
-              color: "var(--text)",
+              color: "#2a1f12",
+              lineHeight: 1.1,
             }}
           >
             Compete
           </h1>
           <p
-            className="mt-2 font-sans"
-            style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
+            className="font-sans"
+            style={{
+              margin: "6px 0 0",
+              fontSize: "14px",
+              lineHeight: 1.5,
+              color: "rgba(42,31,18,0.75)",
+            }}
           >
             Every open task in one place. Pick one and submit.
           </p>
         </div>
+      </HeroStrip>
+
+      {/* Category tiles — pick a category to filter, click again to clear. */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+          gap: "12px",
+          marginTop: "20px",
+          marginBottom: "24px",
+        }}
+      >
+        {CATEGORIES.map((c) => (
+          <CategoryTile
+            key={c.key}
+            label={c.label}
+            Icon={c.Icon}
+            gradient={CATEGORY_GRADIENTS[c.key]}
+            selected={category === c.key}
+            onClick={() => setCategory(category === c.key ? "all" : c.key)}
+          />
+        ))}
       </div>
 
       {/* Filter row */}

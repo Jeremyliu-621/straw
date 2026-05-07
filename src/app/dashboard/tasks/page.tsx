@@ -1,9 +1,40 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import {
+  Search,
+  Code2,
+  Bot,
+  Database,
+  CheckSquare,
+  Sparkles,
+  MoreHorizontal,
+} from "lucide-react";
+import type { LucideProps } from "lucide-react";
+import type { ComponentType } from "react";
 import { TaskCard } from "@/components/dashboard/task-card";
 import { Section, EmptyState } from "@/components/dashboard/section";
+import { HeroStrip, HERO_GRADIENTS } from "@/components/common/hero-strip";
+import {
+  CategoryTile,
+  CATEGORY_GRADIENTS,
+  type CategoryKey,
+} from "@/components/common/category-tile";
+
+interface CategoryDef {
+  key: CategoryKey;
+  label: string;
+  Icon: ComponentType<LucideProps>;
+}
+
+const CATEGORIES: CategoryDef[] = [
+  { key: "code-generation", label: "Code generation", Icon: Code2 },
+  { key: "automation", label: "Automation", Icon: Bot },
+  { key: "data-extraction", label: "Data extraction", Icon: Database },
+  { key: "evaluation", label: "Evaluation", Icon: CheckSquare },
+  { key: "creative", label: "Creative", Icon: Sparkles },
+  { key: "other", label: "Other", Icon: MoreHorizontal },
+];
 
 interface TaskSummary {
   id: string;
@@ -102,59 +133,91 @@ export default function OpenTasksPage() {
 
   return (
     <div>
-      {/* Hero */}
+      {/* Hero strip — pastel gradient banner with stats inline. */}
+      <HeroStrip gradient={HERO_GRADIENTS.coolBlue} height={150}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: "24px",
+            height: "100%",
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <h1
+              className="font-sans"
+              style={{
+                margin: 0,
+                fontSize: "28px",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "#141e3c",
+                lineHeight: 1.1,
+              }}
+            >
+              Open Tasks
+            </h1>
+            <p
+              className="font-sans"
+              style={{
+                margin: "6px 0 0",
+                fontSize: "14px",
+                lineHeight: 1.5,
+                color: "rgba(20,30,60,0.7)",
+              }}
+            >
+              Every open bounty. Pick a category to start, or browse them all.
+            </p>
+          </div>
+          {!loading && tasks.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "24px",
+                flexShrink: 0,
+              }}
+            >
+              <HeaderStat label="Open" value={stats.total.toString()} dark />
+              <HeaderStat
+                label="Total budget"
+                value={`$${(stats.totalBudget / 100).toLocaleString()}`}
+                mono
+                dark
+              />
+              <HeaderStat
+                label="<24h"
+                value={stats.urgent.toString()}
+                tone={stats.urgent > 0 ? "warning" : undefined}
+                dark
+              />
+            </div>
+          )}
+        </div>
+      </HeroStrip>
+
+      {/* Category tiles — six pastel mood-tiles, one per task category.
+          Click toggles the existing `category` filter state. */}
       <div
         style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          paddingBottom: "24px",
-          borderBottom: "1px solid var(--border)",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+          gap: "12px",
+          marginTop: "20px",
           marginBottom: "24px",
-          gap: "16px",
         }}
       >
-        <div style={{ minWidth: 0 }}>
-          <h1
-            className="font-sans"
-            style={{
-              fontSize: "28px",
-              fontWeight: 500,
-              letterSpacing: "-0.02em",
-              color: "var(--text)",
-            }}
-          >
-            Open Tasks
-          </h1>
-          <p
-            className="mt-2 font-sans"
-            style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
-          >
-            Every open bounty. Search, filter, sort, claim.
-          </p>
-        </div>
-        {!loading && tasks.length > 0 && (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              flexShrink: 0,
-            }}
-          >
-            <HeaderStat label="Open" value={stats.total.toString()} />
-            <HeaderStat
-              label="Total budget"
-              value={`$${(stats.totalBudget / 100).toLocaleString()}`}
-              mono
-            />
-            <HeaderStat
-              label="<24h"
-              value={stats.urgent.toString()}
-              tone={stats.urgent > 0 ? "warning" : undefined}
-            />
-          </div>
-        )}
+        {CATEGORIES.map((c) => (
+          <CategoryTile
+            key={c.key}
+            label={c.label}
+            Icon={c.Icon}
+            gradient={CATEGORY_GRADIENTS[c.key]}
+            selected={category === c.key}
+            onClick={() => setCategory(category === c.key ? "all" : c.key)}
+          />
+        ))}
       </div>
 
       {/* Search + filter row */}
@@ -462,13 +525,22 @@ function HeaderStat({
   value,
   mono = false,
   tone,
+  dark = false,
 }: {
   label: string;
   value: string;
   mono?: boolean;
   tone?: "warning";
+  /** Use ink colors instead of theme text — for placement on the gradient hero. */
+  dark?: boolean;
 }) {
-  const color = tone === "warning" ? "var(--warning)" : "var(--text)";
+  const value_color =
+    tone === "warning"
+      ? "var(--warning)"
+      : dark
+        ? "#141e3c"
+        : "var(--text)";
+  const label_color = dark ? "rgba(20,30,60,0.55)" : "var(--text-faint)";
   return (
     <div style={{ minWidth: "60px" }}>
       <p
@@ -478,7 +550,7 @@ function HeaderStat({
           fontWeight: 500,
           letterSpacing: "0.06em",
           textTransform: "uppercase" as const,
-          color: "var(--text-faint)",
+          color: label_color,
           margin: 0,
           marginBottom: "2px",
         }}
@@ -490,7 +562,7 @@ function HeaderStat({
         style={{
           fontSize: "20px",
           fontWeight: 600,
-          color,
+          color: value_color,
           letterSpacing: "-0.01em",
           fontVariantNumeric: mono ? ("tabular-nums" as const) : undefined,
           margin: 0,
