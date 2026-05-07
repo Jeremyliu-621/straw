@@ -139,6 +139,9 @@ describe("Universal Roles — any user can create tasks AND submit solutions", (
         role: null,
         onboarded: true,
         authMethod: "api_key",
+        tier: "verified",
+        operatorTokenId: null,
+        isFloorQualified: true,
       };
 
       // The route only checks: user?.supabaseId
