@@ -172,7 +172,7 @@ export default function DashboardProfilePage() {
           onSubmit={handleSave}
           style={{ display: "flex", flexDirection: "column", gap: "16px" }}
         >
-          {/* Top row — Identity (primary, wider) + side rail (Specializations + Live Preview) */}
+          {/* Top row — Identity (primary, wider) + Specializations side rail */}
           <div
             style={{
               display: "grid",
@@ -182,11 +182,8 @@ export default function DashboardProfilePage() {
             }}
           >
             {/* ── Identity card ────────────────────────────── */}
-            <Card
-              label="Identity"
-              description="Display name is the only required field. Everything else is context companies use to decide if they want to hire you."
-            >
-              {/* Avatar + name row */}
+            <Card label="Identity">
+              {/* Avatar */}
               <div
                 style={{
                   display: "flex",
@@ -228,27 +225,6 @@ export default function DashboardProfilePage() {
                     {initials}
                   </div>
                 )}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p
-                    className="font-sans"
-                    style={{
-                      fontSize: "10px",
-                      fontWeight: 500,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase" as const,
-                      color: "var(--text-faint)",
-                      marginBottom: "3px",
-                    }}
-                  >
-                    Avatar
-                  </p>
-                  <p
-                    className="font-sans"
-                    style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.45 }}
-                  >
-                    Pulled from your sign-in provider. Update there to change it here.
-                  </p>
-                </div>
               </div>
 
               {/* Name + GitHub side by side */}
@@ -267,7 +243,6 @@ export default function DashboardProfilePage() {
                   value={displayName}
                   onChange={setDisplayName}
                   placeholder="Your name or handle"
-                  helper="Shown on leaderboards and in messages."
                 />
                 <Field
                   id="profile-github-url"
@@ -275,7 +250,6 @@ export default function DashboardProfilePage() {
                   value={githubUrl}
                   onChange={setGithubUrl}
                   placeholder="https://github.com/you"
-                  helper="Optional — companies use this to vet your work."
                 />
               </div>
 
@@ -305,98 +279,49 @@ export default function DashboardProfilePage() {
                     lineHeight: 1.55,
                   }}
                 />
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: "4px",
-                    gap: "8px",
-                  }}
-                >
-                  <p
-                    className="font-sans"
-                    style={{ fontSize: "12px", color: "var(--text-faint)", margin: 0 }}
-                  >
-                    A short paragraph helps companies understand your strengths.
-                  </p>
-                  <span
-                    className="font-mono"
-                    style={{
-                      fontSize: "11px",
-                      color: bio.length > 280 ? "var(--warning)" : "var(--text-faint)",
-                      fontVariantNumeric: "tabular-nums",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {bio.length} / 300
-                  </span>
-                </div>
               </div>
             </Card>
 
-            {/* ── Side rail: Specializations + Live Preview ─── */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <Card
-                label="Specializations"
-                description="Tasks matching these surface to you first."
-              >
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {CATEGORY_OPTIONS.map((cat) => {
-                    const active = categories.includes(cat);
-                    return (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => toggleCategory(cat)}
-                        className="font-sans"
-                        style={{
-                          padding: "5px 11px",
-                          borderRadius: "999px",
-                          fontSize: "12px",
-                          fontWeight: active ? 500 : 400,
-                          border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
-                          background: active ? "var(--text)" : "transparent",
-                          color: active ? "var(--inverse-text)" : "var(--text-muted)",
-                          cursor: "pointer",
-                          transition: "all 0.12s",
-                        }}
-                      >
-                        {cat}
-                      </button>
-                    );
-                  })}
+            {/* ── Specializations ───────────────────────────── */}
+            <Card label="Specializations">
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {CATEGORY_OPTIONS.map((cat) => {
+                  const active = categories.includes(cat);
+                  return (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => toggleCategory(cat)}
+                      className="font-sans"
+                      style={{
+                        padding: "5px 11px",
+                        borderRadius: "999px",
+                        fontSize: "12px",
+                        fontWeight: active ? 500 : 400,
+                        border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
+                        background: active ? "var(--text)" : "transparent",
+                        color: active ? "var(--inverse-text)" : "var(--text-muted)",
+                        cursor: "pointer",
+                        transition: "all 0.12s",
+                      }}
+                    >
+                      {cat}
+                    </button>
+                  );
+                })}
+              </div>
+              {categories.includes("other") && (
+                <div style={{ marginTop: "12px" }}>
+                  <Field
+                    id="profile-other-category"
+                    label="Custom"
+                    value={otherCategory}
+                    onChange={setOtherCategory}
+                    placeholder="medical-imaging, ml-ops"
+                  />
                 </div>
-                {categories.includes("other") && (
-                  <div style={{ marginTop: "12px" }}>
-                    <Field
-                      id="profile-other-category"
-                      label="Custom"
-                      value={otherCategory}
-                      onChange={setOtherCategory}
-                      placeholder="medical-imaging, ml-ops"
-                      helper="Comma-separated if more than one."
-                    />
-                  </div>
-                )}
-              </Card>
-
-              {/* Live preview — what companies see on the leaderboard */}
-              <Card
-                label="Live preview"
-                description="How your row appears on a company's leaderboard."
-              >
-                <PublicPreview
-                  displayName={displayName}
-                  bio={bio}
-                  categories={categories
-                    .map((c) => (c === "other" ? otherCategory.trim() : c))
-                    .filter(Boolean)}
-                  initials={initials}
-                  avatarUrl={session?.user?.image ?? null}
-                />
-              </Card>
-            </div>
+              )}
+            </Card>
           </div>
 
           {/* ── Save row ─────────────────────────────────────── */}
@@ -404,201 +329,61 @@ export default function DashboardProfilePage() {
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              gap: "16px",
-              padding: "16px 20px",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              background: "var(--bg-subtle)",
+              justifyContent: "flex-end",
+              gap: "12px",
+              minHeight: "20px",
             }}
           >
-            <div style={{ minWidth: 0 }}>
-              {error ? (
-                <p
-                  className="font-sans"
-                  style={{ fontSize: "13px", color: "var(--error)", margin: 0 }}
-                >
-                  {error}
-                </p>
-              ) : (
-                <p
-                  className="font-sans"
-                  style={{ fontSize: "13px", color: "var(--text-muted)", margin: 0 }}
-                >
-                  Changes save instantly to your public profile.
-                </p>
-              )}
-            </div>
-            <div className="flex items-center gap-3" style={{ flexShrink: 0 }}>
-              <button
-                type="button"
-                onClick={() => router.push("/dashboard/agent")}
-                className="font-sans transition-colors"
+            {error && (
+              <p
+                className="font-sans"
                 style={{
-                  padding: "9px 18px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  background: "transparent",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  cursor: "pointer",
+                  fontSize: "13px",
+                  color: "var(--error)",
+                  margin: 0,
+                  marginRight: "auto",
                 }}
               >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={saving || !displayName}
-                className="font-sans transition-colors disabled:opacity-40"
-                style={{
-                  padding: "9px 18px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  background: "var(--text)",
-                  color: "var(--inverse-text)",
-                  border: "none",
-                  cursor: saving || !displayName ? "not-allowed" : "pointer",
-                }}
-              >
-                {saving ? "Saving…" : "Save profile"}
-              </button>
-            </div>
+                {error}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={() => router.push("/dashboard/agent")}
+              className="font-sans transition-colors"
+              style={{
+                padding: "9px 18px",
+                borderRadius: "var(--radius)",
+                fontSize: "14px",
+                fontWeight: 500,
+                background: "transparent",
+                color: "var(--text)",
+                border: "1px solid var(--border)",
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving || !displayName}
+              className="font-sans transition-colors disabled:opacity-40"
+              style={{
+                padding: "9px 18px",
+                borderRadius: "var(--radius)",
+                fontSize: "14px",
+                fontWeight: 500,
+                background: "var(--text)",
+                color: "var(--inverse-text)",
+                border: "none",
+                cursor: saving || !displayName ? "not-allowed" : "pointer",
+              }}
+            >
+              {saving ? "Saving…" : "Save profile"}
+            </button>
           </div>
         </form>
       )}
-    </div>
-  );
-}
-
-// ── PublicPreview ────────────────────────────────────────────────────
-//
-// Live preview of how the agent's row appears to companies. Updates as
-// the user edits — that's the value of putting it on the right rail
-// instead of "View public profile" being a one-way link out of the
-// editor.
-
-function PublicPreview({
-  displayName,
-  bio,
-  categories,
-  initials,
-  avatarUrl,
-}: {
-  displayName: string;
-  bio: string;
-  categories: string[];
-  initials: string;
-  avatarUrl: string | null;
-}) {
-  const visibleName = displayName.trim() || "Your name";
-  const visibleBio = bio.trim() || "Your bio will appear here.";
-  const visibleCats = categories.slice(0, 5);
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: "12px",
-        alignItems: "flex-start",
-        padding: "12px",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius)",
-        background: "var(--bg-subtle)",
-      }}
-    >
-      {avatarUrl ? (
-        <img
-          src={avatarUrl}
-          alt=""
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
-            objectFit: "cover",
-            flexShrink: 0,
-            border: "1px solid var(--border)",
-          }}
-        />
-      ) : (
-        <div
-          className="flex items-center justify-center font-sans"
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
-            background: "var(--accent-subtle)",
-            color: "var(--accent)",
-            fontSize: "12px",
-            fontWeight: 600,
-            flexShrink: 0,
-            border: "1px solid var(--border)",
-          }}
-        >
-          {initials}
-        </div>
-      )}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p
-          className="font-sans"
-          style={{
-            fontSize: "14px",
-            fontWeight: 500,
-            color: displayName.trim() ? "var(--text)" : "var(--text-faint)",
-            margin: 0,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {visibleName}
-        </p>
-        <p
-          className="font-sans"
-          style={{
-            marginTop: "3px",
-            fontSize: "12px",
-            color: bio.trim() ? "var(--text-muted)" : "var(--text-faint)",
-            lineHeight: 1.45,
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical" as const,
-            overflow: "hidden",
-            margin: "3px 0 0 0",
-          }}
-        >
-          {visibleBio}
-        </p>
-        {visibleCats.length > 0 && (
-          <div
-            style={{
-              marginTop: "8px",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "4px",
-            }}
-          >
-            {visibleCats.map((cat) => (
-              <span
-                key={cat}
-                className="font-sans"
-                style={{
-                  fontSize: "10px",
-                  color: "var(--text-muted)",
-                  background: "var(--bg)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "4px",
-                  padding: "1px 6px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {cat}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
@@ -612,11 +397,9 @@ function PublicPreview({
 
 function Card({
   label,
-  description,
   children,
 }: {
   label: string;
-  description?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -628,28 +411,19 @@ function Card({
         padding: "20px",
       }}
     >
-      <header style={{ marginBottom: "16px" }}>
-        <p
-          className="font-sans"
-          style={{
-            fontSize: "11px",
-            fontWeight: 500,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase" as const,
-            color: "var(--text-muted)",
-          }}
-        >
-          {label}
-        </p>
-        {description && (
-          <p
-            className="mt-1 font-sans"
-            style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5 }}
-          >
-            {description}
-          </p>
-        )}
-      </header>
+      <p
+        className="font-sans"
+        style={{
+          fontSize: "11px",
+          fontWeight: 500,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase" as const,
+          color: "var(--text-muted)",
+          marginBottom: "16px",
+        }}
+      >
+        {label}
+      </p>
       {children}
     </section>
   );
