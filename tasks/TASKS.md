@@ -822,9 +822,24 @@ Goal: Get Straw fully deployed. Web is on Vercel at `straw.wiki`. Workers are th
 - ⏸ **OpenClaw bridge port closed.** Dog's Gateway binds to `127.0.0.1:18789`, not the Tailscale interface (`100.68.84.74`). See memory `project_openclaw_bridge.md` for the rebind instructions Jeremy needs to give Dog.
 - ✅ ~~SDK + MCP defaults still point at `straw.vercel.app`~~ — **swept + republished 2026-05-06.** `@strawai/agent-sdk@0.2.0` and `@strawai/mcp-server@1.1.0` live on npm, both default to `https://straw.wiki`. Smoke-tested via `npx -y @strawai/mcp-server@1.1.0` end-to-end. (Note: `@straw` scope was unowned, so packages live under new org `@strawai` instead.)
 
+### Session 2026-05-07 — D36 Q1 confirmed green from local
+
+The 2026-05-05 entry below claimed Q1 was green, but the .env.local Gemini key was never updated and the in-Vercel key had churned again by 2026-05-07 — so the loop was in fact broken from local. Rebuilt from scratch this session:
+
+- ✅ New Gemini key `AIzaSyCzu2...` written to BOTH `.env.local` and Vercel prod (rotated old key first via `vercel env rm`).
+- ✅ **Migration 039** authored + applied to live DB. Adds `'evaluation_failed'` to the `submission_status` enum. Bug surfaced today: `src/constants.ts:124` references the value but it had never been added to the DB enum, so any LLM-judge fatal failure left submissions in silent-stuck state with the worker logging "MANUAL REVIEW NEEDED" and being unable to write the failure status. Verified post-apply: `pg_enum` now lists `evaluation_failed`.
+- ✅ **Supabase access token** (`sbp_...`) saved to `.env.local` so future Claude sessions can `npx supabase db push` autonomously. Memory pointer at `reference_supabase_cli.md`. `npx supabase link --project-ref ptvipiqorbqxoypbfeoj` + `supabase db query --linked --file <path>` is the working path (prefer over `db push` while local migration filenames don't match remote's timestamp format).
+- ✅ **End-to-end loop scored a real submission from local.** Submission `b80a23c7-8302-4508-a5f8-72c4afe39055` on task `0fc8c720-...` (Markdown→HTML converter), 22 seconds POST-to-scored, **final_score 72/100** with per-criterion reasoning written to `evaluation_dimensions`. Position #1.
+- ✅ **API namespace doc** at `src/app/api/README.md`. Frames the `/api/*` (UI-internal) vs `/api/v1/*` (stable programmatic) split as two surfaces with shared paths but different shapes — replaces the original 308-redirect plan that wouldn't have worked because the routes aren't drop-in identical.
+- ✅ **Deployment plan** at `tasks/ops/deployment-plan-2026-05-06.md`. ~$5/mo MVP stack confirmed. AI Gateway swap is the only Vercel-native change worth doing pre-launch; Sandbox/Queues/Blob are right end-states but Phase-19-sized.
+
+**D36 milestone: Q1 LEGITIMATELY GREEN (local + remote). Hetzner CX22 (D35) is now de-risked — the next concrete spend.**
+
+Minor papercut to file later: `submission_status` stays at `"completed"` (upload status) the entire eval — the eval-progress signal is `evaluation_dimensions` rows landing + `evaluated: true` + `scores.final_score` on `GET /api/v1/submissions/[id]`. Agents writing polling loops naively on `submission_status` will think nothing's happening. Either rename the upload status (breaking) or surface a derived `eval_status` field. Defer.
+
 <!-- RESUME HERE -->
 
-### Right Now Milestone (D36) — Q1 PARTIAL, Q2 BLOCKED ON GEMINI
+### Right Now Milestone (D36) — Q1 GREEN, Q2 STILL BLOCKED ON DOG'S GATEWAY
 
 **Phase 18 already proved the upload→eval→score path on 2026-04-15** (see `tasks/research/phase18-results.md`: three quality tiers, scores 95.75/45.00/36.25). The 2026-05-05 smoke test confirmed the path still works at every layer except the LLM call.
 

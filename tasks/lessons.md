@@ -4,6 +4,29 @@ Running log of patterns and anti-patterns discovered while working on Straw. Rea
 
 ---
 
+## App constant added but DB enum value never migrated (2026-05-07)
+
+`src/constants.ts:124` defined `SUBMISSION_STATUS.EVALUATION_FAILED = "evaluation_failed"` and the eval worker wrote that value when LLM judging failed fatally. But no migration ever ran `ALTER TYPE submission_status ADD VALUE 'evaluation_failed'`. The original enum (migration 001) had four values; migration 021 added `'registered'`; the fifth was never added. Postgres rejected every write with `invalid input value for enum`, so the worker logged "CRITICAL: failed to write evaluation_failed status" and **the submission stayed at whatever status it had before**. Silent stuck state, no surface to user, no retry.
+
+Pattern: when adding a new enum value to a TypeScript constants file, grep for the literal string in `supabase/migrations/` to confirm an `ADD VALUE` exists. Same lesson applies to TypeScript union types that mirror DB enums — the type-checker won't catch this, the live DB will.
+
+How this hid: tests mock the DB layer, so the "write status" call returned success in unit tests. The `evaluation-worker.test.ts` covered LLM-failure code paths but not against a real Postgres. Integration test against a live (or local docker-compose) Supabase would have caught it. Worth adding to TESTING.md.
+
+Recovered with migration 039: one-line `ALTER TYPE submission_status ADD VALUE IF NOT EXISTS 'evaluation_failed';`. Idempotent. Applied via `supabase db query --linked --file <path>` (which works in linked-project mode without needing the local timestamp-format migration filenames that `supabase db push` insists on).
+
+## Don't trust an old session's "✅" without re-testing the empirical state (2026-05-07)
+
+`tasks/TASKS.md:833` claimed Q1 of D36 was "✅ YES (2026-05-05 evening)" — that the Gemini-judged loop scored a real submission. Today (2026-05-07) the same loop crashed at the LLM step with "API key expired." Investigation showed:
+
+- 2026-05-05's "fix" only updated Vercel prod env, not `.env.local`. Line 820 even admitted the local was stale.
+- Vercel's prod key churned again sometime between 2026-05-05 and 2026-05-07 — so even the remote-only fix was no longer good.
+
+The doc said "green," but green-on-2026-05-05 is not the same as green-now. After two full days, the only real check is: re-run the smoke. The TASKS.md ✅ was load-bearing on assumptions that had decayed.
+
+Pattern: at the start of a session, when a prior entry says "milestone X done," and X involves an external dependency (API key, third-party service, deployed infra), re-run the proof before building on top of it. Don't paper over with "should be fine."
+
+Specific to API keys: rotate-then-verify is two steps. If you rotate, also `curl` the API once with the new key against a known-good endpoint, AND check `.env.local` mirrors prod. The cost of "I rotated, I think it works" is a debugged session like today's.
+
 ## `schema_migrations` rows ≠ DDL applied (2026-05-06)
 
 The 2026-05-06 backfill on `supabase_migrations.schema_migrations` inserted rows for migrations 001–027 to make `supabase db push` think those were already applied. But the rows are just bookkeeping — they don't run the SQL. Migration 026's actual DDL (create `notification_preferences`, add `notifications.dismissed_at`, rename `webhook_deliveries` columns, add `task_invitations.company_id`) had never run on the live DB. The PGRST205 from the 2026-05-05 smoke test was the symptom; the deeper damage was that every webhook delivery write had been silently failing for ~3 weeks because code used new column names while the DB still had the old ones.
