@@ -26,6 +26,11 @@ const envSchema = z.object({
   // Email (optional — waitlist notification email is skipped if missing)
   RESEND_API_KEY: z.string().min(1).optional(),
   WAITLIST_NOTIFY_EMAIL: z.email().optional(),
+
+  // Coinbase Commerce (optional — D37 path A; the webhook + claim flow only
+  // operate when these are set. Without them, the routes return 503.)
+  COINBASE_COMMERCE_API_KEY: z.string().min(1).optional(),
+  COINBASE_COMMERCE_WEBHOOK_SECRET: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
