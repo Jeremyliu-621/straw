@@ -22,6 +22,7 @@ import {
   SIDEBAR_WIDTH_EXPANDED,
   SIDEBAR_WIDTH_COLLAPSED,
 } from "./sidebar-context";
+import { NotificationsPanel } from "./notifications-panel";
 
 /**
  * Title + optional crumb resolved from the current pathname. The dashboard
@@ -72,7 +73,9 @@ export function TopBar() {
   const router = useRouter();
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
   const { primary, crumb } = resolvePageTitle(pathname);
@@ -82,12 +85,15 @@ export function TopBar() {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
       }
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
     }
-    if (menuOpen) {
+    if (menuOpen || notifOpen) {
       document.addEventListener("mousedown", onClickOutside);
       return () => document.removeEventListener("mousedown", onClickOutside);
     }
-  }, [menuOpen]);
+  }, [menuOpen, notifOpen]);
 
   const initials = (session?.user?.name ?? "U")
     .split(" ")
@@ -192,26 +198,59 @@ export function TopBar() {
         <TopBarPill icon={<BookOpen size={13} strokeWidth={2} aria-hidden="true" />} label="Docs" href="/dashboard/docs" />
         <TopBarPill icon={<Sparkles size={13} strokeWidth={2} aria-hidden="true" />} label="Ask" href="/api/docs" />
 
-        {/* Notifications bell — placeholder; opens a future panel */}
-        <button
-          type="button"
-          aria-label="Notifications (coming soon)"
-          className="flex items-center justify-center"
-          style={{
-            width: "30px",
-            height: "30px",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            background: "var(--bg-card)",
-            color: "var(--text-muted)",
-            cursor: "not-allowed",
-            opacity: 0.6,
-            flexShrink: 0,
-          }}
-          disabled
-        >
-          <Bell size={13} strokeWidth={2} aria-hidden="true" />
-        </button>
+        {/* Notifications bell + panel */}
+        <div ref={notifRef} style={{ position: "relative" }}>
+          <button
+            type="button"
+            onClick={() => setNotifOpen((v) => !v)}
+            aria-label="Notifications"
+            aria-expanded={notifOpen}
+            className="flex items-center justify-center"
+            style={{
+              position: "relative",
+              width: "30px",
+              height: "30px",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              background: notifOpen ? "var(--bg-subtle)" : "var(--bg-card)",
+              color: notifOpen ? "var(--text)" : "var(--text-muted)",
+              cursor: "pointer",
+              flexShrink: 0,
+              transition: "background-color 0.12s ease, color 0.12s ease",
+            }}
+            onMouseOver={(e) => {
+              if (!notifOpen) {
+                e.currentTarget.style.background = "var(--bg-subtle)";
+                e.currentTarget.style.color = "var(--text)";
+              }
+            }}
+            onMouseOut={(e) => {
+              if (!notifOpen) {
+                e.currentTarget.style.background = "var(--bg-card)";
+                e.currentTarget.style.color = "var(--text-muted)";
+              }
+            }}
+          >
+            <Bell size={13} strokeWidth={2} aria-hidden="true" />
+            {/* Unread dot — purely decorative until real notifs land */}
+            <span
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "5px",
+                right: "5px",
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "var(--cta)",
+                border: "1px solid var(--bg-card)",
+              }}
+            />
+          </button>
+          {notifOpen && (
+            <NotificationsPanel onClose={() => setNotifOpen(false)} />
+          )}
+        </div>
 
         {/* Avatar + dropdown */}
         <div ref={menuRef} style={{ position: "relative", marginLeft: "4px" }}>
