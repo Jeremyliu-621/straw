@@ -51,8 +51,12 @@
   /* ── Radius (unchanged from before — revisit after pastels land) ── */
   --radius: 2.5px;
 
-  /* ── Legacy aliases — keep so existing inline styles don't break */
-  --accent: var(--cta);
+  /* ── Legacy aliases — `--accent` was previously ink-black across the
+       app for "primary action / selected state / icon". Keep it ink so
+       hundreds of existing inline styles don't all go coral by accident.
+       Coral is reserved for explicit primary CTAs that opt-in via
+       `var(--cta)` directly. */
+  --accent: var(--text);
   --accent-subtle: var(--bg-strong);
   --accent-border: var(--border);
   --accent-muted: var(--text-muted);

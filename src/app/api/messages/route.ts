@@ -14,6 +14,12 @@ const sendMessageSchema = z.object({
 
 /**
  * GET /api/messages — List message threads for the current user.
+ *
+ * Each thread is represented by its latest message, plus the resolved
+ * display names of the sender + recipient (joined from `users.name`)
+ * and the task title if the thread is task-scoped (joined from
+ * `tasks.title`). The inbox UI relies on these joined fields; without
+ * them threads render as UUID-slice initials.
  */
 export async function GET() {
   const session = await auth();
@@ -24,10 +30,14 @@ export async function GET() {
   const db = createServiceClient();
   const userId = session.user.supabaseId;
 
-  // Get all messages for this user, ordered newest first
+  // Pull messages + the two user FK joins + task title in one trip.
+  // The `!sender_id` / `!recipient_id` syntax disambiguates the two FKs
+  // pointing at the same `users` table.
   const { data, error } = await db
     .from("messages")
-    .select("*")
+    .select(
+      "*, sender:users!sender_id(name), recipient:users!recipient_id(name), task:tasks(title)"
+    )
     .or(`sender_id.eq.${userId},recipient_id.eq.${userId}`)
     .order("created_at", { ascending: false });
 
@@ -35,17 +45,33 @@ export async function GET() {
     return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
   }
 
-  // Deduplicate to latest message per thread
-  const threadMap = new Map<string, (typeof data)[0]>();
+  // Deduplicate to latest message per thread, flattening the joins.
+  const threadMap = new Map<string, Record<string, unknown>>();
   for (const msg of data ?? []) {
-    if (!threadMap.has(msg.thread_id)) {
-      threadMap.set(msg.thread_id, msg);
-    }
+    if (threadMap.has(msg.thread_id)) continue;
+    const sender = pickJoined(msg.sender) as { name?: string } | null;
+    const recipient = pickJoined(msg.recipient) as { name?: string } | null;
+    const task = pickJoined(msg.task) as { title?: string } | null;
+    threadMap.set(msg.thread_id, {
+      ...msg,
+      sender_name: sender?.name ?? null,
+      recipient_name: recipient?.name ?? null,
+      task_title: task?.title ?? null,
+      // Strip the nested join shapes so the response is flat.
+      sender: undefined,
+      recipient: undefined,
+      task: undefined,
+    });
   }
 
-  const threads = Array.from(threadMap.values());
+  return NextResponse.json(Array.from(threadMap.values()));
+}
 
-  return NextResponse.json(threads);
+/** Supabase-js sometimes returns a relation as a 1-element array. Normalize. */
+function pickJoined<T>(value: T | T[] | null | undefined): T | null {
+  if (!value) return null;
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value;
 }
 
 /**

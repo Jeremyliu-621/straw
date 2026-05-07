@@ -329,7 +329,7 @@ export default function AgentDashboard() {
             </div>
             {hiddenJoinedCount > 0 && (
               <Link
-                href="/dashboard/compete"
+                href="/dashboard/joined"
                 className="font-sans"
                 style={{
                   display: "inline-flex",

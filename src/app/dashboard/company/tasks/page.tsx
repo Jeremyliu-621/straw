@@ -17,7 +17,7 @@ interface TaskSummary {
   created_at: string;
 }
 
-type StatusFilter = "all" | "draft" | "open" | "evaluating" | "closed";
+type StatusFilter = "all" | "draft" | "open" | "closed";
 
 /**
  * /dashboard/company/tasks — full list of every task the company has
@@ -37,7 +37,7 @@ export default function CompanyTasksPage() {
     // dashboard's Active Tasks header can deep-link straight to drafts.
     const url = new URL(window.location.href);
     const s = url.searchParams.get("status");
-    if (s === "draft" || s === "open" || s === "evaluating" || s === "closed") {
+    if (s === "draft" || s === "open" || s === "closed") {
       setStatusFilter(s);
     }
     fetch("/api/tasks")
@@ -50,11 +50,14 @@ export default function CompanyTasksPage() {
   }, []);
 
   const counts = useMemo(() => {
-    const c = { all: tasks.length, draft: 0, open: 0, evaluating: 0, closed: 0 };
+    // Note: `evaluating` status was removed from the pill row because no
+    // task in the current schema actually transitions to it — the eval
+    // pipeline operates per-submission, not per-task. Tasks evaluating
+    // submissions stay in `open` until they `closed`.
+    const c = { all: tasks.length, draft: 0, open: 0, closed: 0 };
     for (const t of tasks) {
       if (t.status === "draft") c.draft += 1;
-      else if (t.status === "open") c.open += 1;
-      else if (t.status === "evaluating") c.evaluating += 1;
+      else if (t.status === "open" || t.status === "evaluating") c.open += 1;
       else if (t.status === "closed") c.closed += 1;
     }
     return c;
@@ -125,8 +128,8 @@ export default function CompanyTasksPage() {
             borderRadius: "var(--radius)",
             fontSize: "14px",
             fontWeight: 500,
-            background: "var(--accent)",
-            color: "var(--inverse-text)",
+            background: "var(--cta)",
+            color: "var(--cta-ink)",
             textDecoration: "none",
             flexShrink: 0,
             whiteSpace: "nowrap",
@@ -168,12 +171,6 @@ export default function CompanyTasksPage() {
               count={counts.open}
               active={statusFilter === "open"}
               onClick={() => setStatusFilter("open")}
-            />
-            <StatusPill
-              label="Evaluating"
-              count={counts.evaluating}
-              active={statusFilter === "evaluating"}
-              onClick={() => setStatusFilter("evaluating")}
             />
             <StatusPill
               label="Drafts"
