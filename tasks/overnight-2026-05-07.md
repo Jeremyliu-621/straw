@@ -74,7 +74,13 @@ Output directory: `tasks/research/agent-context-management/`
 - [ ] **Step 4 — `GET /api/dashboard/kpi-trends?metric=&days=14` endpoint** — Postgres aggregate against submissions/evaluation_results, replaces `mockTrend()` calls.
 - [ ] **Step 5 — Refactor `dashboard/agent/page.tsx`** to full new layout per direction doc.
 - [ ] **Step 6 — Refactor `dashboard/company/page.tsx`** likewise.
-- [ ] **Step 7 — `<RichTaskRow>` / `<RichSubmissionRow>`** — replace bare table rows with dense Vercel-deployment-style.
+- [x] **Step 7 — `<RichTaskRow>` / `<RichSubmissionRow>`** — done 2026-05-07 06:55. (Done out of order — pulled forward because the API endpoint work in step 3 needs more prep.)
+  - `src/components/dashboard/rich-task-row.tsx` — five-zone row: title+meta / status+eval-mode / submissions-bar-or-budget / deadline-countdown. Pure helper `computeDeadlineState()` exposes urgency flags (urgent <24h, warning <72h) used to colour the trailing column.
+  - `src/components/dashboard/rich-task-row.test.ts` — 8 cases for `computeDeadlineState`. All pass.
+  - `src/components/dashboard/rich-submission-row.tsx` — five-zone row: task title+id / agent display name / status / score+delta-bar / time. Pure helper `scoreSeverity()` maps {≥80, ≥50, <50, null} to {success, mid, warning, faint}.
+  - `src/components/dashboard/rich-submission-row.test.ts` — 5 cases. All pass.
+  - Wired into both agent and company dashboards. Removed dead inline-table code (~100 lines per dashboard) — `labelStyle`, `<StatusBadge>` direct, table-header divs, etc.
+  - Net: dashboards are visibly denser without changing the underlying data flow.
 - [ ] **Step 8 — Tile additions:** QuickActions, LeaderboardPreview, ReputationTile, WorkspaceUsage.
 - [ ] **Step 9 — Empty + loading + error states** for each new component.
 - [ ] **Step 10 — Mobile responsive pass.**
@@ -83,9 +89,9 @@ Output directory: `tasks/research/agent-context-management/`
 
 <!-- CURSOR -->
 
-[Next iteration of /loop: **Phase 3 step 3 — `GET /api/dashboard/activity` endpoint**. Should union over `submissions`, `evaluation_results`, `deals`, and the `audit_log` (or `audit_logs`?) tables. Pagination via `cursor + limit`. Owner-only — call `authenticateRequest` then filter to events where the user is `actor.id` OR `target.task.company_id`. Return events shaped like the `ActivityEvent` interface in `src/components/dashboard/activity-feed.tsx`. Indexes: should be cheap on `submissions(agent_id, created_at desc)` and `submissions(task_id, created_at desc)` (already exist? grep migrations to verify). Land as `feat(overnight): /api/dashboard/activity endpoint + wire`, then advance to step 4.]
+[Next iteration of /loop: **Phase 3 step 3 — `GET /api/dashboard/activity` endpoint**. Should union over `submissions`, `evaluation_results`, `deals`, and `audit_logs` tables. Pagination via `cursor + limit`. Owner-only — call `authenticateRequest` then filter to events where the user is `actor.id` OR `target.task.company_id`. Return events shaped like the `ActivityEvent` interface in `src/components/dashboard/activity-feed.tsx`. Indexes: grep `supabase/migrations` for `submissions(agent_id, created_at)` and `submissions(task_id, created_at)`; create if absent (cost: small, write-amplification negligible). Replace the `buildActivityEventsFrom*` shims in both dashboards with a fetch to the new endpoint. Land as `feat(overnight): /api/dashboard/activity endpoint + wire`, then advance to step 4.]
 
-[Worktree onboarding before next iteration starts code work: `cd ../mop-overnight && npm install` (5 min, one-time). Then `npm run dev` from the worktree on a non-3000 port (master tree dev server is on 3000). Visual-verify KpiTile + ActivityFeed render correctly on `/dashboard/agent` BEFORE writing the new endpoint.]
+[Worktree onboarding before next iteration starts code work: `cd ../mop-overnight && npm install` (5 min, one-time). Then `npm run dev` from the worktree on a non-3000 port (master tree dev server is on 3000). Visual-verify KpiTile + ActivityFeed + RichTaskRow + RichSubmissionRow render correctly on `/dashboard/agent` and `/dashboard/company` BEFORE writing the new endpoint.]
 
 ## Phase 2 — Self-onboarding agent docs / CLI / MCP
 

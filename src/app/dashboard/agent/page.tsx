@@ -2,11 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Search, Zap } from "lucide-react";
-import { StatusBadge } from "@/components/status-badge";
 import { KpiTile } from "@/components/dashboard/kpi-tile";
 import { ActivityFeed, type ActivityEvent } from "@/components/dashboard/activity-feed";
+import { RichTaskRow } from "@/components/dashboard/rich-task-row";
+import { RichSubmissionRow } from "@/components/dashboard/rich-submission-row";
 
 interface TaskSummary {
   id: string;
@@ -209,70 +209,25 @@ export default function AgentDashboard() {
             </span>
           </div>
 
-          {/* Table header */}
           <div
-            className="flex items-center gap-4 px-4 py-2"
-            style={{ borderBottom: "1px solid var(--border)" }}
+            style={{
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              overflow: "hidden",
+            }}
           >
-            <span className="flex-1 font-sans" style={labelStyle}>
-              Title
-            </span>
-            <span className="w-28 font-sans" style={labelStyle}>
-              Category
-            </span>
-            <span className="w-24 font-sans" style={labelStyle}>
-              Status
-            </span>
-            <span className="w-28 text-right font-mono" style={labelStyle}>
-              Budget
-            </span>
-            <span className="w-32 text-right font-sans" style={labelStyle}>
-              Deadline
-            </span>
+            {tasks.map((task, i) => (
+              <div
+                key={task.id}
+                style={{
+                  // Last row: drop the bottom border the row would otherwise paint.
+                  ...(i === tasks.length - 1 ? { borderBottom: "none" } : {}),
+                }}
+              >
+                <RichTaskRow task={task} viewerRole="agent" />
+              </div>
+            ))}
           </div>
-
-          {/* Table rows */}
-          {tasks.map((task) => (
-            <Link
-              key={task.id}
-              href={`/tasks/${task.id}`}
-              className="flex items-center gap-4 px-4"
-              style={{
-                height: "56px",
-                borderBottom: "1px solid var(--border)",
-                textDecoration: "none",
-                color: "var(--text)",
-                transition: "background-color 0.15s ease",
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
-              onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
-            >
-              <span className="flex-1 truncate font-sans" style={{ fontSize: "15px" }}>
-                {task.title}
-              </span>
-              <span
-                className="w-28 truncate font-sans"
-                style={{ fontSize: "13px", color: "var(--text-muted)" }}
-              >
-                {task.category}
-              </span>
-              <span className="w-24">
-                <StatusBadge status={task.status} />
-              </span>
-              <span
-                className="w-28 text-right font-mono"
-                style={{ fontSize: "14px", color: "var(--text)" }}
-              >
-                ${(task.budget_cents / 100).toLocaleString()}
-              </span>
-              <span
-                className="w-32 text-right font-sans"
-                style={{ fontSize: "13px", color: "var(--text-muted)" }}
-              >
-                {new Date(task.deadline).toLocaleDateString()}
-              </span>
-            </Link>
-          ))}
         </div>
       )}
       {/* Activity feed — currently mocked from real submissions until
@@ -303,64 +258,17 @@ export default function AgentDashboard() {
             </span>
           </div>
 
-          {/* Table header */}
           <div
-            className="flex items-center gap-4 px-4 py-2"
-            style={{ borderBottom: "1px solid var(--border)" }}
+            style={{
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              overflow: "hidden",
+            }}
           >
-            <span className="flex-1 font-sans" style={labelStyle}>
-              Task
-            </span>
-            <span className="w-24 font-sans" style={labelStyle}>
-              Status
-            </span>
-            <span className="w-20 text-right font-mono" style={labelStyle}>
-              Score
-            </span>
-            <span className="w-28 text-right font-sans" style={labelStyle}>
-              Submitted
-            </span>
+            {submissions.map((sub) => (
+              <RichSubmissionRow key={sub.id} submission={sub} showAgent={false} />
+            ))}
           </div>
-
-          {/* Submission rows */}
-          {submissions.map((sub) => (
-            <Link
-              key={sub.id}
-              href={`/tasks/${sub.task_id}`}
-              className="flex items-center gap-4 px-4"
-              style={{
-                height: "56px",
-                borderBottom: "1px solid var(--border)",
-                textDecoration: "none",
-                color: "var(--text)",
-                transition: "background-color 0.15s ease",
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
-              onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
-            >
-              <span className="flex-1 truncate font-sans" style={{ fontSize: "15px" }}>
-                {sub.task_title || sub.agent_display_name || "Untitled"}
-              </span>
-              <span className="w-24">
-                <StatusBadge status={sub.status} />
-              </span>
-              <span
-                className="w-20 text-right font-mono"
-                style={{
-                  fontSize: "14px",
-                  color: sub.final_score != null ? "var(--text)" : "var(--text-faint)",
-                }}
-              >
-                {sub.final_score != null ? sub.final_score.toFixed(1) : "--"}
-              </span>
-              <span
-                className="w-28 text-right font-sans"
-                style={{ fontSize: "13px", color: "var(--text-muted)" }}
-              >
-                {new Date(sub.created_at).toLocaleDateString()}
-              </span>
-            </Link>
-          ))}
         </div>
       )}
 
@@ -461,11 +369,3 @@ function mockTrend(
   series[N - 1] = endValue;
   return series;
 }
-
-const labelStyle = {
-  fontSize: "11px",
-  fontWeight: 500,
-  letterSpacing: "0.06em",
-  textTransform: "uppercase" as const,
-  color: "var(--text-muted)",
-};
