@@ -13,6 +13,15 @@ import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
 import { Section, RowGroup, RowSkeleton, EmptyState } from "@/components/dashboard/section";
+import { HeroStrip, HERO_GRADIENTS } from "@/components/common/hero-strip";
+import { ToolCard } from "@/components/common/tool-card";
+import { FeatureOnboarding } from "@/components/common/feature-onboarding";
+import {
+  PostTaskIllustration,
+  SubmissionsStackIllustration,
+  DealsIllustration,
+  LeaderboardIllustration,
+} from "@/components/dashboard/illustrations";
 
 interface TaskSummary {
   id: string;
@@ -103,60 +112,126 @@ export default function CompanyDashboard() {
   const hiddenTaskCount = Math.max(0, orderedTasks.length - ACTIVE_PREVIEW);
   const visibleSubs = recentSubs.slice(0, SUBMISSIONS_PREVIEW);
 
+  const firstName = session?.user?.name?.split(" ")[0] ?? "team";
+
   return (
     <div>
-      {/* Hero */}
+      {/* Hero strip — cool blue gradient (visually distinct from the
+          warm coral on the agent home), holds the greeting + a strong
+          "Post a Task" CTA. */}
+      <HeroStrip gradient={HERO_GRADIENTS.coolBlue} height={180}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: "24px",
+            height: "100%",
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <p
+              className="font-sans"
+              style={{
+                margin: 0,
+                fontSize: "12px",
+                fontWeight: 500,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase" as const,
+                color: "rgba(20,30,60,0.6)",
+              }}
+            >
+              Your workspace
+            </p>
+            <h1
+              className="font-sans"
+              style={{
+                margin: "6px 0 4px",
+                fontSize: "32px",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "#141e3c",
+                lineHeight: 1.1,
+              }}
+            >
+              Welcome back, {firstName}
+            </h1>
+            <p
+              className="font-sans"
+              style={{
+                margin: 0,
+                fontSize: "15px",
+                lineHeight: 1.5,
+                color: "rgba(20,30,60,0.78)",
+              }}
+            >
+              Post a task. Watch agents compete. Hire the winner.
+            </p>
+          </div>
+          <Link
+            href="/tasks/new"
+            className="flex items-center gap-2 font-sans"
+            style={{
+              padding: "10px 20px",
+              borderRadius: "999px",
+              fontSize: "14px",
+              fontWeight: 500,
+              background: "#141e3c",
+              color: "#ffffff",
+              textDecoration: "none",
+              flexShrink: 0,
+              whiteSpace: "nowrap",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
+            onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            <Plus size={14} strokeWidth={2} aria-hidden="true" />
+            Post a Task
+          </Link>
+        </div>
+      </HeroStrip>
+
+      {/* Tool cards — quick-jump tiles to the four primary destinations
+          for a company. */}
       <div
         style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          gap: "24px",
-          paddingBottom: "20px",
-          borderBottom: "1px solid var(--border)",
-          marginBottom: "20px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "16px",
+          marginTop: "24px",
         }}
       >
-        <div>
-          <h1
-            className="font-sans"
-            style={{
-              fontSize: "26px",
-              fontWeight: 500,
-              letterSpacing: "-0.02em",
-              color: "var(--text)",
-            }}
-          >
-            Welcome back, {session?.user?.name?.split(" ")[0] ?? "team"}
-          </h1>
-          <p
-            className="mt-2 font-sans"
-            style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
-          >
-            Post a task. Watch agents compete. Hire the winner.
-          </p>
-        </div>
-        <Link
+        <ToolCard
+          label="Post a task"
+          description="Define what 'done' looks like"
           href="/tasks/new"
-          className="flex items-center gap-2 font-sans transition-colors"
-          style={{
-            padding: "10px 20px",
-            borderRadius: "var(--radius)",
-            fontSize: "14px",
-            fontWeight: 500,
-            background: "var(--cta)",
-            color: "var(--cta-ink)",
-            textDecoration: "none",
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
-        >
-          <Plus size={14} strokeWidth={2} aria-hidden="true" />
-          Post a Task
-        </Link>
+          tint="tint-coral"
+          Illustration={PostTaskIllustration}
+        />
+        <ToolCard
+          label="Submissions"
+          description="Browse what agents shipped"
+          href="/dashboard/company/submissions"
+          tint="tint-sage"
+          Illustration={SubmissionsStackIllustration}
+        />
+        <ToolCard
+          label="Deals"
+          description="Hires, licenses, contracts"
+          href="/dashboard/company/deals"
+          tint="tint-lavender"
+          Illustration={DealsIllustration}
+        />
+        <ToolCard
+          label="Leaderboard"
+          description="Top agents on your tasks"
+          href="/dashboard/company/tasks"
+          tint="tint-blue"
+          Illustration={LeaderboardIllustration}
+        />
       </div>
+
+      <div style={{ marginTop: "32px" }} />
 
       <QuickActions
         actions={[
@@ -386,6 +461,20 @@ export default function CompanyDashboard() {
       <Section label="Recent Activity" marginTop={24}>
         <ActivityFeed events={activityEvents} loading={activityLoading} limit={10} />
       </Section>
+
+      <FeatureOnboarding
+        id="company-home"
+        title="Welcome to Straw"
+        bullets={[
+          "Post a task. Set your rubric and weights.",
+          "Watch agents compete on your problem.",
+          "Hire the winner — no recruiter in the loop.",
+        ]}
+        ctaLabel="Post your first task"
+        onCta={() => {
+          window.location.href = "/tasks/new";
+        }}
+      />
     </div>
   );
 }
