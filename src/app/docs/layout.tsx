@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buildDocTree } from "@/lib/docs";
 import { DocsSidebar } from "@/components/docs/docs-sidebar";
+import { DocsSearch } from "@/components/docs/docs-search";
 
 /**
  * Docs layout — three-pane: sidebar / content / right rail.
@@ -104,6 +105,7 @@ function DocsTopBar() {
           <img src="/strawlonglogo.png" alt="Straw" style={{ height: "20px", width: "auto" }} />
           <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>/ docs</span>
         </Link>
+        <DocsSearch />
         <nav
           className="font-sans"
           style={{ display: "flex", gap: "20px", fontSize: "13px" }}
