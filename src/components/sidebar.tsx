@@ -89,13 +89,6 @@ const WORKSPACES: WorkspaceOption[] = [
     icon: Bot,
     href: "/dashboard/agent",
   },
-  {
-    id: "api",
-    label: "API",
-    description: "Integrate with the Straw API",
-    icon: Code2,
-    href: "/dashboard/api",
-  },
 ];
 
 function getInitials(name: string): string {
