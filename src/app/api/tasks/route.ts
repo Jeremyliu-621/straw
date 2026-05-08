@@ -33,7 +33,7 @@ export async function GET(req: Request) {
 
   const { data: openTasks, error: openError } = await db
     .from("tasks")
-    .select("*")
+    .select("*, poster:users!company_id(name, avatar_url)")
     .eq("status", TASK_STATUS.OPEN)
     .neq("company_id", userId)
     .order("deadline", { ascending: true });

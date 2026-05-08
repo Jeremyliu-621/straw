@@ -34,6 +34,7 @@ interface TaskSummary {
   budget_cents: number;
   eval_mode: string;
   created_at: string;
+  poster?: { name: string | null; avatar_url: string | null } | null;
 }
 
 interface CompanyStats {

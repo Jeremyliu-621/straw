@@ -43,6 +43,7 @@ interface TaskSummary {
   deadline: string;
   budget_cents: number;
   eval_mode?: string;
+  poster?: { name: string | null; avatar_url: string | null } | null;
 }
 
 /**
