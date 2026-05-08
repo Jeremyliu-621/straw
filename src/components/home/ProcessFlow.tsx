@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
 
 // 3D builder-at-desk scene — SSR-off because it touches WebGL.
 const BuilderDeskVisual = dynamic(() => import("./BuilderDeskVisual"), {
@@ -213,11 +212,7 @@ export default function ProcessFlow() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* Task makers — soft blue-tinted card */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <div
             style={{
               borderRadius: 6,
               backgroundColor: "transparent",
@@ -253,15 +248,11 @@ export default function ProcessFlow() {
               what winning looks like — not the vendor.
             </p>
             <TaskMakerVisual />
-          </motion.div>
+          </div>
 
           {/* Builders — light card. flex-column so the video can grow to
               match the bounty card's height on the left. */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
+          <div
             style={{
               borderRadius: 6,
               backgroundColor: "transparent",
@@ -299,7 +290,7 @@ export default function ProcessFlow() {
               the leaderboard writes itself.
             </p>
             <BuilderDeskVisual />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
