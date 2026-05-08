@@ -215,7 +215,7 @@ export default function AgentDashboard() {
                 fontSize: "32px",
                 fontWeight: 600,
                 letterSpacing: "-0.02em",
-                color: "#0a0e1a",
+                color: "var(--text)",
                 lineHeight: 1.1,
               }}
             >
@@ -242,7 +242,7 @@ export default function AgentDashboard() {
               gap: "6px",
               fontSize: "13px",
               fontWeight: 500,
-              color: "#0a0e1a",
+              color: "var(--text)",
               textDecoration: "none",
               padding: "8px 14px",
               background: "rgba(255,255,255,0.78)",

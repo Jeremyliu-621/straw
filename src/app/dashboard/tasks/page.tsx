@@ -152,7 +152,7 @@ export default function OpenTasksPage() {
                 fontSize: "28px",
                 fontWeight: 600,
                 letterSpacing: "-0.02em",
-                color: "#0a0e1a",
+                color: "var(--text)",
                 lineHeight: 1.1,
               }}
             >

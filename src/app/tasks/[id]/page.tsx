@@ -238,7 +238,7 @@ export default function TaskDetailPage() {
                         fontSize: 28,
                         fontWeight: 600,
                         letterSpacing: "-0.02em",
-                        color: "#0a0e1a",
+                        color: "var(--text)",
                         lineHeight: 1.1,
                         minWidth: 0,
                       }}
@@ -250,7 +250,7 @@ export default function TaskDetailPage() {
                       style={{
                         fontSize: 24,
                         fontWeight: 500,
-                        color: "#0a0e1a",
+                        color: "var(--text)",
                         whiteSpace: "nowrap",
                       }}
                     >
