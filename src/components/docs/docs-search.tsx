@@ -79,30 +79,55 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
         style={{
           display: "inline-flex",
           alignItems: "center",
-          gap: "8px",
-          padding: "6px 12px",
-          fontSize: "13px",
+          gap: "6px",
+          height: "30px",
+          padding: "0 10px",
+          fontSize: "12px",
+          fontWeight: 500,
           color: "var(--text-muted)",
-          background: "var(--bg)",
+          background: "var(--bg-card)",
           border: "1px solid var(--border)",
           borderRadius: "var(--radius)",
           cursor: "pointer",
-          minWidth: "200px",
+          minWidth: "180px",
+          transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.background = "var(--bg-subtle)";
+          e.currentTarget.style.color = "var(--text)";
+          e.currentTarget.style.borderColor = "var(--text-faint)";
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.background = "var(--bg-card)";
+          e.currentTarget.style.color = "var(--text-muted)";
+          e.currentTarget.style.borderColor = "var(--border)";
         }}
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden="true"
+          style={{ flexShrink: 0 }}
+        >
           <circle cx="11" cy="11" r="7" />
           <path d="m21 21-4.3-4.3" />
         </svg>
         <span style={{ flex: 1, textAlign: "left" }}>Search docs…</span>
         <span
           style={{
-            fontSize: "11px",
-            padding: "1px 6px",
+            fontSize: "10px",
+            lineHeight: 1,
+            padding: "2px 5px",
             background: "var(--bg-subtle)",
             border: "1px solid var(--border)",
-            borderRadius: "4px",
+            borderRadius: "3px",
             fontFamily: "var(--font-mono, monospace)",
+            color: "var(--text-faint)",
+            flexShrink: 0,
           }}
         >
           ⌘K

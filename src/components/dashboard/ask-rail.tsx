@@ -36,9 +36,14 @@ import { useAskRail, ASK_RAIL_WIDTH, ASK_GUTTER } from "./ask-rail-context";
 
 type ToolStatus = "running" | "done";
 
+interface DocSource {
+  slug: string;
+  title: string;
+}
+
 type Msg =
   | { kind: "user"; content: string }
-  | { kind: "assistant"; content: string; animated?: boolean }
+  | { kind: "assistant"; content: string; animated?: boolean; sources?: DocSource[] }
   | { kind: "tool"; label: string; status: ToolStatus };
 
 interface ChatSession {
@@ -389,7 +394,11 @@ export function AskRail() {
         const j = await res.json().catch(() => ({}));
         throw new Error(j.error ?? `HTTP ${res.status}`);
       }
-      const j: { reply: string; navigate?: string | null } = await res.json();
+      const j: {
+        reply: string;
+        navigate?: string | null;
+        sources?: DocSource[];
+      } = await res.json();
 
       // Tool card path: navigation arrived. Insert running pill,
       // call router.push, settle, flip to ✓, THEN add the reply.
@@ -417,7 +426,12 @@ export function AskRail() {
 
       setMessages((cur) => [
         ...cur,
-        { kind: "assistant", content: j.reply, animated: true },
+        {
+          kind: "assistant",
+          content: j.reply,
+          animated: true,
+          sources: j.sources && j.sources.length > 0 ? j.sources : undefined,
+        },
       ]);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -575,7 +589,14 @@ export function AskRail() {
         {messages.map((m, i) => {
           if (m.kind === "user") return <UserBubble key={i} text={m.content} />;
           if (m.kind === "tool") return <ToolPill key={i} label={m.label} status={m.status} />;
-          return <AssistantBubble key={i} text={m.content} animate={m.animated ?? false} />;
+          return (
+            <AssistantBubble
+              key={i}
+              text={m.content}
+              animate={m.animated ?? false}
+              sources={m.sources}
+            />
+          );
         })}
 
         {thinking && <Shimmer text="Thinking…" />}
@@ -966,7 +987,15 @@ function UserBubble({ text }: { text: string }) {
   );
 }
 
-function AssistantBubble({ text, animate }: { text: string; animate: boolean }) {
+function AssistantBubble({
+  text,
+  animate,
+  sources,
+}: {
+  text: string;
+  animate: boolean;
+  sources?: DocSource[];
+}) {
   const shown = useTypewriter(text, animate ? 12 : 0);
   return (
     <div style={{ alignSelf: "flex-start", maxWidth: "100%" }}>
@@ -982,6 +1011,49 @@ function AssistantBubble({ text, animate }: { text: string; animate: boolean }) 
       >
         {shown}
       </p>
+      {sources && sources.length > 0 && (
+        <div
+          className="font-sans"
+          style={{
+            marginTop: "8px",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "4px 6px",
+            alignItems: "center",
+            fontSize: "11px",
+            color: "var(--text-muted)",
+          }}
+        >
+          <span style={{ color: "var(--text-faint)" }}>From the docs:</span>
+          {sources.map((s) => (
+            <a
+              key={s.slug}
+              href={`/docs/${s.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "1px 6px",
+                background: "var(--bg-subtle)",
+                border: "1px solid var(--border)",
+                borderRadius: "3px",
+                color: "var(--text-muted)",
+                textDecoration: "none",
+                transition: "color 0.15s ease, background 0.15s ease",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.color = "var(--text)";
+                e.currentTarget.style.background = "var(--bg-card)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.color = "var(--text-muted)";
+                e.currentTarget.style.background = "var(--bg-subtle)";
+              }}
+            >
+              {s.title}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

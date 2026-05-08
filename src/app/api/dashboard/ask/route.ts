@@ -6,6 +6,8 @@ import { apiError } from "@/lib/api-utils";
 import { rateLimitResponse } from "@/lib/rate-limit";
 import { env } from "@/lib/env";
 import { EVALUATION_LLM_MODEL } from "@/constants";
+import { searchDocs } from "@/lib/docs-search";
+import { readDocPage } from "@/lib/docs";
 
 /**
  * POST /api/dashboard/ask
@@ -103,6 +105,35 @@ const responseSchema: Schema = {
   required: ["reply"],
 };
 
+/**
+ * Top docs hits for the user's question, with their full markdown body
+ * inlined as Gemini context. Tightly scoped: top 3 hits, body capped at
+ * 3000 chars each, so the system prompt stays under ~10K chars even for
+ * dense pages.
+ *
+ * Returns an empty string when there are no hits — Gemini falls back to
+ * its baseline platform knowledge from the SYSTEM_PROMPT.
+ */
+function buildDocsContext(query: string): { context: string; sources: Array<{ slug: string; title: string }> } {
+  const hits = searchDocs(query, 3);
+  if (hits.length === 0) return { context: "", sources: [] };
+
+  const sections: string[] = [];
+  const sources: Array<{ slug: string; title: string }> = [];
+
+  for (const hit of hits) {
+    const page = readDocPage(hit.slug.split("/"));
+    if (!page) continue;
+    const body = page.content.slice(0, 3000);
+    sections.push(
+      `--- DOCS: ${hit.title} (/docs/${hit.slug}) ---\n${body}`,
+    );
+    sources.push({ slug: hit.slug, title: hit.title });
+  }
+
+  return { context: sections.join("\n\n"), sources };
+}
+
 const gemini = new GoogleGenerativeAI(env.GOOGLE_GEMINI_API_KEY);
 
 export async function POST(req: Request) {
@@ -127,10 +158,18 @@ export async function POST(req: Request) {
     return apiError("Last message must be from user", 400);
   }
 
+  // Pre-search the docs and inline the top hits as authoritative context.
+  // Agents asking "how do I set a wallet?" get the wallet doc page in
+  // their system prompt, no scraping required.
+  const { context: docsContext, sources: docSources } = buildDocsContext(latest.content);
+  const augmentedSystemPrompt = docsContext
+    ? `${SYSTEM_PROMPT}\n\n--- RELEVANT DOCS CONTEXT ---\nThe following pages from the Straw documentation are relevant to the user's question. Treat them as authoritative; quote concrete details from them when answering.\n\n${docsContext}`
+    : SYSTEM_PROMPT;
+
   try {
     const model = gemini.getGenerativeModel({
       model: EVALUATION_LLM_MODEL,
-      systemInstruction: SYSTEM_PROMPT,
+      systemInstruction: augmentedSystemPrompt,
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema,
@@ -162,7 +201,7 @@ export async function POST(req: Request) {
     const navigate =
       rawNav && (NAV_PATHS as readonly string[]).includes(rawNav) ? rawNav : null;
 
-    return NextResponse.json({ reply, navigate });
+    return NextResponse.json({ reply, navigate, sources: docSources });
   } catch (err) {
     console.error("[ask] gemini call failed:", err);
     return apiError("Ask failed — try again in a moment.", 502);
