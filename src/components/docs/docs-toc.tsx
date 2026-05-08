@@ -35,7 +35,7 @@ export function DocsToc({ headings }: { headings: DocHeading[] }) {
 
   return (
     <aside
-      className="font-sans"
+      className="font-sans docs-toc-rail"
       style={{
         position: "sticky",
         top: "80px",
