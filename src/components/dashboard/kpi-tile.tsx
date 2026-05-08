@@ -177,15 +177,18 @@ export function KpiTile({
             style={{ display: "block" }}
             aria-hidden="true"
           >
+            {/* Use delta direction for color so sparkline and badge always agree.
+                Intra-series trend (series[0] vs series[last]) can mislead: a single
+                event at day 1 of a 14-day window looks "down" even when PoP is +100%. */}
             <path
               d={sparklineGeo.areaPath}
-              fill={sparklineColor(sparklineGeo.trendDirection, isGoodWhenHigher, 0.08)}
+              fill={sparklineColor(delta?.direction ?? sparklineGeo.trendDirection, isGoodWhenHigher, 0.08)}
               stroke="none"
             />
             <polyline
               points={sparklineGeo.points}
               fill="none"
-              stroke={sparklineColor(sparklineGeo.trendDirection, isGoodWhenHigher, 1)}
+              stroke={sparklineColor(delta?.direction ?? sparklineGeo.trendDirection, isGoodWhenHigher, 1)}
               strokeWidth="1.25"
               strokeLinejoin="round"
               strokeLinecap="round"

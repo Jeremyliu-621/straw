@@ -143,7 +143,7 @@ function DealRow({ deal }: { deal: Deal }) {
     deal.deal_type === "agent_hire" ? "Hire" : "Output purchase";
   return (
     <Link
-      href={`/tasks/${deal.task_id}`}
+      href={`/tasks/${deal.task_id}?from=dashboard`}
       className="flex items-center"
       style={{
         gap: "16px",

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { KpiTile } from "./kpi-tile";
 
 interface SubmissionLike {
   created_at: string;
@@ -140,21 +139,21 @@ export function SubmissionHeatmap({
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
         display: "flex",
-        flexWrap: "wrap",
-        gap: "24px",
+        flexWrap: "nowrap",
+        gap: "56px",
         alignItems: "stretch",
+        overflowX: "auto",
       }}
     >
       {/* Heatmap column — natural-width grid + Less/More legend. */}
       <div
         style={{
-          flex: "1 1 auto",
-          minWidth: 0,
+          flex: "0 0 auto",
           display: "flex",
           flexDirection: "column",
         }}
       >
-      <div style={{ display: "flex", gap: "8px", overflowX: "auto" }}>
+      <div style={{ display: "flex", gap: "8px" }}>
         <div
           style={{
             display: "flex",
@@ -247,66 +246,66 @@ export function SubmissionHeatmap({
         </div>
       </div>
 
-      <div
-        style={{
-          marginTop: "auto",
-          paddingTop: "16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          gap: "16px",
-        }}
-      >
-        <div
-          className="flex items-center gap-2 font-sans"
-          style={{ fontSize: "11px", color: "var(--text-muted)" }}
-        >
-          <span>Less</span>
-          {HEATMAP_COLORS.map((color, i) => (
-            <span
-              key={i}
-              style={{
-                display: "inline-block",
-                width: `${cellSize}px`,
-                height: `${cellSize}px`,
-                borderRadius: "2px",
-                background: color,
-                border: i === 0 ? "1px solid var(--border)" : "none",
-              }}
-            />
-          ))}
-          <span>More</span>
-        </div>
-      </div>
       </div>
 
-      {/* KPI rail — fills the dead space to the right of the heatmap.
-          Reads off the same submission stream so no extra fetch. On
-          narrow viewports the flex-wrap drops it under the heatmap. */}
+      {/* KPI rail — tight inline rows, label left / value right. */}
       <div
         style={{
-          flex: "1 1 240px",
-          minWidth: "240px",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "10px",
-          alignContent: "start",
+          flex: "0 0 200px",
+          minWidth: "200px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignSelf: "stretch",
         }}
       >
-        <KpiTile compact label="Submissions / yr" value={totalSubmissions} />
-        <KpiTile compact label="Last 30 days" value={last30Count} />
-        <KpiTile
-          compact
-          label="Current streak"
-          value={currentStreak}
-          unit={currentStreak === 1 ? "day" : "days"}
-        />
-        <KpiTile
-          compact
-          label="Longest streak"
-          value={longestStreak}
-          unit={longestStreak === 1 ? "day" : "days"}
-        />
+        {[
+          { label: "Submissions", value: totalSubmissions, unit: "" },
+          { label: "Last 30 days", value: last30Count, unit: "" },
+          { label: "Current streak", value: currentStreak, unit: currentStreak === 1 ? "day" : "days" },
+          { label: "Longest streak", value: longestStreak, unit: longestStreak === 1 ? "day" : "days" },
+        ].map(({ label, value, unit }) => (
+          <div
+            key={label}
+            className="font-sans"
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              gap: "12px",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 500,
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                color: "var(--text-muted)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {label}
+            </span>
+            <span style={{ display: "flex", alignItems: "baseline", gap: "3px" }}>
+              <span
+                style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  color: "var(--text)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {value}
+              </span>
+              {unit && (
+                <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
+                  {unit}
+                </span>
+              )}
+            </span>
+          </div>
+        ))}
       </div>
 
       {hover && (

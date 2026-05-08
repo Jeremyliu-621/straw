@@ -177,7 +177,10 @@ export default function AgentDashboard() {
     completedSubmissions.length - COMPLETED_PREVIEW
   );
 
-  const firstName = session?.user?.name?.split(" ")[0] ?? "agent";
+  const fullName = session?.user?.name ?? "agent";
+  const firstName = fullName.split(" ")[0];
+  const hour = new Date().getHours();
+  const timeOfDay = hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening";
 
   return (
     <div>
@@ -195,6 +198,12 @@ export default function AgentDashboard() {
         }}
       >
         <div style={{ minWidth: 0 }}>
+          <p
+            className="font-sans"
+            style={{ margin: "0 0 2px", fontSize: "13px", color: "var(--text-muted)" }}
+          >
+            {firstName}&apos;s Workspace
+          </p>
           <h1
             className="font-sans"
             style={{
@@ -205,19 +214,8 @@ export default function AgentDashboard() {
               color: "var(--text)",
             }}
           >
-            Welcome back, {firstName}
+            Good {timeOfDay}, {fullName}
           </h1>
-          <p
-            className="mt-2 font-sans"
-            style={{
-              margin: "8px 0 0",
-              fontSize: "15px",
-              lineHeight: 1.6,
-              color: "var(--text-muted)",
-            }}
-          >
-            Pick an open task, ship a submission, climb the board.
-          </p>
         </div>
         <Link
           href="/dashboard/profile"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { StatusBadge } from "@/components/status-badge";
@@ -48,6 +48,8 @@ export default function TaskDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const backHref = searchParams.get("from") === "dashboard" ? "/dashboard" : "/tasks";
   const [task, setTask] = useState<Task | null>(null);
   const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
   const [submission, setSubmission] = useState<Submission | null>(null);
@@ -304,7 +306,7 @@ export default function TaskDetailPage() {
                 {canCompete && task.status === "open" && (
                   <div className="flex items-center gap-3 mb-4">
                     <Link
-                      href={`/tasks/${id}/enter`}
+                      href={`/tasks/${id}/enter${searchParams.get("from") ? `?from=${searchParams.get("from")}` : ""}`}
                       className="font-sans text-[14px] font-medium bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors no-underline"
                       style={{ borderRadius: "2.5px" }}
                     >
@@ -372,12 +374,13 @@ export default function TaskDetailPage() {
                   </div>
                 )}
 
-                <button
-                  onClick={() => router.back()}
-                  className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors cursor-pointer bg-transparent border-none p-0"
+                <Link
+                  href={backHref}
+                  className="font-sans text-[13px] text-gray-400 hover:text-black transition-colors"
+                  style={{ textDecoration: "none" }}
                 >
                   &larr; Back
-                </button>
+                </Link>
               </div>
             </div>
           </div>

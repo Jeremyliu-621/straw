@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import PublicLayout from '@/components/home/PublicLayout';
+import { TaskCard } from '@/components/dashboard/task-card';
+import { CategoryTile } from '@/components/common/category-tile';
 
 interface PublicTask {
   id: string;
@@ -16,23 +18,16 @@ interface PublicTask {
   competitor_count: number;
 }
 
-function formatBudget(cents: number): string {
-  return `$${(cents / 100).toLocaleString()}`;
-}
-
-function formatDeadline(deadline: string): string {
-  const d = new Date(deadline);
-  const now = new Date();
-  const diffMs = d.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffDays < 0) return 'Closed';
-  if (diffDays === 0) return 'Today';
-  if (diffDays === 1) return '1 day left';
-  return `${diffDays} days left`;
-}
-
-const CATEGORIES = ['All', 'Code Generation', 'Data Analysis', 'Web Scraping', 'Automation', 'ML Models', 'Testing', 'Refactoring'];
+const CATEGORIES: { label: string; gradient: string }[] = [
+  { label: 'All',             gradient: 'linear-gradient(135deg, var(--orb-lavender) 0%, var(--orb-peach) 100%)' },
+  { label: 'Code Generation', gradient: 'linear-gradient(135deg, var(--orb-blue) 0%, var(--orb-lavender) 100%)' },
+  { label: 'Data Analysis',   gradient: 'linear-gradient(135deg, var(--orb-beige) 0%, var(--orb-sage) 100%)' },
+  { label: 'Web Scraping',    gradient: 'linear-gradient(135deg, var(--orb-sage) 0%, var(--orb-blue) 100%)' },
+  { label: 'Automation',      gradient: 'linear-gradient(135deg, var(--orb-sage) 0%, var(--orb-blue) 100%)' },
+  { label: 'ML Models',       gradient: 'linear-gradient(135deg, var(--orb-coral) 0%, var(--orb-beige) 100%)' },
+  { label: 'Testing',         gradient: 'linear-gradient(135deg, var(--orb-peach) 0%, var(--orb-coral) 100%)' },
+  { label: 'Refactoring',     gradient: 'linear-gradient(135deg, var(--orb-lavender) 0%, var(--orb-blue) 100%)' },
+];
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<PublicTask[]>([]);
@@ -58,114 +53,64 @@ export default function TasksPage() {
         <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-black">
           Open Tasks
         </h1>
-        <p className="mt-4 text-[#646464] text-[16px] leading-relaxed max-w-[500px]">
-          Browse active competitions. Sign in to compete and win contracts.
-        </p>
       </div>
 
-      {/* Category Filter */}
-      <div className="border-b border-gray-200 px-8 sm:px-12 lg:px-16 py-4">
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-full text-[13px] font-medium transition-colors ${
-                  activeCategory === cat
-                    ? 'bg-black text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black'
-                }`}
-              >
-                {cat}
-              </button>
+      {/* Task Grid */}
+      <div className="p-8 sm:p-12 lg:p-16">
+        {/* Category tiles */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: '12px',
+            marginBottom: '28px',
+          }}
+        >
+          {CATEGORIES.map((c) => (
+            <CategoryTile
+              key={c.label}
+              label={c.label}
+              gradient={c.gradient}
+              selected={activeCategory === c.label}
+              onClick={() => setActiveCategory(activeCategory === c.label ? 'All' : c.label)}
+            />
+          ))}
+        </div>
+
+        {/* Task cards */}
+        {loading ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="h-36 bg-gray-50 rounded animate-pulse border border-gray-100" />
             ))}
           </div>
-      </div>
-
-      {/* Task List */}
-      <div>
-          {loading ? (
-            <div className="p-8 sm:p-12 lg:p-16 space-y-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-32 bg-gray-50 rounded-2xl animate-pulse" />
-              ))}
+        ) : filteredTasks.length === 0 ? (
+          <div className="text-center py-24">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" className="text-gray-400">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
             </div>
-          ) : filteredTasks.length === 0 ? (
-            <div className="p-8 sm:p-12 lg:p-16 text-center py-24">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" className="text-gray-400">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-black mb-2">No open tasks</h3>
-              <p className="text-gray-500 text-[15px] mb-8">
-                {activeCategory !== 'All'
-                  ? `No tasks in "${activeCategory}" right now. Try a different category.`
-                  : 'Check back soon for new competitions.'}
-              </p>
-              <Link
-                href="/auth/signin"
-                className="inline-block bg-black text-white px-7 py-3 rounded-full text-[14px] font-medium hover:scale-105 transition-transform"
-              >
-                Post the First Task
-              </Link>
-            </div>
-          ) : (
-            <div>
-              {filteredTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="border-b border-gray-200 hover:bg-gray-50/50 transition-colors"
-                >
-                  <div className="p-6 sm:p-8 lg:px-16 lg:py-8">
-                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-[12px] font-medium text-gray-600">
-                            {task.category}
-                          </span>
-                          {task.eval_mode && task.eval_mode !== "llm" && (
-                            <span className="inline-block px-2.5 py-0.5 bg-gray-900 text-white rounded-full text-[11px] font-medium">
-                              {task.eval_mode === "container" ? "Container Eval" : "Hybrid"}
-                            </span>
-                          )}
-                          <span className="text-[13px] text-gray-400">
-                            {task.competitor_count} competitor{task.competitor_count !== 1 ? 's' : ''}
-                          </span>
-                        </div>
-                        <h3 className="text-[18px] font-medium text-black mb-2 truncate">
-                          {task.title}
-                        </h3>
-                        <p className="text-[14px] text-gray-500 leading-relaxed line-clamp-2">
-                          {task.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-6 lg:gap-8 shrink-0">
-                        <div className="text-right">
-                          <p className="text-[13px] text-gray-400 mb-1">Budget</p>
-                          <p className="text-[18px] font-medium text-black font-mono">
-                            {formatBudget(task.budget_cents)}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[13px] text-gray-400 mb-1">Deadline</p>
-                          <p className="text-[15px] font-medium text-black">
-                            {formatDeadline(task.deadline)}
-                          </p>
-                        </div>
-                        <Link
-                          href="/auth/signin"
-                          className="bg-black text-white px-6 py-2.5 rounded-full text-[13px] font-medium hover:scale-105 transition-transform shrink-0"
-                        >
-                          Compete
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+            <h3 className="text-xl font-medium text-black mb-2">No open tasks</h3>
+            <p className="text-gray-500 text-[15px] mb-8">
+              {activeCategory !== 'All'
+                ? `No tasks in "${activeCategory}" right now. Try a different category.`
+                : 'Check back soon for new competitions.'}
+            </p>
+            <Link
+              href="/auth/signin"
+              className="inline-block bg-black text-white px-7 py-3 rounded-full text-[14px] font-medium hover:scale-105 transition-transform"
+            >
+              Post the First Task
+            </Link>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
+            {filteredTasks.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+          </div>
+        )}
       </div>
     </PublicLayout>
   );

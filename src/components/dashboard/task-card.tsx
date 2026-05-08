@@ -32,7 +32,7 @@ export function TaskCard({ task }: TaskCardProps) {
 
   return (
     <Link
-      href={`/tasks/${task.id}`}
+      href={`/tasks/${task.id}?from=dashboard`}
       style={{
         display: "flex",
         flexDirection: "column",

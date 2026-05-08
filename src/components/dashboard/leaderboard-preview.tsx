@@ -96,7 +96,7 @@ export function LeaderboardPreview({
         </div>
         {(totalEntries ?? entries.length) > limit && (
           <Link
-            href={`/tasks/${taskId}`}
+            href={`/tasks/${taskId}?from=dashboard`}
             className="font-sans"
             style={{
               fontSize: "12px",

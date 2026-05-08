@@ -51,7 +51,7 @@ export function RichTaskRow({ task, viewerRole }: RichTaskRowProps) {
 
   return (
     <Link
-      href={`/tasks/${task.id}`}
+      href={`/tasks/${task.id}?from=dashboard`}
       className="flex items-center"
       style={{
         gap: "16px",

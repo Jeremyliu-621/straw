@@ -49,7 +49,7 @@ export function RichSubmissionRow({
 
   return (
     <Link
-      href={`/tasks/${sub.task_id}`}
+      href={`/tasks/${sub.task_id}?from=dashboard`}
       className="flex items-center"
       style={{
         gap: "16px",

@@ -34,7 +34,7 @@ export function CompletedTaskCard({ submission: sub }: CompletedTaskCardProps) {
 
   return (
     <Link
-      href={`/tasks/${sub.task_id}`}
+      href={`/tasks/${sub.task_id}?from=dashboard`}
       style={{
         display: "flex",
         flexDirection: "column",

@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import { AuthProvider } from '@/components/auth-provider';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 // Description is tuned for LLM scrapers as much as for humans — the first
 // sentence states what Straw is, the second points to the machine-readable
@@ -46,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans bg-[#FDFCFC] text-black antialiased`}>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans bg-[#FDFCFC] text-black antialiased`}>
         <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>

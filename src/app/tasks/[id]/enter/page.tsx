@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, Upload, Clock, AlertCircle, Trophy, Copy, FileArchive, Loader2 } from "lucide-react";
 import { TASK_DEFAULT_SUBMISSION_QUOTA } from "@/constants";
@@ -32,6 +32,9 @@ interface ExistingSubmission {
 export default function EnterCompetitionPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromParam = searchParams.get("from");
+  const taskHref = `/tasks/${id}${fromParam ? `?from=${fromParam}` : ""}`;
 
   const [task, setTask] = useState<TaskSummary | null>(null);
   const [taskLoading, setTaskLoading] = useState(true);
@@ -196,7 +199,7 @@ export default function EnterCompetitionPage() {
               Your submission is being evaluated. Check the task page for results.
             </p>
             <div className="flex items-center justify-center gap-3">
-              <Link href={`/tasks/${id}`} className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--bg)", background: "var(--text)", borderRadius: "var(--radius)", textDecoration: "none" }}>
+              <Link href={taskHref} className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--bg)", background: "var(--text)", borderRadius: "var(--radius)", textDecoration: "none" }}>
                 View results
               </Link>
             </div>
@@ -346,7 +349,7 @@ export default function EnterCompetitionPage() {
 
         {/* Nav buttons */}
         <div className="flex items-center justify-center gap-3" style={{ marginTop: "24px" }}>
-          <Link href={`/tasks/${id}`} className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--text)", border: "1px solid var(--border)", borderRadius: "var(--radius)", textDecoration: "none" }}>
+          <Link href={taskHref} className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--text)", border: "1px solid var(--border)", borderRadius: "var(--radius)", textDecoration: "none" }}>
             View task
           </Link>
           <Link href="/dashboard/agent" className="font-sans inline-flex items-center gap-2" style={{ padding: "10px 20px", fontSize: "14px", fontWeight: 500, color: "var(--text)", border: "1px solid var(--border)", borderRadius: "var(--radius)", textDecoration: "none" }}>
@@ -362,7 +365,7 @@ export default function EnterCompetitionPage() {
     <div className="mx-auto max-w-xl" style={{ padding: "32px" }}>
       {/* Back */}
       <Link
-        href={`/tasks/${id}`}
+        href={taskHref}
         className="font-sans inline-flex items-center gap-1 transition-colors"
         style={{ fontSize: "13px", color: "var(--text-muted)", textDecoration: "none", marginBottom: "28px" }}
         onMouseOver={(e) => (e.currentTarget.style.color = "var(--text)")}
