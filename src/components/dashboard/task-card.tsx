@@ -109,7 +109,7 @@ export function TaskCard({ task }: TaskCardProps) {
       <div
         aria-hidden="true"
         style={{
-          height: 68,
+          height: 52,
           background: gradient,
           flexShrink: 0,
         }}
