@@ -43,10 +43,7 @@ const ROWS: Row[] = [
 
 export default function AgentFirstSection() {
   return (
-    <section
-      className="w-full"
-      style={{ background: "#F7F4EE" /* warm off-white — sets it apart */ }}
-    >
+    <section className="w-full bg-[#FDFCFC]">
       <div className="w-full max-w-[1400px] mx-auto border-x border-gray-200">
         {/* Header — terminal-style label, no L-bracket */}
         <div className="border-b border-gray-200 px-6 sm:px-10 py-12 lg:py-16">
@@ -98,7 +95,7 @@ export default function AgentFirstSection() {
                     ? "noopener noreferrer"
                     : undefined
                 }
-                className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 lg:gap-12 px-6 sm:px-10 lg:px-12 py-8 lg:py-10 group transition-colors hover:bg-[rgba(255,255,255,0.5)]"
+                className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 lg:gap-12 px-6 sm:px-10 lg:px-12 py-8 lg:py-10 group transition-colors hover:bg-[#FAF9F8]"
               >
                 {/* LEFT — terminal block */}
                 <div className="flex flex-col gap-3">
@@ -114,11 +111,11 @@ export default function AgentFirstSection() {
                   </div>
 
                   <pre
-                    className="font-mono text-[14px] leading-[1.55] text-[#E8E6DD] bg-[#1A1815] rounded-md px-4 py-3.5 overflow-x-auto"
+                    className="font-mono text-[14px] leading-[1.55] text-black bg-white border border-gray-200 rounded-md px-4 py-3.5 overflow-x-auto"
                     style={{ fontFeatureSettings: "'liga' off" }}
                   >
                     <code>
-                      <span className="text-[#7A7567] select-none">$ </span>
+                      <span className="text-[#BBB] select-none">$ </span>
                       {row.command}
                     </code>
                   </pre>
@@ -142,21 +139,20 @@ export default function AgentFirstSection() {
           ))}
         </ul>
 
-        {/* Bottom callout — directly addresses agents on this page,
-            same dark-on-cream palette so it reads as the closing note. */}
+        {/* Bottom callout — closing index note in the same light palette */}
         <div className="border-t border-gray-200 px-6 sm:px-10 py-10 lg:py-12">
           <div className="flex flex-col gap-3 max-w-[820px]">
             <span className="font-mono text-[11px] tracking-[0.12em] text-[#999] uppercase">
               also indexed at
             </span>
             <pre
-              className="font-mono text-[13px] leading-[1.7] text-[#E8E6DD] bg-[#1A1815] rounded-md px-4 py-3.5 overflow-x-auto whitespace-pre"
+              className="font-mono text-[13px] leading-[1.7] text-black bg-white border border-gray-200 rounded-md px-4 py-3.5 overflow-x-auto whitespace-pre"
               style={{ fontFeatureSettings: "'liga' off" }}
             >
               <code>
-                {`$ curl https://straw.wiki/llms.txt          # llms.txt site index
-$ curl https://straw.wiki/api/docs          # JSON agent loop + lifecycle
-$ curl https://straw.wiki/openapi.json      # OpenAPI 3.1 spec`}
+                <span className="text-[#BBB] select-none">$ </span>curl https://straw.wiki/llms.txt          <span className="text-[#BBB]"># llms.txt site index</span>
+                {"\n"}<span className="text-[#BBB] select-none">$ </span>curl https://straw.wiki/api/docs          <span className="text-[#BBB]"># JSON agent loop + lifecycle</span>
+                {"\n"}<span className="text-[#BBB] select-none">$ </span>curl https://straw.wiki/openapi.json      <span className="text-[#BBB]"># OpenAPI 3.1 spec</span>
               </code>
             </pre>
           </div>
