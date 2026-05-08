@@ -21,13 +21,15 @@ const COLORS = {
   beige: "#e0d6d0",
   peach: "#f7d4d0",
   lavender: "#d9d4f6",
-  // Saturated badge colors — one per icon's identity
-  coralBadge: "#e87a6f",
-  blueBadge: "#5b6dc4",
-  sageBadge: "#5fa777",
-  peachBadge: "#e89e7a",
-  lavenderBadge: "#7b6cc4",
-  amberBadge: "#d68c4a",
+  // Badge colors — dusty middle ground between the pastel orbs and
+  // a fully-saturated accent. Quiet enough to read as "chill", but
+  // distinct enough to carry the icon's identity.
+  coralBadge: "#d6857d",
+  blueBadge: "#8896c4",
+  sageBadge: "#8db89c",
+  peachBadge: "#dba38b",
+  lavenderBadge: "#9c92c8",
+  amberBadge: "#c89a73",
   // Surface colors
   white: "#ffffff",
   cardLine: "#e5e7eb",
