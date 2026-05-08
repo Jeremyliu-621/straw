@@ -12,8 +12,8 @@ interface SearchHit {
 }
 
 /**
- * Cmd+K search dialog. Top-of-docs button + global keyboard listener.
- * Fetches /api/docs/search?q=... on each keystroke (debounced).
+ * Docs search — a wide dropdown anchored under the trigger button.
+ * Cmd/Ctrl+K opens it, Escape closes it. Click outside closes it.
  *
  * `openInNewTab` controls how a result click navigates. From the
  * dashboard, true → a new tab so the user keeps their dashboard state.
@@ -26,6 +26,7 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
   const [loading, setLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Open on cmd/ctrl+K, close on escape.
   useEffect(() => {
@@ -39,6 +40,18 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
+
+  // Click-outside closes the dropdown.
+  useEffect(() => {
+    if (!open) return;
+    function onMouseDown(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onMouseDown);
+    return () => document.removeEventListener("mousedown", onMouseDown);
+  }, [open]);
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
@@ -71,10 +84,11 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
   }, [query]);
 
   return (
-    <>
+    <div ref={containerRef} style={{ position: "relative" }}>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
         className="font-sans"
         style={{
           display: "inline-flex",
@@ -84,20 +98,24 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
           padding: "0 10px",
           fontSize: "12px",
           fontWeight: 500,
-          color: "var(--text-muted)",
-          background: "var(--bg-card)",
+          color: open ? "var(--text)" : "var(--text-muted)",
+          background: open ? "var(--bg-subtle)" : "var(--bg-card)",
           border: "1px solid var(--border)",
+          borderColor: open ? "var(--text-faint)" : "var(--border)",
           borderRadius: "var(--radius)",
           cursor: "pointer",
           minWidth: "180px",
-          transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
+          transition:
+            "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
         }}
         onMouseOver={(e) => {
+          if (open) return;
           e.currentTarget.style.background = "var(--bg-subtle)";
           e.currentTarget.style.color = "var(--text)";
           e.currentTarget.style.borderColor = "var(--text-faint)";
         }}
         onMouseOut={(e) => {
+          if (open) return;
           e.currentTarget.style.background = "var(--bg-card)";
           e.currentTarget.style.color = "var(--text-muted)";
           e.currentTarget.style.borderColor = "var(--border)";
@@ -135,7 +153,7 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
       </button>
 
       {open && (
-        <SearchDialog
+        <SearchDropdown
           query={query}
           setQuery={setQuery}
           hits={hits}
@@ -147,11 +165,11 @@ export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } 
           openInNewTab={openInNewTab}
         />
       )}
-    </>
+    </div>
   );
 }
 
-function SearchDialog({
+function SearchDropdown({
   query,
   setQuery,
   hits,
@@ -174,143 +192,174 @@ function SearchDialog({
 }) {
   return (
     <div
-      onClick={onClose}
+      role="dialog"
+      aria-label="Docs search"
       style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.4)",
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        paddingTop: "10vh",
-        zIndex: 100,
+        position: "absolute",
+        top: "calc(100% + 6px)",
+        right: 0,
+        width: "min(560px, calc(100vw - 32px))",
+        background: "var(--bg-card)",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        boxShadow: "0 12px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04)",
+        overflow: "hidden",
+        zIndex: 50,
       }}
     >
       <div
-        onClick={(e) => e.stopPropagation()}
         style={{
-          width: "min(640px, 90vw)",
-          background: "var(--bg)",
-          border: "1px solid var(--border)",
-          borderRadius: "var(--radius)",
-          boxShadow: "0 24px 48px rgba(0,0,0,0.18)",
-          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          padding: "10px 14px",
+          borderBottom: "1px solid var(--border)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: "var(--text-muted)", marginRight: "8px" }}>
-            <circle cx="11" cy="11" r="7" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-          <input
-            ref={inputRef}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "ArrowDown") {
-                e.preventDefault();
-                setActiveIdx(Math.min(hits.length - 1, activeIdx + 1));
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          style={{ color: "var(--text-muted)", marginRight: "8px", flexShrink: 0 }}
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              setActiveIdx(Math.min(hits.length - 1, activeIdx + 1));
+            }
+            if (e.key === "ArrowUp") {
+              e.preventDefault();
+              setActiveIdx(Math.max(0, activeIdx - 1));
+            }
+            if (e.key === "Enter" && hits[activeIdx]) {
+              const target = `/docs/${hits[activeIdx].slug}`;
+              if (openInNewTab) {
+                window.open(target, "_blank", "noopener,noreferrer");
+                onClose();
+              } else {
+                window.location.href = target;
               }
-              if (e.key === "ArrowUp") {
-                e.preventDefault();
-                setActiveIdx(Math.max(0, activeIdx - 1));
-              }
-              if (e.key === "Enter" && hits[activeIdx]) {
-                const target = `/docs/${hits[activeIdx].slug}`;
-                if (openInNewTab) {
-                  window.open(target, "_blank", "noopener,noreferrer");
-                  onClose();
-                } else {
-                  window.location.href = target;
-                }
-              }
-            }}
-            placeholder="Search docs…"
+            }
+          }}
+          placeholder="Search docs…"
+          className="font-sans"
+          style={{
+            flex: 1,
+            border: "none",
+            outline: "none",
+            background: "transparent",
+            fontSize: "14px",
+            color: "var(--text)",
+          }}
+        />
+        {loading && (
+          <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>…</span>
+        )}
+      </div>
+      <div style={{ maxHeight: "420px", overflowY: "auto" }}>
+        {hits.length === 0 && query.trim() && !loading && (
+          <p
             className="font-sans"
             style={{
-              flex: 1,
-              border: "none",
-              outline: "none",
-              background: "transparent",
-              fontSize: "16px",
-              color: "var(--text)",
+              padding: "16px 14px",
+              fontSize: "13px",
+              color: "var(--text-muted)",
+              margin: 0,
             }}
-          />
-          {loading && <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>…</span>}
-        </div>
-        <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
-          {hits.length === 0 && query.trim() && !loading && (
-            <p
-              className="font-sans"
-              style={{ padding: "20px 16px", fontSize: "13px", color: "var(--text-muted)" }}
-            >
-              No matches.
-            </p>
-          )}
-          {hits.length === 0 && !query.trim() && (
-            <p
-              className="font-sans"
-              style={{ padding: "20px 16px", fontSize: "13px", color: "var(--text-muted)" }}
-            >
-              Type to search across all docs pages.
-            </p>
-          )}
-          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-            {hits.map((h, i) => {
-              const sharedItemStyle = {
-                display: "block" as const,
-                padding: "12px 16px",
-                borderBottom: "1px solid var(--border)",
-                textDecoration: "none" as const,
-                color: "var(--text)",
-                background: i === activeIdx ? "var(--bg-subtle)" : "transparent",
-              };
-              const inner = (
-                <>
-                  <div style={{ fontSize: "14px", fontWeight: 500, marginBottom: "2px" }}>
-                    {h.title}
+          >
+            No matches.
+          </p>
+        )}
+        {hits.length === 0 && !query.trim() && (
+          <p
+            className="font-sans"
+            style={{
+              padding: "16px 14px",
+              fontSize: "13px",
+              color: "var(--text-muted)",
+              margin: 0,
+            }}
+          >
+            Type to search across all docs pages.
+          </p>
+        )}
+        <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          {hits.map((h, i) => {
+            const sharedItemStyle = {
+              display: "block" as const,
+              padding: "10px 14px",
+              borderBottom: "1px solid var(--border)",
+              textDecoration: "none" as const,
+              color: "var(--text)",
+              background: i === activeIdx ? "var(--bg-subtle)" : "transparent",
+            };
+            const inner = (
+              <>
+                <div style={{ fontSize: "13px", fontWeight: 500, marginBottom: "2px" }}>
+                  {h.title}
+                </div>
+                {h.description && (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "var(--text-muted)",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    {h.description}
                   </div>
-                  {h.description && (
-                    <div style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "4px" }}>
-                      {h.description}
-                    </div>
-                  )}
-                  <div style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.5 }}>
-                    {h.snippet}
-                  </div>
-                </>
-              );
-              if (openInNewTab) {
-                return (
-                  <li key={h.slug}>
-                    <a
-                      href={`/docs/${h.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={onClose}
-                      className="font-sans"
-                      style={sharedItemStyle}
-                    >
-                      {inner}
-                    </a>
-                  </li>
-                );
-              }
+                )}
+                <div
+                  style={{
+                    fontSize: "12px",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {h.snippet}
+                </div>
+              </>
+            );
+            if (openInNewTab) {
               return (
                 <li key={h.slug}>
-                  <Link
+                  <a
                     href={`/docs/${h.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={onClose}
                     className="font-sans"
                     style={sharedItemStyle}
                   >
                     {inner}
-                  </Link>
+                  </a>
                 </li>
               );
-            })}
-          </ul>
-        </div>
+            }
+            return (
+              <li key={h.slug}>
+                <Link
+                  href={`/docs/${h.slug}`}
+                  onClick={onClose}
+                  className="font-sans"
+                  style={sharedItemStyle}
+                >
+                  {inner}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );
