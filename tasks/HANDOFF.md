@@ -18,7 +18,7 @@ crosses it off. When all are crossed, restart from the top.
 - [x] **Compete-side journey**: register → discover → quick-submit → poll. Bash + curl. _(iter 1)_
 - [x] **CLI dogfood**: `npx @strawai/cli` end-to-end. The customer agent acts as a developer. _(iter 2)_
 - [x] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`. _(iter 3)_
-- [ ] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect.
+- [x] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect. _(iter 4)_
 - [ ] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap.
 - [ ] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps.
 - [ ] **Wallet F4 round-trip**: a fresh agent declares an address, signs the challenge with viem, submits the proof.
@@ -177,6 +177,77 @@ D40 doctrine. **Top finding shipped this iteration:**
 - **`company_id` field naming** — rename to `owner_id` /
   `poster_id` is a column rename + cascading code change.
   Migration scope, defer.
+
+### Iter 4 — 2026-05-08 (SDK dogfood)
+
+Customer subagent built a real TS daemon against
+`@strawai/agent-sdk@0.6.0`: registerAnonymous → StrawClient →
+whoami → tasks.list → tasks.quickSubmit → submissions.waitUntilDone.
+End-to-end the plumbing worked (submission landed, files uploaded);
+score didn't materialize because the eval-worker upstream gap is
+still in place.
+
+**Top finding shipped this iteration:**
+
+- **`registerAnonymous` returned a `next_steps` array of raw REST
+  recipes** ("GET /api/v1/tasks", "POST /api/v1/tasks/{id}/quick-
+  submit") even when the caller was using the SDK. SDK users had to
+  mentally translate every bullet back to a method call.
+
+  **Shipped:** `register-anonymous` response now carries a parallel
+  `sdk_next_steps` object alongside the existing REST `next_steps`.
+  It includes:
+    - `package` + `install` (npm coordinates)
+    - `snippet` — a verified, copy-pasteable end-to-end example
+      covering registration → whoami → compete (list +
+      quickSubmit + waitUntilDone) → post (create + publish +
+      streamLeaderboard) → wallet (set). Every method name was
+      grepped against `packages/agent-sdk/client.ts` at compose
+      time so the snippet actually compiles — including the
+      gotchas the customer found (registerAnonymous is a top-
+      level export, quickSubmit is on `tasks` not `submissions`,
+      streamers take a callback not an async iterator).
+    - `method_index` — flat list of every method by facet
+      (identity / compete / post / wallet). Daemons can pattern-
+      match without parsing the snippet.
+  Curl users still get the same REST `next_steps`. No backwards-
+  compat break.
+
+  **Plus:** the long-standing silent display_name normalization
+  (flagged in iter 1, again in iter 4) now surfaces explicitly —
+  if the input was rewritten, the response includes
+  `display_name_input`, `display_name_normalized: true`, and a
+  one-line note explaining the canonical name is what /whoami and
+  the leaderboard will return.
+
+**Findings deferred (added to backlog):**
+
+- **`packages/agent-sdk/README.md` quick-start snippet doesn't
+  compile** — uses `client.submissions.quickSubmit(taskId,
+  filesObject)` but the actual signature is `client.tasks
+  .quickSubmit(taskId, { files: filesObject })`. Source-only
+  fix, ships only via npm publish (Jeremy's 2FA).
+- **`waitUntilDone` reconnect contract is incomplete** — on an
+  idle SSE that never emits `terminal` past the first
+  `submission` event, the helper hangs to the user-supplied
+  timeout instead of falling back to `submissions.get()`. Two
+  fixes needed in `packages/agent-sdk/client.ts` (sse.ts is
+  inlined): (a) on `WAIT_ABORTED` after at least one event,
+  return the last snapshot instead of throwing; (b) add a 30s
+  inactivity watchdog that closes + reconnects. Source-only.
+- **`Submission.status` is typed as `string`** in
+  `packages/agent-sdk/types.ts` — should be the literal union
+  `'registered'|'running'|'completed'|'failed'|'evaluation_
+  failed'`, with a JSDoc noting that `evaluated:true` is the
+  truth signal (status='completed' alone is ambiguous, see
+  iter 1). Source-only.
+- **`StrawClientConfig` accepts only `apiKey` + `baseUrl`** — no
+  retries, no per-request timeout, no User-Agent override, no
+  injectable fetch. Daemons that want instrumentation have to
+  wrap. Source-only.
+- **`StrawApiError.details` is typed as `unknown`** — could be a
+  per-error-code typed details map for ergonomic narrowing.
+  Source-only.
 
 ---
 
