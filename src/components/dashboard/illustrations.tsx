@@ -1,8 +1,11 @@
-// Tool-card illustrations — twelve inline SVGs (200×200) for the
-// dashboard home pages. Each one uses linear/radial gradients on the
-// main shapes plus a soft inline drop shadow for a "3D sticker" feel
-// closer to the ElevenLabs reference. All shapes pulled from the same
-// pastel palette as the orb / tint tokens.
+// Tool-card illustrations — twelve inline SVGs in the ElevenLabs
+// "sticker" style. Each is a small composition of flat-colored
+// shapes (rotated slightly for energy), with one saturated-color
+// circular badge overlapping the main element. White icon glyph
+// inside the badge. Single soft drop shadow under each main shape.
+//
+// No gradients. No 3D. Childlike. The meaning comes from the badge —
+// the body shape just gives it something to overlap.
 
 import * as React from "react";
 
@@ -11,20 +14,24 @@ interface IllustrationProps {
 }
 
 const COLORS = {
+  // Pastels (used for line markings, card body washes)
   coral: "#ecd0cc",
-  coralDeep: "#e87a6f",
   blue: "#cfd5e8",
-  blueDeep: "#7d8fb5",
   sage: "#d0d7d1",
-  sageDeep: "#88b896",
   beige: "#e0d6d0",
   peach: "#f7d4d0",
-  peachDeep: "#f0a890",
   lavender: "#d9d4f6",
-  lavenderDeep: "#8a7dc4",
+  // Saturated badge colors — one per icon's identity
+  coralBadge: "#e87a6f",
+  blueBadge: "#5b6dc4",
+  sageBadge: "#5fa777",
+  peachBadge: "#e89e7a",
+  lavenderBadge: "#7b6cc4",
+  amberBadge: "#d68c4a",
+  // Surface colors
+  white: "#ffffff",
+  cardLine: "#e5e7eb",
   ink: "#2a1f12",
-  inkSoft: "#5a4d3d",
-  paper: "#faf6ef",
 };
 
 function svgProps(className?: string): React.SVGProps<SVGSVGElement> {
@@ -36,18 +43,12 @@ function svgProps(className?: string): React.SVGProps<SVGSVGElement> {
   };
 }
 
-/**
- * One small inline filter that every illustration shares. Renders a
- * soft drop shadow under whatever element it's applied to.
- *
- * IMPORTANT: filter IDs must be unique per page render. Each
- * illustration adds its own copy in <defs> with its own id.
- */
-function softShadowFilter(id: string) {
+/** Soft single drop shadow used on every main shape. */
+function shadowFilter(id: string) {
   return (
-    <filter id={id} x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" />
-      <feOffset dy="2.5" />
+    <filter id={id} x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+      <feOffset dy="2" />
       <feComponentTransfer>
         <feFuncA type="linear" slope="0.18" />
       </feComponentTransfer>
@@ -61,524 +62,417 @@ function softShadowFilter(id: string) {
 
 // ─── Agent dashboard ────────────────────────────────────────────────
 
-/** Concentric arena rings with a small 3D agent figure in the center. */
+/** Compete → a task card tilted, with a coral "vs" badge. */
 export function ArenaIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("arena-shadow")}
-        <radialGradient id="arena-ring-outer" cx="50%" cy="35%">
-          <stop offset="0%" stopColor="#f7e0db" />
-          <stop offset="100%" stopColor={COLORS.coral} />
-        </radialGradient>
-        <radialGradient id="arena-ring-inner" cx="50%" cy="35%">
-          <stop offset="0%" stopColor="#ffeae3" />
-          <stop offset="100%" stopColor={COLORS.peach} />
-        </radialGradient>
-        <radialGradient id="arena-figure" cx="40%" cy="25%">
-          <stop offset="0%" stopColor="#5e4534" />
-          <stop offset="100%" stopColor={COLORS.ink} />
-        </radialGradient>
-      </defs>
-      {/* Floor shadow on the surface */}
-      <ellipse cx="100" cy="160" rx="78" ry="8" fill="#000" opacity="0.06" />
-      {/* Outer ring */}
-      <g filter="url(#arena-shadow)">
-        <ellipse cx="100" cy="124" rx="76" ry="22" fill="url(#arena-ring-outer)" />
+      <defs>{shadowFilter("arena-s")}</defs>
+      {/* Back card (lavender wash, more tilted) */}
+      <g transform="rotate(8 110 100)" filter="url(#arena-s)">
+        <rect x="68" y="56" width="84" height="100" rx="8" fill={COLORS.lavender} />
       </g>
-      {/* Middle ring */}
-      <ellipse cx="100" cy="120" rx="60" ry="17" fill="url(#arena-ring-inner)" />
-      {/* Inner spotlight */}
-      <ellipse cx="100" cy="118" rx="42" ry="11" fill="#fff5ef" opacity="0.7" />
-      {/* Figure shadow */}
-      <ellipse cx="100" cy="116" rx="11" ry="2.5" fill="#000" opacity="0.2" />
-      {/* Figure body */}
-      <g filter="url(#arena-shadow)">
-        <rect x="94" y="80" width="12" height="36" rx="6" fill="url(#arena-figure)" />
-        <circle cx="100" cy="78" r="10" fill="url(#arena-figure)" />
+      {/* Front task card */}
+      <g transform="rotate(-6 90 100)" filter="url(#arena-s)">
+        <rect x="50" y="50" width="92" height="108" rx="8" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        <rect x="62" y="74" width="42" height="6" rx="3" fill={COLORS.coral} />
+        <rect x="62" y="90" width="58" height="4" rx="2" fill={COLORS.blue} opacity="0.6" />
+        <rect x="62" y="102" width="40" height="4" rx="2" fill={COLORS.blue} opacity="0.6" />
       </g>
-      {/* Highlight on head */}
-      <ellipse cx="96" cy="74" rx="3.5" ry="2.5" fill="#fff" opacity="0.28" />
+      {/* Coral badge — crossed swords */}
+      <g filter="url(#arena-s)">
+        <circle cx="62" cy="138" r="22" fill={COLORS.coralBadge} />
+        {/* Two stylized crossed sword strokes */}
+        <line x1="51" y1="127" x2="73" y2="149" stroke={COLORS.white} strokeWidth="3" strokeLinecap="round" />
+        <line x1="73" y1="127" x2="51" y2="149" stroke={COLORS.white} strokeWidth="3" strokeLinecap="round" />
+      </g>
     </svg>
   );
 }
 
-/** Wrapped parcel mid-flight with ribbon, shadow, motion trace. */
+/** In flight → tilted task card with a peach paper-plane badge. */
 export function SubmissionIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("submission-shadow")}
-        <linearGradient id="submission-box" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f0e7e0" />
-          <stop offset="100%" stopColor={COLORS.beige} />
-        </linearGradient>
-        <linearGradient id="submission-ribbon" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f5dcd6" />
-          <stop offset="100%" stopColor={COLORS.coralDeep} />
-        </linearGradient>
-      </defs>
-      {/* Motion swooshes */}
-      <path d="M 24 144 Q 60 138 88 148" fill="none" stroke={COLORS.coral} strokeWidth="3" strokeLinecap="round" opacity="0.55" />
-      <path d="M 30 156 Q 58 152 80 160" fill="none" stroke={COLORS.peach} strokeWidth="2.5" strokeLinecap="round" opacity="0.45" />
-      {/* Floor shadow under parcel */}
-      <ellipse cx="106" cy="148" rx="46" ry="6" fill="#000" opacity="0.1" />
-      {/* Box */}
-      <g filter="url(#submission-shadow)">
-        <rect x="56" y="58" width="92" height="78" rx="6" fill="url(#submission-box)" />
-        {/* Vertical ribbon */}
-        <rect x="92" y="58" width="14" height="78" fill="url(#submission-ribbon)" />
-        {/* Horizontal ribbon */}
-        <rect x="56" y="86" width="92" height="14" fill="url(#submission-ribbon)" />
-        {/* Knot */}
-        <circle cx="99" cy="93" r="10" fill={COLORS.coralDeep} />
-        <circle cx="99" cy="93" r="10" fill="url(#submission-ribbon)" opacity="0.4" />
+      <defs>{shadowFilter("sub-s")}</defs>
+      {/* Card */}
+      <g transform="rotate(-8 100 100)" filter="url(#sub-s)">
+        <rect x="50" y="50" width="100" height="116" rx="8" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        <rect x="62" y="72" width="48" height="6" rx="3" fill={COLORS.peach} />
+        <rect x="62" y="88" width="64" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
+        <rect x="62" y="100" width="50" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
+        <rect x="62" y="112" width="36" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
       </g>
-      {/* Highlight on box top edge */}
-      <rect x="58" y="60" width="88" height="2" rx="1" fill="#fff" opacity="0.5" />
-      {/* Sparkle */}
-      <circle cx="156" cy="48" r="3" fill={COLORS.peachDeep} />
-      <circle cx="166" cy="62" r="1.6" fill={COLORS.peachDeep} />
+      {/* Peach badge — paper plane (simple triangular path) */}
+      <g filter="url(#sub-s)">
+        <circle cx="148" cy="142" r="22" fill={COLORS.peachBadge} />
+        <path
+          d="M 137 144 L 158 132 L 154 154 L 148 148 L 142 152 Z"
+          fill={COLORS.white}
+        />
+      </g>
     </svg>
   );
 }
 
-/** A 3D medal with a ribbon and orbiting sparkles. */
+/** Reputation → tilted card with a star badge. */
 export function ReputationIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("rep-shadow")}
-        <radialGradient id="rep-medal-outer" cx="35%" cy="30%">
-          <stop offset="0%" stopColor="#f6e6e2" />
-          <stop offset="100%" stopColor={COLORS.coralDeep} />
-        </radialGradient>
-        <radialGradient id="rep-medal-inner" cx="35%" cy="30%">
-          <stop offset="0%" stopColor="#fff0e8" />
-          <stop offset="100%" stopColor={COLORS.peach} />
-        </radialGradient>
-        <linearGradient id="rep-ribbon" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={COLORS.coralDeep} />
-          <stop offset="100%" stopColor="#bf5145" />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="172" rx="40" ry="5" fill="#000" opacity="0.1" />
-      {/* Ribbon */}
-      <path d="M 86 120 L 76 168 L 100 156 L 124 168 L 114 120 Z" fill="url(#rep-ribbon)" />
-      <path d="M 86 120 L 100 138 L 114 120 Z" fill="#000" opacity="0.12" />
-      {/* Medal outer ring */}
-      <g filter="url(#rep-shadow)">
-        <circle cx="100" cy="100" r="32" fill="url(#rep-medal-outer)" />
-        <circle cx="100" cy="100" r="22" fill="url(#rep-medal-inner)" />
+      <defs>{shadowFilter("rep-s")}</defs>
+      {/* Card */}
+      <g transform="rotate(-6 100 100)" filter="url(#rep-s)">
+        <rect x="56" y="48" width="88" height="108" rx="8" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        {/* Star rating row inside */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <path
+            key={i}
+            d={`M ${66 + i * 13} 80 L ${68 + i * 13} 86 L ${75 + i * 13} 87 L ${69 + i * 13} 92 L ${71 + i * 13} 99 L ${66 + i * 13} 96 L ${61 + i * 13} 99 L ${63 + i * 13} 92 L ${57 + i * 13} 87 L ${64 + i * 13} 86 Z`}
+            fill={COLORS.coral}
+          />
+        ))}
+        <rect x="64" y="112" width="64" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
+        <rect x="64" y="124" width="48" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
       </g>
-      {/* Medal star/symbol — simple 5-point */}
-      <path
-        d="M 100 86 L 104 96 L 114 96 L 106 102 L 110 112 L 100 106 L 90 112 L 94 102 L 86 96 L 96 96 Z"
-        fill={COLORS.coralDeep}
-      />
-      {/* Highlight on medal */}
-      <ellipse cx="92" cy="92" rx="6" ry="4" fill="#fff" opacity="0.5" />
-      {/* Sparkles */}
-      <circle cx="50" cy="62" r="2.5" fill={COLORS.lavenderDeep} />
-      <circle cx="158" cy="56" r="3" fill={COLORS.lavenderDeep} />
-      <circle cx="170" cy="92" r="1.8" fill={COLORS.lavenderDeep} />
+      {/* Lavender badge — single big star */}
+      <g filter="url(#rep-s)">
+        <circle cx="148" cy="56" r="22" fill={COLORS.lavenderBadge} />
+        <path
+          d="M 148 42 L 152 52 L 162 53 L 154 60 L 157 70 L 148 64 L 139 70 L 142 60 L 134 53 L 144 52 Z"
+          fill={COLORS.white}
+        />
+      </g>
     </svg>
   );
 }
 
-/** A neat stack of pastel coins with a sparkle floating above. */
+/** Earnings → tilted card with a chart line and a coral "$" badge. */
 export function EarningsIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("coin-shadow")}
-        <linearGradient id="coin-bottom" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fbe6e0" />
-          <stop offset="100%" stopColor={COLORS.peach} />
-        </linearGradient>
-        <linearGradient id="coin-mid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fde8e2" />
-          <stop offset="100%" stopColor={COLORS.coral} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="160" rx="50" ry="6" fill="#000" opacity="0.1" />
-      {/* Coin 1 (bottom) */}
-      <g filter="url(#coin-shadow)">
-        <ellipse cx="100" cy="146" rx="46" ry="11" fill={COLORS.coralDeep} />
-        <ellipse cx="100" cy="142" rx="46" ry="11" fill="url(#coin-bottom)" />
+      <defs>{shadowFilter("earn-s")}</defs>
+      {/* Card */}
+      <g transform="rotate(-7 100 100)" filter="url(#earn-s)">
+        <rect x="50" y="48" width="100" height="112" rx="8" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        {/* Big number bars */}
+        <rect x="62" y="68" width="34" height="6" rx="3" fill={COLORS.peach} />
+        {/* Chart polyline */}
+        <polyline
+          points="64,128 78,108 92,118 108,90 128,100 138,82"
+          fill="none"
+          stroke={COLORS.coralBadge}
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+        {/* Chart endpoint dot */}
+        <circle cx="138" cy="82" r="3" fill={COLORS.coralBadge} />
+        <rect x="62" y="142" width="44" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
       </g>
-      {/* Coin 2 */}
-      <g filter="url(#coin-shadow)">
-        <ellipse cx="100" cy="120" rx="42" ry="10" fill={COLORS.coralDeep} />
-        <ellipse cx="100" cy="116" rx="42" ry="10" fill="url(#coin-mid)" />
+      {/* Coral badge — dollar sign */}
+      <g filter="url(#earn-s)">
+        <circle cx="152" cy="146" r="22" fill={COLORS.coralBadge} />
+        <text
+          x="152"
+          y="155"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize="22"
+          fontWeight="700"
+          textAnchor="middle"
+          fill={COLORS.white}
+        >
+          $
+        </text>
       </g>
-      {/* Coin 3 (top) */}
-      <g filter="url(#coin-shadow)">
-        <ellipse cx="100" cy="92" rx="38" ry="9" fill={COLORS.coralDeep} />
-        <ellipse cx="100" cy="88" rx="38" ry="9" fill="url(#coin-bottom)" />
-      </g>
-      {/* Highlight on top coin */}
-      <ellipse cx="86" cy="84" rx="14" ry="2" fill="#fff" opacity="0.55" />
-      {/* Sparkle */}
-      <path
-        d="M 144 50 L 147 60 L 157 63 L 147 66 L 144 76 L 141 66 L 131 63 L 141 60 Z"
-        fill={COLORS.lavenderDeep}
-      />
     </svg>
   );
 }
 
-/** Stack of database disks — workspace / data storage. */
+/** Workspace → tilted stack of cards + a blue folder badge. */
 export function WorkspaceIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("ws-shadow")}
-        <linearGradient id="ws-disk-1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#e3eefa" />
-          <stop offset="100%" stopColor={COLORS.blue} />
-        </linearGradient>
-        <linearGradient id="ws-disk-2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe5fb" />
-          <stop offset="100%" stopColor={COLORS.lavender} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="160" rx="56" ry="6" fill="#000" opacity="0.1" />
-      {/* Bottom disk */}
-      <g filter="url(#ws-shadow)">
-        <ellipse cx="100" cy="148" rx="50" ry="12" fill={COLORS.blueDeep} opacity="0.6" />
-        <ellipse cx="100" cy="144" rx="50" ry="12" fill="url(#ws-disk-1)" />
+      <defs>{shadowFilter("ws-s")}</defs>
+      {/* Back card */}
+      <g transform="rotate(7 100 110)" filter="url(#ws-s)">
+        <rect x="60" y="60" width="84" height="96" rx="8" fill={COLORS.beige} />
       </g>
-      {/* Middle-bottom */}
-      <g filter="url(#ws-shadow)">
-        <ellipse cx="100" cy="124" rx="50" ry="12" fill={COLORS.lavenderDeep} opacity="0.6" />
-        <ellipse cx="100" cy="120" rx="50" ry="12" fill="url(#ws-disk-2)" />
+      {/* Middle card */}
+      <g transform="rotate(-3 100 105)" filter="url(#ws-s)">
+        <rect x="56" y="58" width="88" height="100" rx="8" fill={COLORS.lavender} />
       </g>
-      {/* Middle-top */}
-      <g filter="url(#ws-shadow)">
-        <ellipse cx="100" cy="100" rx="50" ry="12" fill={COLORS.blueDeep} opacity="0.6" />
-        <ellipse cx="100" cy="96" rx="50" ry="12" fill="url(#ws-disk-1)" />
+      {/* Front card with file lines */}
+      <g transform="rotate(-9 100 100)" filter="url(#ws-s)">
+        <rect x="50" y="50" width="92" height="108" rx="8" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        <rect x="62" y="72" width="56" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
+        <rect x="62" y="84" width="40" height="4" rx="2" fill={COLORS.blue} opacity="0.55" />
+        <rect x="62" y="100" width="60" height="4" rx="2" fill={COLORS.blue} opacity="0.4" />
+        <rect x="62" y="112" width="46" height="4" rx="2" fill={COLORS.blue} opacity="0.4" />
       </g>
-      {/* Top disk */}
-      <g filter="url(#ws-shadow)">
-        <ellipse cx="100" cy="76" rx="50" ry="12" fill={COLORS.lavenderDeep} opacity="0.6" />
-        <ellipse cx="100" cy="72" rx="50" ry="12" fill="url(#ws-disk-2)" />
+      {/* Blue badge — folder icon */}
+      <g filter="url(#ws-s)">
+        <circle cx="150" cy="146" r="22" fill={COLORS.blueBadge} />
+        {/* Simple folder shape */}
+        <path
+          d="M 138 138 L 144 138 L 148 142 L 162 142 L 162 156 L 138 156 Z"
+          fill={COLORS.white}
+        />
       </g>
-      {/* Highlight on top */}
-      <ellipse cx="84" cy="68" rx="20" ry="2" fill="#fff" opacity="0.55" />
-      {/* Activity dot */}
-      <circle cx="134" cy="70" r="5" fill={COLORS.coralDeep} />
-      <circle cx="134" cy="70" r="5" fill={COLORS.coralDeep} opacity="0.3" />
     </svg>
   );
 }
 
-/** Envelope with a peeking letter — inbox / messages. */
+/** Inbox → envelope tilted, with a coral notification dot badge. */
 export function InboxIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("inbox-shadow")}
-        <linearGradient id="inbox-body" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe1da" />
-          <stop offset="100%" stopColor={COLORS.beige} />
-        </linearGradient>
-        <linearGradient id="inbox-flap" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f5dcd6" />
-          <stop offset="100%" stopColor={COLORS.coralDeep} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="160" rx="64" ry="6" fill="#000" opacity="0.1" />
-      {/* Envelope back */}
-      <g filter="url(#inbox-shadow)">
-        <rect x="36" y="74" width="128" height="78" rx="6" fill="url(#inbox-body)" />
+      <defs>{shadowFilter("inbox-s")}</defs>
+      {/* Envelope body */}
+      <g transform="rotate(-5 100 102)" filter="url(#inbox-s)">
+        <rect x="40" y="68" width="120" height="80" rx="6" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        {/* Triangular flap (filled) */}
+        <path d="M 40 68 L 100 116 L 160 68 Z" fill={COLORS.beige} />
+        {/* Side fold lines */}
+        <line x1="40" y1="148" x2="86" y2="108" stroke={COLORS.cardLine} strokeWidth="1" />
+        <line x1="160" y1="148" x2="114" y2="108" stroke={COLORS.cardLine} strokeWidth="1" />
       </g>
-      {/* Letter peeking out */}
-      <rect x="56" y="58" width="88" height="58" rx="4" fill="#ffffff" />
-      <rect x="56" y="58" width="88" height="58" rx="4" fill="none" stroke={COLORS.inkSoft} strokeWidth="0.5" opacity="0.25" />
-      <rect x="68" y="78" width="60" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.35" />
-      <rect x="68" y="88" width="46" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.28" />
-      <rect x="68" y="98" width="52" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.28" />
-      {/* Envelope flap */}
-      <g filter="url(#inbox-shadow)">
-        <path d="M 36 74 L 100 116 L 164 74 Z" fill="url(#inbox-flap)" />
+      {/* Coral badge — bell icon */}
+      <g filter="url(#inbox-s)">
+        <circle cx="148" cy="56" r="22" fill={COLORS.coralBadge} />
+        {/* Bell silhouette */}
+        <path
+          d="M 148 44 C 142 44 138 48 138 56 L 136 64 L 160 64 L 158 56 C 158 48 154 44 148 44 Z"
+          fill={COLORS.white}
+        />
+        <circle cx="148" cy="68" r="3" fill={COLORS.white} />
       </g>
-      {/* Notification dot */}
-      <circle cx="160" cy="80" r="9" fill="#fff" />
-      <circle cx="160" cy="80" r="7" fill={COLORS.coralDeep} />
     </svg>
   );
 }
 
 // ─── Company dashboard ─────────────────────────────────────────────
 
-/** A scroll/sheet with a quill resting beside it. */
+/** Post a task → tilted blank sheet + coral plus badge. */
 export function PostTaskIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("post-shadow")}
-        <linearGradient id="post-sheet" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fce6e2" />
-          <stop offset="100%" stopColor={COLORS.peach} />
-        </linearGradient>
-        <linearGradient id="post-quill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe5fb" />
-          <stop offset="100%" stopColor={COLORS.lavenderDeep} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="172" rx="50" ry="5" fill="#000" opacity="0.1" />
+      <defs>{shadowFilter("post-s")}</defs>
       {/* Sheet */}
-      <g filter="url(#post-shadow)">
-        <rect x="50" y="48" width="100" height="116" rx="3" fill="url(#post-sheet)" />
+      <g transform="rotate(-6 100 100)" filter="url(#post-s)">
+        <rect x="50" y="44" width="100" height="120" rx="6" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        {/* Title underline */}
+        <rect x="62" y="68" width="56" height="6" rx="3" fill={COLORS.peach} />
+        {/* Blank lines */}
+        <rect x="62" y="86" width="76" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="62" y="98" width="60" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="62" y="110" width="68" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="62" y="122" width="48" height="3" rx="1.5" fill={COLORS.cardLine} />
       </g>
-      {/* Glow at top of sheet */}
-      <rect x="50" y="48" width="100" height="14" rx="3" fill={COLORS.coralDeep} opacity="0.55" />
-      {/* Lines */}
-      <rect x="62" y="78" width="60" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.35" />
-      <rect x="62" y="92" width="76" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
-      <rect x="62" y="106" width="48" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
-      <rect x="62" y="120" width="64" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.22" />
-      <rect x="62" y="134" width="40" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.22" />
-      {/* Quill */}
-      <g transform="rotate(35 154 116)" filter="url(#post-shadow)">
-        <path d="M 130 110 L 174 100 L 178 110 L 134 122 Z" fill="url(#post-quill)" />
-        <rect x="174" y="100" width="6" height="10" fill={COLORS.coralDeep} />
-        <path d="M 178 110 L 188 116 L 178 120 Z" fill={COLORS.ink} />
+      {/* Coral badge — plus sign */}
+      <g filter="url(#post-s)">
+        <circle cx="150" cy="148" r="22" fill={COLORS.coralBadge} />
+        <line x1="150" y1="138" x2="150" y2="158" stroke={COLORS.white} strokeWidth="3.5" strokeLinecap="round" />
+        <line x1="140" y1="148" x2="160" y2="148" stroke={COLORS.white} strokeWidth="3.5" strokeLinecap="round" />
       </g>
     </svg>
   );
 }
 
-/** Stack of cards/papers with a check on top — submissions. */
+/** Submissions → fanned card stack + sage check badge. */
 export function SubmissionsStackIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("subs-shadow")}
-        <linearGradient id="subs-card-back" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#dadfeb" />
-          <stop offset="100%" stopColor={COLORS.blue} />
-        </linearGradient>
-        <linearGradient id="subs-card-mid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe1da" />
-          <stop offset="100%" stopColor={COLORS.beige} />
-        </linearGradient>
-        <linearGradient id="subs-card-front" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#dde6dd" />
-          <stop offset="100%" stopColor={COLORS.sage} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="170" rx="56" ry="5" fill="#000" opacity="0.1" />
+      <defs>{shadowFilter("subs-s")}</defs>
       {/* Back card */}
-      <g transform="rotate(-7 100 110)" filter="url(#subs-shadow)">
-        <rect x="48" y="58" width="100" height="100" rx="6" fill="url(#subs-card-back)" />
+      <g transform="rotate(-12 100 105)" filter="url(#subs-s)">
+        <rect x="48" y="60" width="92" height="98" rx="8" fill={COLORS.blue} />
       </g>
       {/* Middle card */}
-      <g transform="rotate(3 100 110)" filter="url(#subs-shadow)">
-        <rect x="50" y="60" width="100" height="100" rx="6" fill="url(#subs-card-mid)" />
+      <g transform="rotate(4 100 108)" filter="url(#subs-s)">
+        <rect x="54" y="56" width="92" height="100" rx="8" fill={COLORS.beige} />
       </g>
       {/* Front card */}
-      <g filter="url(#subs-shadow)">
-        <rect x="56" y="56" width="100" height="100" rx="6" fill="url(#subs-card-front)" />
+      <g transform="rotate(-3 100 100)" filter="url(#subs-s)">
+        <rect x="58" y="50" width="86" height="100" rx="8" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        <rect x="68" y="72" width="46" height="5" rx="2.5" fill={COLORS.sage} />
+        <rect x="68" y="86" width="60" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="68" y="96" width="48" height="3" rx="1.5" fill={COLORS.cardLine} />
       </g>
-      {/* Check circle */}
-      <circle cx="106" cy="106" r="22" fill="#fff" />
-      <circle cx="106" cy="106" r="22" fill="none" stroke={COLORS.sageDeep} strokeWidth="2" />
-      <path
-        d="M 96 108 L 104 116 L 118 100"
-        fill="none"
-        stroke={COLORS.sageDeep}
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {/* Sage badge — checkmark */}
+      <g filter="url(#subs-s)">
+        <circle cx="150" cy="146" r="22" fill={COLORS.sageBadge} />
+        <path
+          d="M 140 146 L 147 153 L 160 140"
+          fill="none"
+          stroke={COLORS.white}
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
     </svg>
   );
 }
 
-/** Two abstract shapes meeting in a handshake. */
+/** Deals → two cards meeting + a lavender heart-glow badge. */
 export function DealsIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("deals-shadow")}
-        <linearGradient id="deals-left" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f5dcd6" />
-          <stop offset="100%" stopColor={COLORS.coralDeep} />
-        </linearGradient>
-        <linearGradient id="deals-right" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#dadfeb" />
-          <stop offset="100%" stopColor={COLORS.blueDeep} />
-        </linearGradient>
-        <radialGradient id="deals-glow" cx="50%" cy="50%">
-          <stop offset="0%" stopColor="#fff" />
-          <stop offset="55%" stopColor={COLORS.lavender} />
-          <stop offset="100%" stopColor={COLORS.lavenderDeep} />
-        </radialGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="160" rx="74" ry="6" fill="#000" opacity="0.1" />
-      {/* Left arm */}
-      <g filter="url(#deals-shadow)">
+      <defs>{shadowFilter("deals-s")}</defs>
+      {/* Left card (coral wash) */}
+      <g transform="rotate(-12 70 100)" filter="url(#deals-s)">
+        <rect x="34" y="56" width="80" height="100" rx="8" fill={COLORS.coral} />
+      </g>
+      {/* Right card (blue wash) */}
+      <g transform="rotate(12 130 100)" filter="url(#deals-s)">
+        <rect x="86" y="56" width="80" height="100" rx="8" fill={COLORS.blue} />
+      </g>
+      {/* Lavender badge — handshake-ish glyph (simple two arrows) */}
+      <g filter="url(#deals-s)">
+        <circle cx="100" cy="100" r="26" fill={COLORS.lavenderBadge} />
+        {/* Inverted "V" suggesting clasp */}
         <path
-          d="M 22 110 Q 36 70 76 80 Q 92 86 96 104 L 96 122 Q 84 130 60 128 Q 32 124 22 110 Z"
-          fill="url(#deals-left)"
+          d="M 86 96 L 100 108 L 114 96"
+          fill="none"
+          stroke={COLORS.white}
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
+        <line x1="86" y1="106" x2="114" y2="106" stroke={COLORS.white} strokeWidth="3.5" strokeLinecap="round" />
       </g>
-      {/* Right arm */}
-      <g filter="url(#deals-shadow)">
-        <path
-          d="M 178 110 Q 164 70 124 80 Q 108 86 104 104 L 104 122 Q 116 130 140 128 Q 168 124 178 110 Z"
-          fill="url(#deals-right)"
-        />
-      </g>
-      {/* Meeting glow */}
-      <g filter="url(#deals-shadow)">
-        <circle cx="100" cy="112" r="20" fill="url(#deals-glow)" />
-      </g>
-      {/* Sparkles */}
-      <circle cx="100" cy="50" r="2.5" fill={COLORS.lavenderDeep} />
-      <circle cx="58" cy="56" r="1.8" fill={COLORS.lavenderDeep} />
-      <circle cx="142" cy="56" r="1.8" fill={COLORS.lavenderDeep} />
     </svg>
   );
 }
 
-/** A 3-tiered podium with a sparkle above the center. */
+/** Leaderboard → 3-tier podium + coral "1" badge. */
 export function LeaderboardIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("lb-shadow")}
-        <linearGradient id="lb-gold" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fde8e2" />
-          <stop offset="100%" stopColor={COLORS.coralDeep} />
-        </linearGradient>
-        <linearGradient id="lb-silver" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe1da" />
-          <stop offset="100%" stopColor={COLORS.beige} />
-        </linearGradient>
-        <linearGradient id="lb-bronze" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#dde6dd" />
-          <stop offset="100%" stopColor={COLORS.sage} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="172" rx="64" ry="5" fill="#000" opacity="0.12" />
-      {/* Sparkle */}
-      <path
-        d="M 100 22 L 103 38 L 119 41 L 103 44 L 100 60 L 97 44 L 81 41 L 97 38 Z"
-        fill={COLORS.lavenderDeep}
-      />
+      <defs>{shadowFilter("lb-s")}</defs>
       {/* 2nd place (left, medium) */}
-      <g filter="url(#lb-shadow)">
-        <rect x="34" y="98" width="42" height="68" rx="3" fill="url(#lb-silver)" />
-      </g>
-      {/* 1st place (center, tallest) */}
-      <g filter="url(#lb-shadow)">
-        <rect x="79" y="74" width="42" height="92" rx="3" fill="url(#lb-gold)" />
+      <g filter="url(#lb-s)">
+        <rect x="32" y="100" width="44" height="68" rx="6" fill={COLORS.beige} />
       </g>
       {/* 3rd place (right, shortest) */}
-      <g filter="url(#lb-shadow)">
-        <rect x="124" y="118" width="42" height="48" rx="3" fill="url(#lb-bronze)" />
+      <g filter="url(#lb-s)">
+        <rect x="124" y="124" width="44" height="44" rx="6" fill={COLORS.sage} />
       </g>
-      {/* Top highlights */}
-      <rect x="34" y="98" width="42" height="3" fill="#fff" opacity="0.5" />
-      <rect x="79" y="74" width="42" height="3" fill="#fff" opacity="0.55" />
-      <rect x="124" y="118" width="42" height="3" fill="#fff" opacity="0.5" />
+      {/* 1st place (center, tallest) */}
+      <g filter="url(#lb-s)">
+        <rect x="78" y="76" width="44" height="92" rx="6" fill={COLORS.peach} />
+      </g>
+      {/* Coral badge with "1" */}
+      <g filter="url(#lb-s)">
+        <circle cx="100" cy="60" r="22" fill={COLORS.coralBadge} />
+        <text
+          x="100"
+          y="69"
+          fontFamily="ui-sans-serif, system-ui, sans-serif"
+          fontSize="22"
+          fontWeight="700"
+          textAnchor="middle"
+          fill={COLORS.white}
+        >
+          1
+        </text>
+      </g>
     </svg>
   );
 }
 
-/** Stacked clipboards — all tasks. */
+/** All tasks → clipboard tilted + sage check badge. */
 export function AllTasksIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("at-shadow")}
-        <linearGradient id="at-back" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe5fb" />
-          <stop offset="100%" stopColor={COLORS.lavender} />
-        </linearGradient>
-        <linearGradient id="at-front" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe1da" />
-          <stop offset="100%" stopColor={COLORS.beige} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="170" rx="50" ry="5" fill="#000" opacity="0.1" />
-      {/* Back clipboard */}
-      <g transform="rotate(-5 100 100)" filter="url(#at-shadow)">
-        <rect x="50" y="46" width="92" height="108" rx="6" fill="url(#at-back)" />
+      <defs>{shadowFilter("at-s")}</defs>
+      {/* Back card */}
+      <g transform="rotate(8 110 100)" filter="url(#at-s)">
+        <rect x="62" y="56" width="86" height="100" rx="6" fill={COLORS.lavender} />
       </g>
       {/* Front clipboard */}
-      <g filter="url(#at-shadow)">
-        <rect x="56" y="50" width="92" height="108" rx="6" fill="url(#at-front)" />
+      <g transform="rotate(-4 90 100)" filter="url(#at-s)">
+        <rect x="50" y="50" width="92" height="116" rx="6" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        {/* Clip */}
+        <rect x="80" y="42" width="32" height="14" rx="3" fill={COLORS.beige} />
+        {/* Tasks list (with checkboxes) */}
+        {[0, 1, 2, 3].map((i) => {
+          const y = 76 + i * 18;
+          const checked = i < 2;
+          return (
+            <g key={i}>
+              <rect
+                x="60"
+                y={y}
+                width="10"
+                height="10"
+                rx="2"
+                fill={checked ? COLORS.sageBadge : COLORS.white}
+                stroke={checked ? COLORS.sageBadge : COLORS.cardLine}
+                strokeWidth="1"
+              />
+              {checked && (
+                <path
+                  d={`M ${62} ${y + 5} L ${64} ${y + 7} L ${68} ${y + 3}`}
+                  fill="none"
+                  stroke={COLORS.white}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              )}
+              <rect
+                x="76"
+                y={y + 3}
+                width={42 + (i % 2 === 0 ? 12 : 0)}
+                height="4"
+                rx="2"
+                fill={checked ? COLORS.cardLine : COLORS.coral}
+                opacity={checked ? 0.7 : 1}
+              />
+            </g>
+          );
+        })}
       </g>
-      {/* Clip */}
-      <rect x="86" y="42" width="32" height="14" rx="3" fill={COLORS.inkSoft} opacity="0.55" />
-      <rect x="92" y="38" width="20" height="6" rx="2" fill={COLORS.inkSoft} opacity="0.7" />
-      {/* Lines */}
-      <rect x="68" y="76" width="56" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.35" />
-      <rect x="68" y="90" width="48" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.28" />
-      <rect x="68" y="104" width="64" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.28" />
-      <rect x="68" y="118" width="40" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.28" />
-      <rect x="68" y="132" width="52" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.25" />
-      {/* Check circle */}
-      <circle cx="138" cy="80" r="7" fill={COLORS.sageDeep} />
-      <path
-        d="M 134 80 L 137 83 L 142 77"
-        fill="none"
-        stroke="#fff"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {/* Sage badge — single check */}
+      <g filter="url(#at-s)">
+        <circle cx="150" cy="148" r="22" fill={COLORS.sageBadge} />
+        <path
+          d="M 140 148 L 147 155 L 160 142"
+          fill="none"
+          stroke={COLORS.white}
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
     </svg>
   );
 }
 
-/** Sheet with a pencil mid-edit — drafts. */
+/** Drafts → tilted sheet with a pencil edit badge. */
 export function DraftsIllustration({ className }: IllustrationProps) {
   return (
     <svg {...svgProps(className)}>
-      <defs>
-        {softShadowFilter("drafts-shadow")}
-        <linearGradient id="drafts-sheet" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fbe6e0" />
-          <stop offset="100%" stopColor={COLORS.peach} />
-        </linearGradient>
-        <linearGradient id="drafts-pencil" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ebe5fb" />
-          <stop offset="100%" stopColor={COLORS.lavenderDeep} />
-        </linearGradient>
-      </defs>
-      {/* Floor shadow */}
-      <ellipse cx="100" cy="172" rx="50" ry="5" fill="#000" opacity="0.1" />
+      <defs>{shadowFilter("drafts-s")}</defs>
       {/* Sheet */}
-      <g filter="url(#drafts-shadow)">
-        <rect x="48" y="48" width="96" height="118" rx="4" fill="url(#drafts-sheet)" />
+      <g transform="rotate(-7 100 100)" filter="url(#drafts-s)">
+        <rect x="50" y="44" width="100" height="120" rx="6" fill={COLORS.white} stroke={COLORS.cardLine} strokeWidth="1" />
+        <rect x="62" y="64" width="56" height="6" rx="3" fill={COLORS.peach} />
+        <rect x="62" y="82" width="76" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="62" y="94" width="60" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="62" y="106" width="68" height="3" rx="1.5" fill={COLORS.cardLine} />
+        <rect x="62" y="118" width="48" height="3" rx="1.5" fill={COLORS.cardLine} />
       </g>
-      {/* Lines */}
-      <rect x="60" y="74" width="56" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.35" />
-      <rect x="60" y="88" width="68" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
-      <rect x="60" y="102" width="48" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
-      <rect x="60" y="116" width="60" height="3" rx="1.5" fill={COLORS.inkSoft} opacity="0.3" />
-      {/* Pencil */}
-      <g transform="rotate(35 138 130)" filter="url(#drafts-shadow)">
-        <rect x="106" y="124" width="56" height="10" rx="2" fill="url(#drafts-pencil)" />
-        <rect x="106" y="124" width="8" height="10" fill={COLORS.coralDeep} />
-        <path d="M 162 124 L 172 129 L 162 134 Z" fill={COLORS.ink} />
+      {/* Lavender badge — pencil icon */}
+      <g filter="url(#drafts-s)">
+        <circle cx="150" cy="148" r="22" fill={COLORS.lavenderBadge} />
+        {/* Simple pencil shape */}
+        <g transform="rotate(45 150 148)">
+          <rect x="142" y="138" width="16" height="6" rx="1" fill={COLORS.white} />
+          <path d="M 158 138 L 162 141 L 158 144 Z" fill={COLORS.white} />
+          <rect x="142" y="144" width="16" height="6" rx="1" fill={COLORS.white} opacity="0.85" />
+        </g>
       </g>
-      {/* Status dot top-right */}
-      <circle cx="58" cy="58" r="3.5" fill={COLORS.coralDeep} />
     </svg>
   );
 }
