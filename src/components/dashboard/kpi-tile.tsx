@@ -84,7 +84,7 @@ export function KpiTile({
         padding: compact ? "14px 16px" : "20px",
         borderRadius: "var(--radius)",
         border: "1px solid var(--border)",
-        background: "var(--bg)",
+        background: "var(--bg-card)",
         transition: "background-color 0.15s ease, border-color 0.15s ease",
         cursor: href ? "pointer" : "default",
         height: "100%",

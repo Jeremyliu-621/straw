@@ -83,7 +83,7 @@ function ActionPill({ action }: { action: QuickAction }) {
         padding: "6px 12px",
         borderRadius: "999px",
         border: "1px solid var(--border)",
-        background: "var(--bg)",
+        background: "var(--bg-card)",
         color: "var(--text)",
         fontSize: "13px",
         fontWeight: 500,
@@ -95,7 +95,7 @@ function ActionPill({ action }: { action: QuickAction }) {
         e.currentTarget.style.borderColor = "var(--text-faint)";
       }}
       onMouseOut={(e) => {
-        e.currentTarget.style.background = "var(--bg)";
+        e.currentTarget.style.background = "var(--bg-card)";
         e.currentTarget.style.borderColor = "var(--border)";
       }}
     >

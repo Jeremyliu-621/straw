@@ -46,7 +46,7 @@ export function JoinedCompetitionCard({
         padding: "16px",
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
-        background: "var(--bg)",
+        background: "var(--bg-card)",
         textDecoration: "none",
         color: "var(--text)",
         minHeight: "140px",
@@ -57,7 +57,7 @@ export function JoinedCompetitionCard({
         e.currentTarget.style.borderColor = "var(--text-faint)";
       }}
       onMouseOut={(e) => {
-        e.currentTarget.style.background = "var(--bg)";
+        e.currentTarget.style.background = "var(--bg-card)";
         e.currentTarget.style.borderColor = "var(--border)";
       }}
     >

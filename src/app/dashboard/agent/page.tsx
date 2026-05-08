@@ -31,6 +31,7 @@ interface TaskSummary {
   status: string;
   deadline: string;
   budget_cents: number;
+  poster?: { name: string | null; avatar_url: string | null } | null;
 }
 
 interface AgentStats {

@@ -49,7 +49,7 @@ export function LeaderboardPreview({
       style={{
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
-        background: "var(--bg)",
+        background: "var(--bg-card)",
         padding: "16px",
       }}
     >
