@@ -30,42 +30,44 @@ export interface TaskCardProps {
 function PosterAvatar({
   name,
   avatar_url,
+  size = 34,
 }: {
   name: string | null;
   avatar_url: string | null;
+  size?: number;
 }) {
   const initial = (name ?? "?")[0].toUpperCase();
+  const shared: React.CSSProperties = {
+    width: size,
+    height: size,
+    borderRadius: "50%",
+    border: "2px solid rgba(255,255,255,0.85)",
+    boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
+    flexShrink: 0,
+  };
+
   if (avatar_url) {
     return (
       <img
         src={avatar_url}
         alt={name ?? ""}
-        style={{
-          width: 28,
-          height: 28,
-          borderRadius: "50%",
-          border: "2px solid rgba(255,255,255,0.8)",
-          objectFit: "cover",
-          flexShrink: 0,
-        }}
+        style={{ ...shared, objectFit: "cover" }}
       />
     );
   }
   return (
     <div
       style={{
-        width: 28,
-        height: 28,
-        borderRadius: "50%",
-        border: "2px solid rgba(255,255,255,0.8)",
-        background: "rgba(255,255,255,0.3)",
+        ...shared,
+        background: "rgba(255,255,255,0.35)",
+        backdropFilter: "blur(4px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: 11,
+        fontSize: size * 0.38,
         fontWeight: 600,
-        color: "rgba(0,0,0,0.55)",
-        flexShrink: 0,
+        color: "rgba(0,0,0,0.5)",
+        letterSpacing: "-0.01em",
       }}
     >
       {initial}
@@ -80,6 +82,7 @@ export function TaskCard({ task }: TaskCardProps) {
   return (
     <Link
       href={`/tasks/${task.id}?from=dashboard`}
+      className="font-sans"
       style={{
         display: "flex",
         flexDirection: "column",
@@ -89,47 +92,53 @@ export function TaskCard({ task }: TaskCardProps) {
         textDecoration: "none",
         color: "var(--text)",
         overflow: "hidden",
-        minHeight: "180px",
-        transition: "border-color 0.12s ease, box-shadow 0.12s ease",
+        transition: "border-color 0.14s ease, box-shadow 0.14s ease, transform 0.14s ease",
       }}
       onMouseOver={(e) => {
-        e.currentTarget.style.borderColor = "var(--text-faint)";
-        e.currentTarget.style.boxShadow = "0 4px 14px rgba(0,0,0,0.06)";
+        e.currentTarget.style.borderColor = "var(--border-strong)";
+        e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.07)";
+        e.currentTarget.style.transform = "translateY(-1px)";
       }}
       onMouseOut={(e) => {
         e.currentTarget.style.borderColor = "var(--border)";
         e.currentTarget.style.boxShadow = "none";
+        e.currentTarget.style.transform = "translateY(0)";
       }}
     >
-      {/* Gradient banner */}
+      {/* Gradient banner — avatar anchored bottom-left */}
       <div
         aria-hidden="true"
         style={{
-          height: 52,
+          height: 70,
           background: gradient,
           flexShrink: 0,
           display: "flex",
           alignItems: "flex-end",
-          justifyContent: "flex-end",
-          padding: "0 12px 8px",
+          padding: "0 0 10px 14px",
         }}
       >
-        {task.poster && (
+        {task.poster ? (
           <PosterAvatar
             name={task.poster.name}
             avatar_url={task.poster.avatar_url}
           />
+        ) : (
+          // Empty placeholder keeps banner height consistent
+          <div style={{ height: 34 }} />
         )}
       </div>
 
-      {/* Body */}
+      {/* Body — rounded top panel that overlaps the banner */}
       <div
         style={{
+          background: "var(--bg-card)",
+          borderRadius: "12px 12px 0 0",
+          marginTop: -12,
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           gap: "10px",
-          padding: "12px 14px 14px",
-          flex: 1,
+          padding: "14px 14px 16px",
         }}
       >
         {/* Status + deadline */}
@@ -163,16 +172,15 @@ export function TaskCard({ task }: TaskCardProps) {
               style={{ color: deadline.urgent ? "var(--error)" : "var(--text-faint)" }}
               aria-hidden="true"
             />
-            <span className="font-sans">{deadline.label}</span>
+            <span>{deadline.label}</span>
           </div>
         </div>
 
         {/* Title */}
         <h3
-          className="font-sans"
           style={{
             fontSize: "14px",
-            fontWeight: 500,
+            fontWeight: 600,
             color: "var(--text)",
             lineHeight: 1.4,
             margin: 0,
@@ -181,6 +189,7 @@ export function TaskCard({ task }: TaskCardProps) {
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical" as const,
             overflow: "hidden",
+            letterSpacing: "-0.01em",
           }}
         >
           {task.title}
@@ -193,15 +202,17 @@ export function TaskCard({ task }: TaskCardProps) {
             alignItems: "center",
             justifyContent: "space-between",
             gap: "8px",
-            paddingTop: "8px",
+            paddingTop: "10px",
             borderTop: "1px solid var(--border)",
           }}
         >
           <span
-            className="font-sans"
             style={{
-              fontSize: "12px",
-              color: "var(--text-muted)",
+              fontSize: "11px",
+              fontWeight: 500,
+              color: "var(--text-faint)",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase" as const,
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
@@ -213,6 +224,7 @@ export function TaskCard({ task }: TaskCardProps) {
             className="font-mono"
             style={{
               fontSize: "13px",
+              fontWeight: 600,
               color: "var(--text)",
               fontVariantNumeric: "tabular-nums" as const,
               flexShrink: 0,
