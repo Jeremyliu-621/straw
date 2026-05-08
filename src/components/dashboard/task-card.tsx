@@ -105,42 +105,50 @@ export function TaskCard({ task }: TaskCardProps) {
         e.currentTarget.style.transform = "translateY(0)";
       }}
     >
-      {/* Gradient banner — avatar anchored bottom-left */}
+      {/* Gradient banner — no avatar here, it straddles the fold below */}
       <div
         aria-hidden="true"
         style={{
-          height: 70,
+          height: 68,
           background: gradient,
           flexShrink: 0,
-          display: "flex",
-          alignItems: "flex-end",
-          padding: "0 0 10px 14px",
         }}
-      >
-        {task.poster ? (
-          <PosterAvatar
-            name={task.poster.name}
-            avatar_url={task.poster.avatar_url}
-          />
-        ) : (
-          // Empty placeholder keeps banner height consistent
-          <div style={{ height: 34 }} />
-        )}
-      </div>
+      />
 
-      {/* Body — rounded top panel that overlaps the banner */}
+      {/* Body — rounded top panel overlapping the banner.
+          The avatar is absolutely positioned so the 12px curve bisects it,
+          half in the gradient, half in the white body. */}
       <div
         style={{
           background: "var(--bg-card)",
           borderRadius: "12px 12px 0 0",
           marginTop: -12,
           flex: 1,
+          position: "relative",
           display: "flex",
           flexDirection: "column",
           gap: "10px",
-          padding: "14px 14px 16px",
+          // Extra top padding when avatar is present — 18px (half avatar) + 10px gap
+          padding: task.poster ? "28px 14px 16px" : "14px 14px 16px",
         }}
       >
+        {/* Avatar centred on the curve */}
+        {task.poster && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              top: -18,   // half of 36px → curve bisects the avatar
+              left: 14,
+              zIndex: 1,
+            }}
+          >
+            <PosterAvatar
+              name={task.poster.name}
+              avatar_url={task.poster.avatar_url}
+            />
+          </div>
+        )}
         {/* Status + deadline */}
         <div
           style={{
