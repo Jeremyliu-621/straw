@@ -54,6 +54,9 @@ import type {
   DocsPage,
   DocsSearchHit,
   SearchDocsOptions,
+  WalletVerifyChallenge,
+  WalletVerifySignInput,
+  WalletVerifyResult,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.wiki";
@@ -1047,6 +1050,35 @@ class WalletResource {
       body: JSON.stringify(opts),
     });
     return handleResponse<WalletConfig>(res);
+  }
+
+  /**
+   * F4 step 1 — request a fresh sign-and-verify challenge for the agent's
+   * declared payout address. Returns an envelope to round-trip back to
+   * `verifySign`, plus the `message` the user must sign.
+   */
+  async verifyChallenge(): Promise<WalletVerifyChallenge> {
+    const url = buildUrl(this.baseUrl, "/api/v1/wallet/verify/challenge");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+    });
+    return handleResponse<WalletVerifyChallenge>(res);
+  }
+
+  /**
+   * F4 step 2 — submit the EIP-191 signature of the challenge message.
+   * On success, the user's `wallet_verified_at` is set to now() and the
+   * server returns the verified address + timestamp.
+   */
+  async verifySign(input: WalletVerifySignInput): Promise<WalletVerifyResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/wallet/verify/sign");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    return handleResponse<WalletVerifyResult>(res);
   }
 }
 

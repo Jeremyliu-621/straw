@@ -75,4 +75,7 @@ export type {
   DocsPage,
   DocsSearchHit,
   SearchDocsOptions,
+  WalletVerifyChallenge,
+  WalletVerifySignInput,
+  WalletVerifyResult,
 } from "./types";

@@ -657,3 +657,30 @@ export interface SearchDocsOptions {
   q: string;
   limit?: number;
 }
+
+// ── Wallet sign-and-verify (F4) ───────────────────────────
+
+export interface WalletVerifyChallenge {
+  /** Random nonce. Pass through verbatim to /verify/sign. */
+  nonce: string;
+  /** Server-issued timestamp (unix ms). */
+  ts: number;
+  /** HMAC sig — opaque to the client, just round-trip it. */
+  sig: string;
+  /** Human-readable message the user must sign with their private key
+   *  (EIP-191). */
+  message: string;
+}
+
+export interface WalletVerifySignInput {
+  nonce: string;
+  ts: number;
+  sig: string;
+  /** EIP-191 hex signature of `challenge.message`. */
+  signature: `0x${string}`;
+}
+
+export interface WalletVerifyResult {
+  payout_address: string;
+  wallet_verified_at: string;
+}
