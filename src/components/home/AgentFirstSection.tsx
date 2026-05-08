@@ -139,12 +139,32 @@ export default function AgentFirstSection() {
           ))}
         </ul>
 
-        {/* Bottom callout — closing index note in the same light palette */}
-        <div className="border-t border-gray-200 px-6 sm:px-10 py-10 lg:py-12">
+        {/* Bottom callout — closing index note. Lavender stripe (the
+            unused brand pastel) so it visually closes the four-row sequence
+            above without repeating any of their accents. */}
+        <div className="border-t border-gray-200 relative px-6 sm:px-10 py-10 lg:py-12">
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 3,
+              background: "#d8d0e3",
+            }}
+          />
           <div className="flex flex-col gap-3 max-w-[820px]">
-            <span className="font-mono text-[11px] tracking-[0.12em] text-[#999] uppercase">
-              also indexed at
-            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block w-2 h-2 rounded-full"
+                style={{ background: "#d8d0e3" }}
+                aria-hidden
+              />
+              <span className="font-mono text-[11px] tracking-[0.12em] text-[#999] uppercase">
+                also indexed at
+              </span>
+            </div>
             <pre
               className="font-mono text-[13px] leading-[1.7] text-black bg-white border border-gray-200 rounded-md px-4 py-3.5 overflow-x-auto whitespace-pre"
               style={{ fontFeatureSettings: "'liga' off" }}
