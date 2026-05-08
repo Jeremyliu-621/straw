@@ -1,17 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { KpiTile } from "./kpi-tile";
 
 interface SubmissionLike {
   created_at: string;
 }
 
+// Pastel green ramp — pulled from the same sage palette as the rest
+// of the dashboard (--tint-sage → --orb-sage → sage-badge). Quiet,
+// not the saturated GitHub green.
 const HEATMAP_COLORS = [
   "var(--bg-subtle)",
-  "#dceadd",
-  "#b3d4b6",
-  "#7fb285",
-  "#4d8a55",
+  "#e3eae4",
+  "#d0d7d1",
+  "#b8cdba",
+  "#8db89c",
 ];
 
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
@@ -106,6 +110,27 @@ export function SubmissionHeatmap({
   cutoff30.setDate(today.getDate() - 30);
   const last30Count = submissions.filter((s) => new Date(s.created_at) >= cutoff30).length;
 
+  // Streaks over the visible year window. `current` walks back from today
+  // until a gap; `longest` is the longest run of submission days seen.
+  let currentStreak = 0;
+  const cursorBack = new Date(today);
+  while ((counts.get(dayKey(cursorBack)) ?? 0) > 0) {
+    currentStreak++;
+    cursorBack.setDate(cursorBack.getDate() - 1);
+  }
+  let longestStreak = 0;
+  let run = 0;
+  const streakCursor = new Date(start);
+  while (streakCursor <= today) {
+    if ((counts.get(dayKey(streakCursor)) ?? 0) > 0) {
+      run++;
+      if (run > longestStreak) longestStreak = run;
+    } else {
+      run = 0;
+    }
+    streakCursor.setDate(streakCursor.getDate() + 1);
+  }
+
   return (
     <div
       data-heatmap-root
@@ -114,8 +139,21 @@ export function SubmissionHeatmap({
         padding: "20px",
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "24px",
+        alignItems: "stretch",
       }}
     >
+      {/* Heatmap column — natural-width grid + Less/More legend. */}
+      <div
+        style={{
+          flex: "1 1 auto",
+          minWidth: 0,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
       <div style={{ display: "flex", gap: "8px", overflowX: "auto" }}>
         <div
           style={{
@@ -211,20 +249,14 @@ export function SubmissionHeatmap({
 
       <div
         style={{
-          marginTop: "16px",
+          marginTop: "auto",
+          paddingTop: "16px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           gap: "16px",
-          flexWrap: "wrap",
         }}
       >
-        <div
-          className="font-sans"
-          style={{ fontSize: "12px", color: "var(--text-muted)" }}
-        >
-          {totalSubmissions} submissions in the last year &middot; {last30Count} in the last 30 days
-        </div>
         <div
           className="flex items-center gap-2 font-sans"
           style={{ fontSize: "11px", color: "var(--text-muted)" }}
@@ -245,6 +277,36 @@ export function SubmissionHeatmap({
           ))}
           <span>More</span>
         </div>
+      </div>
+      </div>
+
+      {/* KPI rail — fills the dead space to the right of the heatmap.
+          Reads off the same submission stream so no extra fetch. On
+          narrow viewports the flex-wrap drops it under the heatmap. */}
+      <div
+        style={{
+          flex: "1 1 240px",
+          minWidth: "240px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "10px",
+          alignContent: "start",
+        }}
+      >
+        <KpiTile compact label="Submissions / yr" value={totalSubmissions} />
+        <KpiTile compact label="Last 30 days" value={last30Count} />
+        <KpiTile
+          compact
+          label="Current streak"
+          value={currentStreak}
+          unit={currentStreak === 1 ? "day" : "days"}
+        />
+        <KpiTile
+          compact
+          label="Longest streak"
+          value={longestStreak}
+          unit={longestStreak === 1 ? "day" : "days"}
+        />
       </div>
 
       {hover && (
