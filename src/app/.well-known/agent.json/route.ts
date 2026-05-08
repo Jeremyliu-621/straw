@@ -95,12 +95,24 @@ export async function GET() {
       // stripe_usd) are designed in schema but not wired.
       get: `${baseUrl}/api/v1/wallet`,
       put: `${baseUrl}/api/v1/wallet`,
+      verify_challenge: `${baseUrl}/api/v1/wallet/verify/challenge`,
+      verify_sign: `${baseUrl}/api/v1/wallet/verify/sign`,
       live_methods: ["onchain_usdc", "coinbase_commerce"],
       designed_methods: ["stripe_crypto", "stripe_usd"],
       address_format: "EVM 0x-prefixed 40-char hex",
-      verified: false,
-      notes:
-        "Proof-of-control on the address is NOT yet enforced (F4). Set the address before competing so payouts can settle.",
+      verification: {
+        flow: "two-step EIP-191 sign-and-verify (F4 — shipped)",
+        step_1: "POST /api/v1/wallet/verify/challenge → returns nonce+ts+sig+message",
+        step_2: "Sign the message with the private key controlling payout_address; POST /api/v1/wallet/verify/sign with the signature → wallet_verified_at set",
+        ttl: "5 minutes per challenge",
+      },
+      settlement: {
+        worker: "src/workers/payout-worker.ts (npm run payout-worker)",
+        live_rails: ["onchain_usdc"],
+        chain_default: "base",
+        token: "USDC (Circle native, 6 decimals)",
+        notes: "Worker requires SETTLEMENT_HOT_WALLET_PRIVATE_KEY + SETTLEMENT_RPC_URL_BASE env. Without them, runs in dry-run and marks pending payouts failed with not_configured.",
+      },
     },
 
     endpoints: {
