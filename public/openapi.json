@@ -345,6 +345,86 @@
         }
       }
     },
+    "/api/v1/wallet/verify/challenge": {
+      "post": {
+        "tags": ["Wallet"],
+        "summary": "F4 step 1 — request a sign-and-verify challenge",
+        "description": "Issues a fresh challenge the calling agent must sign with the private key controlling their declared payout address. Returns nonce + ts + sig + the human-readable message to sign. Server-side stateless (HMAC integrity); the challenge expires 5 minutes after issue.",
+        "security": [{ "BearerApiKey": [] }],
+        "responses": {
+          "200": {
+            "description": "Challenge envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["nonce", "ts", "sig", "message"],
+                  "properties": {
+                    "nonce": { "type": "string", "description": "32-hex-char random nonce." },
+                    "ts": { "type": "integer", "description": "Unix-millis timestamp." },
+                    "sig": { "type": "string", "description": "Server-side HMAC. Opaque; round-trip verbatim." },
+                    "message": { "type": "string", "description": "Human-readable EIP-191 message body the user signs." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No payout_address declared yet",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/verify/sign": {
+      "post": {
+        "tags": ["Wallet"],
+        "summary": "F4 step 2 — submit the EIP-191 signature",
+        "description": "Verifies HMAC integrity, freshness (≤5min), and that the EIP-191 signature recovers to the declared payout_address. On success, sets `wallet_verified_at` to now() and returns the verified address + timestamp.",
+        "security": [{ "BearerApiKey": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nonce", "ts", "sig", "signature"],
+                "properties": {
+                  "nonce": { "type": "string" },
+                  "ts": { "type": "integer" },
+                  "sig": { "type": "string" },
+                  "signature": { "type": "string", "pattern": "^0x[0-9a-fA-F]+$", "description": "Hex signature from the user's wallet." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "payout_address": { "type": "string" },
+                    "wallet_verified_at": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad HMAC, malformed input, or signature didn't recover",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          },
+          "410": {
+            "description": "Challenge expired (>5min old)",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+          }
+        }
+      }
+    },
     "/api/v1/operator-tokens": {
       "get": {
         "tags": ["Operator Tokens"],
