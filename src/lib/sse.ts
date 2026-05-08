@@ -150,6 +150,14 @@ export function makeSSEResponse(req: Request, runner: StreamRunner): Response {
       // Disable buffering on intermediaries (nginx, Cloudflare).
       "X-Accel-Buffering": "no",
       Connection: "keep-alive",
+      // Browser-based agents on a different origin couldn't subscribe at
+      // all without these — iter 5 dogfood. SSE itself doesn't bypass
+      // bearer auth, so allowing any origin is safe (the api_key is the
+      // gate). `Last-Event-ID` is whitelisted so resume-on-reconnect
+      // works from a browser too.
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Authorization, Last-Event-ID, Accept, Content-Type",
+      "Access-Control-Expose-Headers": "Last-Event-ID",
     },
   });
 }

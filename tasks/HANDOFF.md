@@ -19,7 +19,7 @@ crosses it off. When all are crossed, restart from the top.
 - [x] **CLI dogfood**: `npx @strawai/cli` end-to-end. The customer agent acts as a developer. _(iter 2)_
 - [x] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`. _(iter 3)_
 - [x] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect. _(iter 4)_
-- [ ] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap.
+- [x] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap. _(iter 5)_
 - [ ] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps.
 - [ ] **Wallet F4 round-trip**: a fresh agent declares an address, signs the challenge with viem, submits the proof.
 - [ ] **Docs surface from an agent's POV**: feed `/llms.txt` + `/docs/llms.txt` to a fresh model, ask "given this, write a working agent that competes on a python bounty." Audit what it generates.
@@ -248,6 +248,80 @@ still in place.
 - **`StrawApiError.details` is typed as `unknown`** — could be a
   per-error-code typed details map for ergonomic narrowing.
   Source-only.
+
+### Iter 5 — 2026-05-08 (bounty firehose durability)
+
+Customer subagent ran two anonymous identities, two full ~270s SSE
+sessions, provoked real bounty events with one identity while
+subscribed with the other, tested reconnect / Last-Event-ID
+backfill / filter-validation / CORS / heartbeats.
+
+**Top three findings shipped this iteration (all in
+`src/app/api/v1/bounties/stream/route.ts` + `src/lib/sse.ts`):**
+
+1. **No backfill mechanism — disconnected events were gone forever.**
+   Every reconnect (the structural one at the 270s cap OR a network
+   glitch) created a permanent blind spot. Now: route honors
+   `Last-Event-ID` header. Treats it as a millis timestamp, rewinds
+   the cursor, and the first poll iteration replays everything since.
+   Connected event includes `resumed: true` + `resume_cursor` so the
+   client knows the first batch is backfill, not live. Self-consistent
+   because we already emit each `bounty` event with `id:
+   <created_at_ms>` — a reconnect just hands that back.
+
+2. **Filter parameters silently coerced to null** —
+   `?min_budget_cents=-50` and `?deadline_after=not-a-date` were
+   echoed as `null` with no signal. Subscribers with typos saw an
+   empty stream forever and couldn't tell the difference from
+   "subscribed correctly to a quiet category." Now: `parseFilter`
+   returns rejected entries, surfaced on the `connected` event as
+   `rejected_filters: [{ param, raw, reason }]`. No 400 (no behavior
+   break for existing callers); just a structured warning the
+   daemon can act on. Kept the existing freely-echoed `category`
+   list since there's no authoritative category allowlist.
+
+3. **Server hung up silently at 270s — no terminal event.** Clients
+   couldn't distinguish "cleanly hit the cap" from "TCP died." Now:
+   route runs a 265s budget timer (just under sse.ts's 270s cap)
+   and emits `event: close` with `{ reason: "function_timeout",
+   reconnect: true, last_event_id }` before exiting. The
+   last_event_id is the latest cursor, so the client can pass it
+   back as `Last-Event-ID` on the next connect for seamless resume.
+
+**Bonus shipped:** CORS headers on every SSE response (added in
+`makeSSEResponse`, so all 4 SSE routes inherit). Browser-based
+agents on a different origin can now consume the firehose,
+submission stream, leaderboard stream, and task-events stream.
+`Last-Event-ID` is whitelisted in Allow-Headers + Expose-Headers
+so resume-on-reconnect works from a browser too.
+
+**Findings deferred (added to backlog):**
+
+- **Bounty event payload is too thin** — only `{id, title,
+  description, category, deadline, budget_cents, eval_mode, status,
+  created_at}`. Missing `criteria[]`, `input_spec`, `output_spec`.
+  Daemons must round-trip `GET /api/v1/tasks/{id}` to decide whether
+  to compete, eroding the firehose's vs-polling cost advantage.
+  Could include them — they're cheap. Defer to a payload-shape
+  iteration.
+- **Heartbeat cadence is 25s** — slightly long for corporate
+  proxies (which often idle-timeout at 30s). Halving to 12-15s is
+  trivial in `sse.ts`. Defer; not a real-world break yet.
+- **OPTIONS preflight handler not added on SSE routes** — the
+  Access-Control-Allow-Origin header on GET responses unblocks
+  EventSource (which doesn't preflight), but browser fetch with
+  `Authorization: Bearer ...` will preflight with OPTIONS and
+  there's no handler. Per-route OPTIONS exports needed. Defer for
+  a focused CORS iteration.
+- **POST /api/v1/tasks requires undocumented fields** —
+  `criteria[].position`, `test_weight`, `llm_weight`. Iter 3
+  already documented these in `/api/docs guide.for_posters` but
+  the create-task endpoint definition in `endpoints[]` doesn't
+  echo the same advice. Could default `position` from array
+  index + `test_weight`/`llm_weight` from `eval_mode`. Behavior
+  change risk; defer.
+- **UTF-8 em-dash mangling** in task descriptions persists from
+  iter 3. Same root cause across compose path. Defer with care.
 
 ---
 
