@@ -26,6 +26,15 @@ const envSchema = z.object({
   // Email (optional — waitlist notification email is skipped if missing)
   RESEND_API_KEY: z.string().min(1).optional(),
   WAITLIST_NOTIFY_EMAIL: z.email().optional(),
+
+  // Settlement worker — on-chain USDC payouts. Optional: when missing,
+  // the worker logs the would-be transaction and marks the payout
+  // failed with a clear reason instead of broadcasting.
+  SETTLEMENT_HOT_WALLET_PRIVATE_KEY: z.string().regex(/^0x[0-9a-fA-F]{64}$/).optional(),
+  SETTLEMENT_RPC_URL_BASE: z.url().optional(),
+  SETTLEMENT_RPC_URL_OPTIMISM: z.url().optional(),
+  SETTLEMENT_RPC_URL_ARBITRUM: z.url().optional(),
+  SETTLEMENT_RPC_URL_MAINNET: z.url().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
