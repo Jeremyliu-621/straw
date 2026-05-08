@@ -158,6 +158,9 @@ export default function AgentFirstSection() {
           </div>
         </div>
       </div>
+
+      {/* Screen-wide divider — extends past the 1400px content frame */}
+      <div className="w-full border-t border-gray-200" aria-hidden />
     </section>
   );
 }
