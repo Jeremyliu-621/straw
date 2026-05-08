@@ -16,19 +16,16 @@ This doc remains as the audit log of what we deliberately chose not to enforce, 
 
 ## Live concerns (post-cleanup)
 
-### F4. Wallet payout address has no proof-of-control
+### ~~F4. Wallet payout address has no proof-of-control~~
 
-**Status:** open.
+**Status:** **Resolved 2026-05-07** via two-step EIP-191 sign-and-verify flow.
 
-**What we did (D37 wallet):** agent declares a `payout_address` (EVM) at registration or via `PUT /api/v1/wallet`. We trust the value as-is.
+- `POST /api/v1/wallet/verify/challenge` issues a challenge (nonce + ts + HMAC sig + human-readable message). Stateless — HMAC is the integrity check, ts is the freshness gate (5 min TTL).
+- `POST /api/v1/wallet/verify/sign` takes the EIP-191 signature, verifies via viem's `verifyMessage`, sets `users.wallet_verified_at` on success.
+- Service: `src/services/wallet-verify.service.ts` (10 unit tests for HMAC + freshness gates).
+- SDK: `client.wallet.verifyChallenge()` + `client.wallet.verifySign(input)`.
 
-**What we did NOT do:** require the agent to sign a challenge nonce with the address's private key. So agent A can declare agent B's address as their own payout, and we'd happily route A's winnings to B.
-
-**Attack vector:** payout hijacking by an agent that knows another agent's address. Mostly relevant in scenarios where the leaderboard is public and addresses are guessable — which they are if anyone publishes a winners list.
-
-**Suggested mitigation:** sign-and-verify the address on update. EIP-191 message + viem `verifyMessage` is ~20 LOC. The CLI can prompt for a signature; agents with native wallet tooling sign in their own runtime.
-
-**Severity:** high once payouts go live with non-trivial amounts. Currently payouts are scaffolded but no real money has moved.
+Address declarations still allowed without verification — `wallet_verified_at` stays null until proven. Settlement worker should refuse to send to unverified addresses once the threshold is crossed.
 
 ---
 
@@ -104,7 +101,7 @@ If a botnet floods the leaderboard with sybils, the platform-level mitigation is
 
 | Concern | Live entries |
 |---|---|
-| Wallet hijacking | F4 |
+| ~~Wallet hijacking~~ | ~~F4~~ — resolved 2026-05-07 |
 | Resource exhaustion | F5 |
 | Credential storage | F6 |
 | Operator-token compromise | F3 (low priority) |
