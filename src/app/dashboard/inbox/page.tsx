@@ -2,6 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { Mail, MessageCircle, PenSquare, X, Search } from "lucide-react";
+import { EmptyState } from "@/components/dashboard/section";
+
+interface AgentDirectoryRow {
+  user_id: string;
+  display_name: string;
+}
 
 interface Message {
   id: string;
@@ -54,19 +61,23 @@ export default function InboxPage() {
   const [loading, setLoading] = useState(true);
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [composing, setComposing] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const userId = session?.user?.supabaseId;
 
-  // Fetch thread list
-  useEffect(() => {
-    fetch("/api/messages")
+  function refetchThreads() {
+    return fetch("/api/messages")
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) setThreads(data);
       })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .catch(() => {});
+  }
+
+  // Fetch thread list
+  useEffect(() => {
+    refetchThreads().finally(() => setLoading(false));
   }, []);
 
   // Fetch messages for selected thread
@@ -121,17 +132,8 @@ export default function InboxPage() {
 
   if (loading) {
     return (
-      <div style={{ padding: "32px" }}>
-        <div
-          className="animate-pulse"
-          style={{
-            height: "28px",
-            width: "80px",
-            background: "var(--bg-subtle)",
-            borderRadius: "var(--radius)",
-            marginBottom: "32px",
-          }}
-        />
+      <div>
+        <InboxHero unreadCount={0} onCompose={() => setComposing(true)} />
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div
@@ -149,6 +151,10 @@ export default function InboxPage() {
     );
   }
 
+  const unreadCount = threads.filter(
+    (t) => t.recipient_id === userId && !t.read_at
+  ).length;
+
   // Resolve the other party's display info for a thread
   function getThreadParty(thread: Message) {
     const isFromMe = thread.sender_id === userId;
@@ -165,80 +171,49 @@ export default function InboxPage() {
     ? getThreadParty(selectedThreadData)
     : null;
 
+  async function sendCompose(recipientId: string, body: string) {
+    const res = await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ recipientId, body }),
+    });
+    if (!res.ok) {
+      throw new Error("Failed to send");
+    }
+    const msg = (await res.json()) as Message;
+    await refetchThreads();
+    setComposing(false);
+    setSelectedThread(msg.thread_id);
+  }
+
   return (
-    <div style={{ padding: "32px" }}>
-      <h1
-        className="font-sans"
-        style={{
-          fontSize: "28px",
-          fontWeight: 500,
-          letterSpacing: "-0.02em",
-          color: "var(--text)",
-        }}
-      >
-        Inbox
-      </h1>
+    <div>
+      <InboxHero
+        unreadCount={unreadCount}
+        onCompose={() => setComposing(true)}
+      />
+
+      {composing && (
+        <ComposePanel
+          onClose={() => setComposing(false)}
+          onSend={sendCompose}
+          currentUserId={userId}
+        />
+      )}
 
       {threads.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "64px 0" }}>
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              background: "var(--bg-subtle)",
-              margin: "0 auto 16px",
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ color: "var(--text-faint)" }}
-            >
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-          </div>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "16px",
-              fontWeight: 500,
-              color: "var(--text)",
-            }}
-          >
-            No messages yet
-          </p>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "14px",
-              color: "var(--text-muted)",
-              marginTop: "6px",
-              maxWidth: "280px",
-              margin: "6px auto 0",
-              lineHeight: 1.5,
-            }}
-          >
-            Messages from task participants will appear here after a competition
-            closes.
-          </p>
-        </div>
+        <EmptyState
+          icon={<Mail size={32} strokeWidth={1} style={{ color: "var(--text-faint)" }} />}
+          title="No messages yet"
+          body="Messages from task participants land here. Start a thread from any task you're competing on or have posted."
+        />
       ) : (
         <div
-          className="mt-6 flex"
+          className="flex"
           style={{
             border: "1px solid var(--border)",
             borderRadius: "var(--radius)",
-            height: "calc(100vh - 180px)",
+            height: "calc(100vh - 220px)",
             minHeight: "400px",
             overflow: "hidden",
           }}
@@ -378,29 +353,19 @@ export default function InboxPage() {
           {/* Message area */}
           <div className="flex flex-1 flex-col" style={{ minWidth: 0 }}>
             {!selectedThread ? (
-              <div className="flex flex-1 flex-col items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    color: "var(--text-faint)",
-                    marginBottom: "12px",
-                  }}
-                >
-                  <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                </svg>
+              <div className="flex flex-1 flex-col items-center justify-center" style={{ gap: "12px" }}>
+                <MessageCircle
+                  size={28}
+                  strokeWidth={1.25}
+                  style={{ color: "var(--text-faint)" }}
+                  aria-hidden="true"
+                />
                 <p
                   className="font-sans"
                   style={{
                     fontSize: "14px",
                     color: "var(--text-faint)",
+                    margin: 0,
                   }}
                 >
                   Select a conversation to start messaging
@@ -609,6 +574,424 @@ export default function InboxPage() {
             )}
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+function InboxHero({
+  unreadCount,
+  onCompose,
+}: {
+  unreadCount: number;
+  onCompose: () => void;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        gap: "24px",
+        paddingBottom: "20px",
+        borderBottom: "1px solid var(--border)",
+        marginBottom: "20px",
+      }}
+    >
+      <div style={{ minWidth: 0 }}>
+        <h1
+          className="font-sans"
+          style={{
+            fontSize: "26px",
+            fontWeight: 500,
+            letterSpacing: "-0.02em",
+            color: "var(--text)",
+          }}
+        >
+          Inbox
+        </h1>
+        <p
+          className="mt-2 font-sans"
+          style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
+        >
+          Conversations with task participants — companies and agents.
+        </p>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+        {unreadCount > 0 && (
+          <span
+            className="font-sans"
+            style={{
+              fontSize: "12px",
+              color: "var(--text)",
+              background: "var(--bg-strong)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              padding: "4px 10px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {unreadCount} unread
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={onCompose}
+          className="font-sans transition-colors"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "8px 14px",
+            borderRadius: "var(--radius)",
+            fontSize: "13px",
+            fontWeight: 500,
+            background: "var(--text)",
+            color: "var(--inverse-text)",
+            border: "1px solid var(--text)",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
+          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+        >
+          <PenSquare size={13} strokeWidth={2} aria-hidden="true" />
+          Compose
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ComposePanel({
+  onClose,
+  onSend,
+  currentUserId,
+}: {
+  onClose: () => void;
+  onSend: (recipientId: string, body: string) => Promise<void>;
+  currentUserId: string | undefined;
+}) {
+  const [agents, setAgents] = useState<AgentDirectoryRow[]>([]);
+  const [query, setQuery] = useState("");
+  const [recipient, setRecipient] = useState<AgentDirectoryRow | null>(null);
+  const [body, setBody] = useState("");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/public/agents?limit=200")
+      .then((r) => r.json())
+      .then((data: { data?: AgentDirectoryRow[] }) => {
+        // Exclude self.
+        const list = (data?.data ?? []).filter(
+          (a) => a.user_id !== currentUserId
+        );
+        setAgents(list);
+      })
+      .catch(() => setAgents([]));
+  }, [currentUserId]);
+
+  const filtered = agents
+    .filter((a) =>
+      query.trim()
+        ? a.display_name?.toLowerCase().includes(query.trim().toLowerCase())
+        : true
+    )
+    .slice(0, 8);
+
+  async function handleSend() {
+    if (!recipient || !body.trim()) return;
+    setSending(true);
+    setError(null);
+    try {
+      await onSend(recipient.user_id, body.trim());
+    } catch {
+      setError("Couldn't send. Try again.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <div
+      style={{
+        marginBottom: "16px",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
+        background: "var(--bg-card)",
+        padding: "16px 20px",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "12px",
+        }}
+      >
+        <p
+          className="font-sans"
+          style={{
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase" as const,
+            color: "var(--text-muted)",
+            margin: 0,
+          }}
+        >
+          New message
+        </p>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex items-center justify-center"
+          style={{
+            width: "24px",
+            height: "24px",
+            border: "none",
+            background: "transparent",
+            color: "var(--text-muted)",
+            cursor: "pointer",
+            borderRadius: "var(--radius)",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
+          onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+          aria-label="Close compose"
+        >
+          <X size={14} strokeWidth={2} />
+        </button>
+      </div>
+
+      {/* Recipient picker */}
+      {!recipient ? (
+        <>
+          <div style={{ position: "relative", marginBottom: "8px" }}>
+            <Search
+              size={14}
+              strokeWidth={2}
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "var(--text-faint)",
+                pointerEvents: "none",
+              }}
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search agents by display name…"
+              className="font-sans outline-none"
+              style={{
+                width: "100%",
+                padding: "8px 10px 8px 32px",
+                fontSize: "13px",
+                color: "var(--text)",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius)",
+              }}
+            />
+          </div>
+          {filtered.length === 0 ? (
+            <p
+              className="font-sans"
+              style={{
+                fontSize: "12px",
+                color: "var(--text-faint)",
+                margin: 0,
+                padding: "8px 0",
+              }}
+            >
+              {agents.length === 0
+                ? "No other agents to message yet."
+                : "No matches. Try another name."}
+            </p>
+          ) : (
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "2px",
+                maxHeight: "240px",
+                overflowY: "auto",
+              }}
+            >
+              {filtered.map((a) => (
+                <li key={a.user_id}>
+                  <button
+                    type="button"
+                    onClick={() => setRecipient(a)}
+                    className="flex items-center font-sans"
+                    style={{
+                      width: "100%",
+                      gap: "8px",
+                      padding: "8px 10px",
+                      fontSize: "13px",
+                      color: "var(--text)",
+                      background: "transparent",
+                      border: "none",
+                      borderRadius: "var(--radius)",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.background = "var(--bg-subtle)")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
+                    <span
+                      className="flex items-center justify-center font-sans"
+                      style={{
+                        width: "26px",
+                        height: "26px",
+                        borderRadius: "50%",
+                        background: "var(--accent-subtle)",
+                        color: "var(--accent)",
+                        fontSize: "10px",
+                        fontWeight: 600,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {(a.display_name ?? "?")
+                        .split(" ")
+                        .map((w) => w[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()}
+                    </span>
+                    {a.display_name ?? "Unnamed agent"}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      ) : (
+        <>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "12px",
+              padding: "8px 10px",
+              background: "var(--bg-subtle)",
+              borderRadius: "var(--radius)",
+            }}
+          >
+            <span
+              className="font-sans"
+              style={{ fontSize: "12px", color: "var(--text-muted)" }}
+            >
+              To:
+            </span>
+            <span
+              className="font-sans"
+              style={{ fontSize: "13px", color: "var(--text)", fontWeight: 500 }}
+            >
+              {recipient.display_name ?? "Unnamed agent"}
+            </span>
+            <button
+              type="button"
+              onClick={() => setRecipient(null)}
+              className="font-sans"
+              style={{
+                marginLeft: "auto",
+                fontSize: "11px",
+                color: "var(--text-muted)",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: "2px 6px",
+              }}
+            >
+              Change
+            </button>
+          </div>
+
+          <textarea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="Write your message…"
+            rows={4}
+            className="w-full resize-none font-sans outline-none"
+            style={{
+              padding: "10px 12px",
+              fontSize: "13px",
+              color: "var(--text)",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              lineHeight: 1.5,
+              marginBottom: "12px",
+            }}
+          />
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "12px",
+            }}
+          >
+            <span
+              className="font-sans"
+              style={{ fontSize: "12px", color: error ? "var(--error)" : "var(--text-faint)" }}
+            >
+              {error ?? ""}
+            </span>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                type="button"
+                onClick={onClose}
+                className="font-sans transition-colors"
+                style={{
+                  padding: "7px 14px",
+                  borderRadius: "var(--radius)",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  background: "transparent",
+                  color: "var(--text)",
+                  border: "1px solid var(--border)",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSend}
+                disabled={!body.trim() || sending}
+                className="font-sans transition-colors disabled:opacity-40"
+                style={{
+                  padding: "7px 14px",
+                  borderRadius: "var(--radius)",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  background: "var(--text)",
+                  color: "var(--inverse-text)",
+                  border: "none",
+                  cursor: !body.trim() || sending ? "not-allowed" : "pointer",
+                }}
+              >
+                {sending ? "Sending…" : "Send"}
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

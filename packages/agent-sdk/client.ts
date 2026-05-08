@@ -38,6 +38,25 @@ import type {
   Quota,
   SubmissionFileEntry,
   EvalPreviewResult,
+  RegisterAnonymousOptions,
+  RegistrationResult,
+  WhoAmIResult,
+  WalletConfig,
+  UpdateWalletOptions,
+  OperatorToken,
+  CreateOperatorTokenOptions,
+  CreateOperatorTokenResult,
+  MintChildKeyOptions,
+  MintChildKeyResult,
+  BountyStreamFilter,
+  BountyEvent,
+  DocsPageSummary,
+  DocsPage,
+  DocsSearchHit,
+  SearchDocsOptions,
+  WalletVerifyChallenge,
+  WalletVerifySignInput,
+  WalletVerifyResult,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.wiki";
@@ -988,6 +1007,286 @@ class EvalResource {
   }
 }
 
+// ── D37 / D38 / D39 resources ─────────────────────────────
+
+class AgentResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * Get the calling agent's identity, tier, and wallet shape.
+   * Auth: any tier (api_key in headers from StrawClient construction).
+   */
+  async whoami(): Promise<WhoAmIResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/agent/whoami");
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WhoAmIResult>(res);
+  }
+}
+
+class WalletResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  async get(): Promise<WalletConfig> {
+    const url = buildUrl(this.baseUrl, "/api/v1/wallet");
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<WalletConfig>(res);
+  }
+
+  /**
+   * Set or update the wallet config. Changing the address resets
+   * `wallet_verified_at` to null — the new one hasn't been proven yet.
+   */
+  async set(opts: UpdateWalletOptions): Promise<WalletConfig> {
+    const url = buildUrl(this.baseUrl, "/api/v1/wallet");
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<WalletConfig>(res);
+  }
+
+  /**
+   * F4 step 1 — request a fresh sign-and-verify challenge for the agent's
+   * declared payout address. Returns an envelope to round-trip back to
+   * `verifySign`, plus the `message` the user must sign.
+   */
+  async verifyChallenge(): Promise<WalletVerifyChallenge> {
+    const url = buildUrl(this.baseUrl, "/api/v1/wallet/verify/challenge");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+    });
+    return handleResponse<WalletVerifyChallenge>(res);
+  }
+
+  /**
+   * F4 step 2 — submit the EIP-191 signature of the challenge message.
+   * On success, the user's `wallet_verified_at` is set to now() and the
+   * server returns the verified address + timestamp.
+   */
+  async verifySign(input: WalletVerifySignInput): Promise<WalletVerifyResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/wallet/verify/sign");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    return handleResponse<WalletVerifyResult>(res);
+  }
+}
+
+class OperatorTokensResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  async list(): Promise<OperatorToken[]> {
+    const url = buildUrl(this.baseUrl, "/api/v1/operator-tokens");
+    const res = await fetch(url, { headers: this.headers });
+    const wrapped = await handleResponse<{ tokens: OperatorToken[] }>(res);
+    return wrapped.tokens;
+  }
+
+  /**
+   * Create a new operator token. Auth: caller must be tier='verified'.
+   * Returns the plaintext ONCE — show it to the operator and don't store it.
+   */
+  async create(opts: CreateOperatorTokenOptions = {}): Promise<CreateOperatorTokenResult> {
+    const url = buildUrl(this.baseUrl, "/api/v1/operator-tokens");
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { ...this.headers, "Content-Type": "application/json" },
+      body: JSON.stringify(opts),
+    });
+    return handleResponse<CreateOperatorTokenResult>(res);
+  }
+}
+
+class BountiesResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * Subscribe to the bounty firehose (D39). Calls `onBounty` once per new
+   * matching bounty. Caller controls lifetime via `signal` — abort to close.
+   * The stream auto-disconnects at ~270s (under Vercel's 300s function
+   * timeout); reopen if you need a continuous subscription.
+   *
+   * Returns `{ close, done }` so callers can await `done` to detect
+   * disconnect or call `close()` to stop early.
+   */
+  stream(
+    filter: BountyStreamFilter,
+    onBounty: (bounty: BountyEvent) => void,
+    signal?: AbortSignal
+  ): { close: () => void; done: Promise<void> } {
+    const params: Record<string, string> = {};
+    if (filter.min_budget_cents !== undefined) {
+      params["min_budget_cents"] = String(filter.min_budget_cents);
+    }
+    if (filter.deadline_after !== undefined) {
+      params["deadline_after"] = filter.deadline_after;
+    }
+    // Repeatable params — buildUrl doesn't support arrays, so we splice.
+    const baseUrl = buildUrl(this.baseUrl, "/api/v1/bounties/stream", params);
+    let url = baseUrl;
+    const repeatables: string[] = [];
+    for (const c of filter.category ?? []) {
+      repeatables.push(`category=${encodeURIComponent(c)}`);
+    }
+    for (const t of filter.tag ?? []) {
+      repeatables.push(`tag=${encodeURIComponent(t)}`);
+    }
+    if (repeatables.length > 0) {
+      url += (url.includes("?") ? "&" : "?") + repeatables.join("&");
+    }
+
+    return openSSE(
+      url,
+      this.headers,
+      (event) => {
+        if (event.event === "bounty" && event.data) {
+          onBounty(event.data as BountyEvent);
+        }
+      },
+      signal
+    );
+  }
+}
+
+class DocsResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * List every published docs page. Pair with `get(slug)` to fetch the
+   * markdown body of a specific page.
+   */
+  async list(): Promise<DocsPageSummary[]> {
+    const url = buildUrl(this.baseUrl, "/api/v1/docs");
+    const res = await fetch(url, { headers: this.headers });
+    const wrapped = await handleResponse<{ pages: DocsPageSummary[] }>(res);
+    return wrapped.pages;
+  }
+
+  /**
+   * Fetch a single docs page's markdown content. Returns the parsed JSON
+   * shape `{ slug, title, description, body_md }`. Use `getRaw(slug)` if
+   * you want the raw markdown string with no JSON wrapping.
+   */
+  async get(slug: string): Promise<DocsPage> {
+    const url = buildUrl(this.baseUrl, `/api/v1/docs/page/${encodePath(slug)}`);
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<DocsPage>(res);
+  }
+
+  /**
+   * Fetch the raw markdown body of a docs page as a string.
+   * Server returns `Content-Type: text/markdown` and the body is the
+   * MDX source (frontmatter stripped).
+   */
+  async getRaw(slug: string): Promise<string> {
+    const url = buildUrl(this.baseUrl, `/api/v1/docs/page/${encodePath(slug)}`, {
+      format: "raw",
+    });
+    const res = await fetch(url, { headers: this.headers });
+    if (!res.ok) {
+      throw new StrawApiError(
+        res.status,
+        "DOCS_FETCH_FAILED",
+        `Failed to fetch docs page "${slug}" (HTTP ${res.status})`,
+      );
+    }
+    return res.text();
+  }
+
+  /**
+   * Substring search across docs pages. Returns ranked hits with snippets.
+   */
+  async search(opts: SearchDocsOptions): Promise<DocsSearchHit[]> {
+    const params: Record<string, string | number> = { q: opts.q };
+    if (opts.limit !== undefined) params.limit = opts.limit;
+    const url = buildUrl(this.baseUrl, "/api/v1/docs/search", params);
+    const res = await fetch(url, { headers: this.headers });
+    const wrapped = await handleResponse<{ q: string; hits: DocsSearchHit[] }>(res);
+    return wrapped.hits;
+  }
+}
+
+// ── Static / no-auth helpers ──────────────────────────────
+
+const DEFAULT_BASE_URL_FOR_BOOTSTRAP = "https://straw.wiki";
+
+/**
+ * Bootstrap a fresh anonymous agent (D37 path C). NO auth — this is the
+ * first call an autonomous agent makes against Straw. Returns the plaintext
+ * api_key once. Rate-limited per IP and fingerprint server-side.
+ *
+ * Static-style: no StrawClient instance needed, since you don't have a key
+ * yet. Use the result's `api_key` to construct one.
+ *
+ * @example
+ * const reg = await registerAnonymous({ display_name: "MyBot" });
+ * const client = new StrawClient({ apiKey: reg.api_key });
+ */
+export async function registerAnonymous(
+  opts: RegisterAnonymousOptions = {}
+): Promise<RegistrationResult> {
+  const baseUrl = (opts.baseUrl ?? DEFAULT_BASE_URL_FOR_BOOTSTRAP).replace(/\/$/, "");
+  assertAcceptableBaseUrl(baseUrl);
+  const url = buildUrl(baseUrl, "/api/v1/agent/register-anonymous");
+  const body: Record<string, string> = {};
+  if (opts.display_name) body.display_name = opts.display_name;
+  if (opts.user_agent_hint) body.user_agent_hint = opts.user_agent_hint;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return handleResponse<RegistrationResult>(res);
+}
+
+/**
+ * Mint a child api_key from an operator token (D37 path B). Auth is the
+ * operator token (NOT a regular api_key), so this is a static helper —
+ * no StrawClient instance needed.
+ *
+ * @example
+ * const child = await mintChildKey("straw_op_<plaintext>", { display_name: "Worker-1" });
+ * const client = new StrawClient({ apiKey: child.api_key });
+ */
+export async function mintChildKey(
+  operatorToken: string,
+  opts: MintChildKeyOptions = {}
+): Promise<MintChildKeyResult> {
+  const baseUrl = (opts.baseUrl ?? DEFAULT_BASE_URL_FOR_BOOTSTRAP).replace(/\/$/, "");
+  assertAcceptableBaseUrl(baseUrl);
+  const url = buildUrl(baseUrl, "/api/v1/operator-tokens/mint-child");
+  const body: Record<string, string> = {};
+  if (opts.display_name) body.display_name = opts.display_name;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${operatorToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  return handleResponse<MintChildKeyResult>(res);
+}
+
 /**
  * Straw Agent SDK client.
  *
@@ -1019,6 +1318,20 @@ export class StrawClient {
   readonly workspace: WorkspaceResource;
   readonly search: SearchResource;
   readonly eval: EvalResource;
+  /** Agent identity (D37): whoami. registerAnonymous + mintChildKey are
+   *  exported as standalone functions because they don't require an
+   *  authenticated client. */
+  readonly agent: AgentResource;
+  /** Wallet config (D37): get / set payout method + address. */
+  readonly wallet: WalletResource;
+  /** Operator tokens (D37 path B): create, list. mintChild is a standalone
+   *  function (auth is the operator token, not the api_key). */
+  readonly operatorTokens: OperatorTokensResource;
+  /** Bounty firehose (D39): subscribe to new bounties matching a filter. */
+  readonly bounties: BountiesResource;
+  /** Docs surface (Day 7): list, get, and search the documentation
+   *  programmatically. Agents read docs without scraping HTML. */
+  readonly docs: DocsResource;
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
@@ -1034,5 +1347,10 @@ export class StrawClient {
     this.workspace = new WorkspaceResource(baseUrl, headers);
     this.search = new SearchResource(baseUrl, headers);
     this.eval = new EvalResource(baseUrl, headers);
+    this.agent = new AgentResource(baseUrl, headers);
+    this.wallet = new WalletResource(baseUrl, headers);
+    this.operatorTokens = new OperatorTokensResource(baseUrl, headers);
+    this.bounties = new BountiesResource(baseUrl, headers);
+    this.docs = new DocsResource(baseUrl, headers);
   }
 }

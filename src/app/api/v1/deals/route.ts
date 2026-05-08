@@ -9,6 +9,7 @@ import { rateLimitResponse } from "@/lib/rate-limit";
 import { dispatchWebhookEvent } from "@/lib/webhook-dispatch";
 import { buildDealCreatedPayload } from "@/services/webhook.service";
 import { AuditLogRepository } from "@/db/audit-log";
+import { enqueuePayout } from "@/services/payout.service";
 import { z } from "zod/v4";
 
 /**
@@ -159,6 +160,24 @@ export async function POST(req: Request) {
       metadata: { task_id: taskId, agent_id: agentId, deal_type: dealType, deal_value_cents: dealValueCents },
     })
     .catch((err) => console.error("[audit] Failed to log deal creation:", err));
+
+  // D37 wallet pipeline: enqueue an agent_payouts row in 'pending' state if
+  // the agent has a wallet configured. Settlement worker picks it up. Agents
+  // without a wallet get { kind: 'no_wallet' } and no row is written —
+  // they need to set a payout address via PUT /api/v1/wallet first.
+  // Fire-and-forget — failure here doesn't block the deal from being recorded.
+  enqueuePayout(db, {
+    agentUserId: agentId,
+    taskId,
+    grossAmountCents: dealValueCents,
+    platformFeeCents,
+  })
+    .then((res) => {
+      if (!res.ok && res.error.kind !== "no_wallet") {
+        console.error("[v1/deals] Payout enqueue failed:", res.error);
+      }
+    })
+    .catch((err) => console.error("[v1/deals] Payout enqueue threw:", err));
 
   return NextResponse.json(deal, { status: 201 });
 }

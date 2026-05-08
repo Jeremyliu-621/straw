@@ -1,4 +1,17 @@
-import type { UserRole, TaskStatus, SubmissionStatus, DealType, AuditAction, NotificationType, InvitationStatus, EvalMode, WebhookDeliveryStatus } from "@/constants";
+import type {
+  UserRole,
+  TaskStatus,
+  SubmissionStatus,
+  DealType,
+  AuditAction,
+  NotificationType,
+  InvitationStatus,
+  EvalMode,
+  WebhookDeliveryStatus,
+  ApiKeyTier,
+  PayoutMethod,
+  PayoutStatus,
+} from "@/constants";
 
 // ── Base ─────────────────────────────────────────────────────
 
@@ -395,4 +408,116 @@ export interface TaskInvitationInsert {
   company_id: string;
   agent_id: string;
   message?: string | null;
+}
+
+// ── User wallet fields (D37) ─────────────────────────────────
+// These columns live on the `users` table itself (migration 040). Kept as a
+// separate interface for callers that only care about wallet shape.
+
+export interface UserWalletFields {
+  payout_address: string | null;
+  payout_method: PayoutMethod | null;
+  payout_chain: string | null;
+  wallet_verified_at: string | null;
+  is_floor_qualified: boolean;
+}
+
+// ── API Keys (migration 020 + 040) ───────────────────────────
+
+export interface ApiKey extends Timestamps {
+  id: string;
+  user_id: string;
+  key_hash: string;
+  prefix: string;
+  name: string | null;
+  tier: ApiKeyTier;
+  operator_token_id: string | null;
+  last_used_at: string | null;
+  revoked_at: string | null;
+}
+
+export interface ApiKeyInsert {
+  user_id: string;
+  key_hash: string;
+  prefix: string;
+  name?: string | null;
+  tier?: ApiKeyTier;
+  operator_token_id?: string | null;
+}
+
+// ── Operator Tokens (D37 path B) ─────────────────────────────
+
+export interface OperatorToken extends Timestamps {
+  id: string;
+  operator_user_id: string;
+  token_hash: string;
+  prefix: string;
+  label: string | null;
+  monthly_quota_submissions: number;
+  used_quota_submissions: number;
+  child_quota_pct: number;
+  revoked_at: string | null;
+  revoked_reason: string | null;
+  last_used_at: string | null;
+}
+
+export interface OperatorTokenInsert {
+  operator_user_id: string;
+  token_hash: string;
+  prefix: string;
+  label?: string | null;
+  monthly_quota_submissions?: number;
+  child_quota_pct?: number;
+}
+
+// ── Agent Payouts (D37 wallet) ───────────────────────────────
+
+export interface AgentPayout {
+  id: string;
+  agent_user_id: string;
+  task_id: string | null;
+  submission_id: string | null;
+  amount_cents: number;
+  currency: string;
+  payout_method: PayoutMethod;
+  payout_address: string | null;
+  payout_chain: string | null;
+  status: PayoutStatus;
+  txid: string | null;
+  failure_count: number;
+  error_message: string | null;
+  raw_provider_response: Record<string, unknown> | null;
+  created_at: string;
+  queued_at: string | null;
+  sent_at: string | null;
+  confirmed_at: string | null;
+  refunded_at: string | null;
+}
+
+export interface AgentPayoutInsert {
+  agent_user_id: string;
+  task_id?: string | null;
+  submission_id?: string | null;
+  amount_cents: number;
+  currency?: string;
+  payout_method: PayoutMethod;
+  payout_address?: string | null;
+  payout_chain?: string | null;
+}
+
+// Stake Charges + Coinbase Webhook Events: types REMOVED 2026-05-07
+// alongside the stake-to-bootstrap path A. Tables remain in the DB as
+// dead artifacts; no code reads or writes them. See HANDOFF.md.
+
+// ── Anonymous Register Log (audit only) ──────────────────────
+
+export interface AnonymousRegisterLogEntry {
+  id: string;
+  source_ip: string;
+  ua_fingerprint: string | null;
+  user_id: string | null;
+  api_key_id: string | null;
+  rejected: boolean;
+  rejection_reason: string | null;
+  created_at: string;
 }

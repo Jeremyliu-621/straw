@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #fafafa;
-  --bg-subtle: #f4f4f4;
-  --border: #e5e5e5;
-  --text: #111111;
-  --text-muted: #737373;
-  --text-faint: #a3a3a3;
-  --inverse-bg: #111111;
+  /* ── Surfaces (per ElevenLabs study) ──────────────────────────── */
+  --bg: #f5f5f5;            /* canvas — page background, off-white */
+  --bg-subtle: #fafafa;     /* canvas-soft — section bands, sidebar */
+  --bg-card: #ffffff;       /* surface-card — actual card body */
+  --bg-strong: #f0efed;     /* surface-strong — chips, sidebar active row */
+
+  /* ── Borders ──────────────────────────────────────────────────── */
+  --border: #e7e5e4;            /* hairline (default) */
+  --border-strong: #d6d3d1;     /* hairline-strong (input fields) */
+
+  /* ── Text ─────────────────────────────────────────────────────── */
+  --text: #0c0a09;          /* ink */
+  --text-body: #4e4e4e;     /* body copy */
+  --text-muted: #777169;    /* secondary */
+  --text-faint: #a8a29e;    /* tertiary */
+  --inverse-bg: #0c0a09;
   --inverse-text: #fafafa;
 
-  /* Semantic — use only for state, never decoration */
+  /* ── Semantic (state only, never decoration) ──────────────────── */
   --success: #16a34a;
   --error: #dc2626;
   --warning: #d97706;
   --info: #2563eb;
 
-  /* Accent — monochrome, shared across roles */
-  --accent: #111111;
-  --accent-subtle: #f4f4f4;
-  --accent-border: #e5e5e5;
-  --accent-muted: #525252;
+  /* ── Primary CTA (saturated coral, single-action — never two) ── */
+  --cta: #e87a6f;            /* peach #f7d4d0 taken to full saturation */
+  --cta-hover: #d96255;
+  --cta-ink: #ffffff;        /* foreground on the coral pill */
+
+  /* ── Atmospheric pastel orbs (decoration only, never fills) ──── */
+  --orb-peach:    #f7d4d0;
+  --orb-lavender: #d9d4f6;
+  --orb-blue:     #cfd5e8;
+  --orb-beige:    #e0d6d0;
+  --orb-coral:    #ecd0cc;
+  --orb-sage:     #d0d7d1;
+
+  /* ── Pastel TINTS for full-card category backgrounds ──────────── */
+  /* Lighter washes (~40% mix with white) so cards stay legible      */
+  /* with text + chips on top. Used on TaskCard / CompletedTaskCard. */
+  --tint-peach:    #fcebe9;
+  --tint-lavender: #ece9fb;
+  --tint-blue:     #e6eaf3;
+  --tint-beige:    #ede5e1;
+  --tint-coral:    #f5e4e1;
+  --tint-sage:     #e3eae4;
+
+  /* ── Radius (unchanged from before — revisit after pastels land) ── */
+  --radius: 2.5px;
+
+  /* ── Legacy aliases — `--accent` was previously ink-black across the
+       app for "primary action / selected state / icon". Keep it ink so
+       hundreds of existing inline styles don't all go coral by accident.
+       Coral is reserved for explicit primary CTAs that opt-in via
+       `var(--cta)` directly. */
+  --accent: var(--text);
+  --accent-subtle: var(--bg-strong);
+  --accent-border: var(--border);
+  --accent-muted: var(--text-muted);
 }
 
 [data-role="company"] {
@@ -37,11 +76,85 @@
   --accent-muted: #3f3f46;
 }
 
+/* ── Theme: warm-dim — distinctly tan/cream surfaces, warmer text. ─
+   Saturated enough that the difference from light is obvious at a
+   glance. Orbs untouched; tints shift to fit the cream base. */
+:root[data-theme="warm-dim"] {
+  --bg: #e6d6b8;
+  --bg-subtle: #ddc99e;
+  --bg-card: #f1e6c9;
+  --bg-strong: #cdb78a;
+
+  --border: #b9a577;
+  --border-strong: #9a8657;
+
+  --text: #2a1f0e;
+  --text-body: #4d3f24;
+  --text-muted: #75623e;
+  --text-faint: #9d8a64;
+  --inverse-bg: #2a1f0e;
+  --inverse-text: #f1e6c9;
+
+  /* Tints reworked for cream base */
+  --tint-peach:    #f5dccd;
+  --tint-lavender: #e0dbef;
+  --tint-blue:     #dadfeb;
+  --tint-beige:    #e8ddc6;
+  --tint-coral:    #efd6c8;
+  --tint-sage:     #d8dec8;
+}
+
+/* ── Theme: dark — deep neutral surface. ──────────────────────────
+   Pastels stay vivid (color identity is the point). Tints flip to
+   dark-saturated versions so they read as "tint" without going white
+   on a black surface. */
+:root[data-theme="dark"] {
+  --bg: #0e0e10;
+  --bg-subtle: #18181b;
+  --bg-card: #1f1f23;
+  --bg-strong: #27272a;
+
+  --border: #2f2f33;
+  --border-strong: #3f3f46;
+
+  --text: #fafafa;
+  --text-body: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-faint: #71717a;
+  --inverse-bg: #fafafa;
+  --inverse-text: #0e0e10;
+
+  /* Pastels stay vivid in dark mode — color is the brand */
+  --orb-peach:    #f7d4d0;
+  --orb-lavender: #d9d4f6;
+  --orb-blue:     #cfd5e8;
+  --orb-beige:    #e0d6d0;
+  --orb-coral:    #ecd0cc;
+  --orb-sage:     #d0d7d1;
+
+  /* Tints flip to dark-saturated for use as card backgrounds */
+  --tint-peach:    #3a2925;
+  --tint-lavender: #29243a;
+  --tint-blue:     #1f2436;
+  --tint-beige:    #322c25;
+  --tint-coral:    #382925;
+  --tint-sage:     #262e28;
+
+  --accent: var(--text);
+  --accent-subtle: var(--bg-strong);
+  --accent-border: var(--border);
+  --accent-muted: var(--text-muted);
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-subtle: var(--bg-subtle);
+  --color-bg-card: var(--bg-card);
+  --color-bg-strong: var(--bg-strong);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-text: var(--text);
+  --color-text-body: var(--text-body);
   --color-text-muted: var(--text-muted);
   --color-text-faint: var(--text-faint);
   --color-inverse-bg: var(--inverse-bg);
@@ -50,9 +163,10 @@
   --color-error: var(--error);
   --color-warning: var(--warning);
   --color-info: var(--info);
-  --font-sans: var(--font-geist-sans);
+  --color-cta: var(--cta);
+  --color-cta-hover: var(--cta-hover);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
-  --radius: 2.5px;
 }
 
 :focus-visible {
@@ -88,7 +202,7 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

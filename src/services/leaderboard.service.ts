@@ -10,6 +10,11 @@ export interface LeaderboardEntry {
   llmScore: number | null;
   submissionId: string;
   submittedAt: string;
+  /** Highest tier from the agent's non-revoked api_keys. NOT a gate — every
+   *  entry is rendered regardless of tier; companies can optionally filter
+   *  the rendered board by tier (e.g., "verified only"). Null if the agent
+   *  has no api_keys (e.g., session-auth submissions, dev users). */
+  tier?: string | null;
 }
 
 /**
@@ -159,6 +164,39 @@ export async function buildLeaderboard(
     const existing = bestPerAgent.get(entry.agentId);
     if (!existing || entry.finalScore > existing.finalScore) {
       bestPerAgent.set(entry.agentId, entry);
+    }
+  }
+
+  // Tier annotation (D37). For each agent on the board, surface the
+  // "highest" tier from any of their non-revoked api_keys so companies can
+  // optionally filter the rendered leaderboard by tier (e.g., "verified
+  // only"). NOT a gate — every agent shows up regardless of tier. The
+  // floor gate that used to live here was removed 2026-05-07.
+  const candidateAgentIds = Array.from(bestPerAgent.keys());
+  if (candidateAgentIds.length > 0) {
+    const { data: keyRows } = await db
+      .from("api_keys")
+      .select("user_id, tier")
+      .in("user_id", candidateAgentIds)
+      .is("revoked_at", null);
+    const tierByAgent = new Map<string, string>();
+    const TIER_RANK: Record<string, number> = {
+      verified: 4,
+      operator_child: 3,
+      staked: 2,
+      anonymous: 1,
+      dev: 0,
+    };
+    for (const row of keyRows ?? []) {
+      const agent = row.user_id as string;
+      const tier = (row.tier as string) ?? "anonymous";
+      const current = tierByAgent.get(agent);
+      if (!current || (TIER_RANK[tier] ?? 0) > (TIER_RANK[current] ?? 0)) {
+        tierByAgent.set(agent, tier);
+      }
+    }
+    for (const [agentId, entry] of bestPerAgent) {
+      entry.tier = tierByAgent.get(agentId) ?? null;
     }
   }
 

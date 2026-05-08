@@ -837,6 +837,31 @@ The 2026-05-05 entry below claimed Q1 was green, but the .env.local Gemini key w
 
 Minor papercut to file later: `submission_status` stays at `"completed"` (upload status) the entire eval — the eval-progress signal is `evaluation_dimensions` rows landing + `evaluated: true` + `scores.final_score` on `GET /api/v1/submissions/[id]`. Agents writing polling loops naively on `submission_status` will think nothing's happening. Either rename the upload status (breaking) or surface a derived `eval_status` field. Defer.
 
+### Session 2026-05-07 evening — Agent-first customer epic (D37/D38/D39/D40)
+
+User reframe: "How do we make agents our primary customer?" → Build the registration + wallet + CLI + bounty firehose so autonomous agents go from zero → registered → submitted → scored without a human in the loop. Doctrine reset (D40): two roles (post + compete), both agent-first, humans secondary. Authoritative spec at `tasks/proposals/agent-first-customer-2026-05-07.md`. Locked: ship all three Tier-1 paths (A+B+C) for D37; on-chain USDC + Coinbase Commerce as live wallet rails; thin CLI 1:1 with MCP tools.
+
+Shipped this session (13 commits, see `tasks/HANDOFF.md` for the per-commit table):
+
+- ✅ **Doctrine** — full rewrite of `AGENT_FIRST_DREAM.md` (D40). Two filters running in parallel, ratifies arena/dashboard/brand work, original 2026-04-24 version preserved as audit history. Anchor docs (REQUIREMENTS, HOW_IT_WORKS, PRODUCT_VISION, YC_APPLICATION_DRAFT) carry surgical D40 banners.
+- ✅ **Schema** — migration 040 (`agent_identity_and_wallet.sql`). Adds api_keys.tier + operator_token_id, payout columns + payout_method enum + is_floor_qualified on users, operator_tokens table, agent_payouts table, stake_charges table, coinbase_webhook_events table, anonymous_register_log table. ⚠ NOT YET APPLIED to live DB.
+- ✅ **Services** — operator-token.service (create/list/find/revoke + childSubmissionBudget), agent-identity.service (registerAnonymous, mintOperatorChildKey, syntheticEmail/AuthProviderId, sanitizeDisplayName, checkAnonymousRegisterRateLimit), wallet-validation lib. 62 new tests, all green.
+- ✅ **Routes** — `POST /api/v1/agent/register-anonymous` (D37 path C), `GET /api/v1/agent/whoami`, `GET|PUT /api/v1/wallet`, `GET|POST /api/v1/operator-tokens`, `POST /api/v1/operator-tokens/mint-child` (D37 path B). Auth surface (`auth-api-key.ts` + `auth-unified.ts`) gains tier + operatorTokenId + isFloorQualified.
+- ✅ **D39 firehose** — `GET /api/v1/bounties/stream` (SSE, filterable by category/min_budget/tag/deadline_after).
+- ✅ **SDK 0.4.0** — new resources (`client.agent`, `client.wallet`, `client.operatorTokens`, `client.bounties`) + standalone `registerAnonymous` and `mintChildKey` exports.
+- ✅ **MCP 1.4.0** — 5 new tools (whoami, wallet_get, wallet_set, operator_tokens_list, operator_tokens_create, subscribe_bounties). Server instructions blob rewritten to D40 framing.
+- ✅ **CLI 0.2.0** — `register / login / logout / whoami / wallet / tasks / submit / watch / subscribe`. End-to-end demo: zero → registered → wallet set → discovered → submitted → scored, all in shell.
+- ✅ **Discovery surface** — `/llms.txt` + `/.well-known/agent.json` advertise the new endpoints, the three Tier-1 paths, the wallet shape, the firehose, and the CLI.
+- ✅ **Security followups doc** — `tasks/strategy/agent-first-security-followups.md` carries 8 deferred tradeoff entries (F1–F8) for the security pass.
+
+Pickup work in priority order (full detail in `tasks/HANDOFF.md`):
+1. Apply migration 040 to live DB (`npx supabase db query --linked --file supabase/migrations/040_agent_identity_and_wallet.sql`).
+2. D37 path A — Coinbase Commerce webhook + stake claim flow.
+3. Wallet payout pipeline (settlement worker for USDC on win).
+4. F8 floor-gate enforcement in submission flow.
+5. Publish SDK 0.4.0 + MCP 1.4.0 + CLI 0.2.0 (first publish for CLI).
+6. End-to-end smoke test against live, capture in `tasks/research/agent-first-customer-smoke-2026-05-XX.md`.
+
 <!-- RESUME HERE -->
 
 ### Right Now Milestone (D36) — Q1 GREEN, Q2 STILL BLOCKED ON DOG'S GATEWAY

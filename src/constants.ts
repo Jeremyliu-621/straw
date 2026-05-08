@@ -303,3 +303,90 @@ export const INVITATION_STATUS = {
 export type InvitationStatus = (typeof INVITATION_STATUS)[keyof typeof INVITATION_STATUS];
 export const INVITATION_MESSAGE_MAX_LENGTH = 1000;
 export const INVITATION_MAX_PER_TASK = 20;
+
+// ── Agent Identity Tiers (D37, D40) ─────────────────────────
+// Each api_key carries a tier indicating which registration path minted it.
+// Wire format mirrors the Postgres enum `api_key_tier` exactly. Source of
+// truth: supabase/migrations/040_agent_identity_and_wallet.sql.
+//
+// Note (cleanup 2026-05-07): the `staked` value is retained in the enum but
+// is never minted — the stake-to-bootstrap path A was removed. Existing
+// rows (none in prod) would still validate.
+export const API_KEY_TIER = {
+  VERIFIED: "verified",
+  OPERATOR_CHILD: "operator_child",
+  STAKED: "staked",
+  ANONYMOUS: "anonymous",
+  DEV: "dev",
+} as const;
+export type ApiKeyTier = (typeof API_KEY_TIER)[keyof typeof API_KEY_TIER];
+
+// ── Operator Tokens (D37 path B) ────────────────────────────
+// Format: straw_op_<32 hex chars from 16 random bytes>. Distinct from api_key
+// prefix so logs and grep can tell them apart at a glance.
+export const OPERATOR_TOKEN_PREFIX = "straw_op_" as const;
+export const OPERATOR_TOKEN_RANDOM_BYTES = 16;
+export const OPERATOR_TOKEN_DEFAULT_MONTHLY_QUOTA = 1000;
+export const OPERATOR_TOKEN_MAX_PER_USER = 10;
+export const OPERATOR_TOKEN_DEFAULT_CHILD_QUOTA_PCT = 100;
+
+// ── Wallet / Payout Methods (D37) ───────────────────────────
+// Wire format mirrors the Postgres enum `payout_method` exactly. On-chain USDC
+// and Coinbase Commerce are the two live rails; Stripe options are designed
+// in schema but not wired yet.
+export const PAYOUT_METHOD = {
+  ONCHAIN_USDC: "onchain_usdc",
+  COINBASE_COMMERCE: "coinbase_commerce",
+  STRIPE_CRYPTO: "stripe_crypto",
+  STRIPE_USD: "stripe_usd",
+} as const;
+export type PayoutMethod = (typeof PAYOUT_METHOD)[keyof typeof PAYOUT_METHOD];
+
+export const PAYOUT_METHOD_LIVE = [
+  PAYOUT_METHOD.ONCHAIN_USDC,
+  PAYOUT_METHOD.COINBASE_COMMERCE,
+] as const;
+
+// Default chain for on-chain USDC. Base is the Coinbase L2; cheapest USDC fees
+// for autonomous agents.
+export const PAYOUT_DEFAULT_CHAIN = "base" as const;
+export const PAYOUT_SUPPORTED_CHAINS = ["base", "optimism", "arbitrum", "mainnet"] as const;
+export type PayoutChain = (typeof PAYOUT_SUPPORTED_CHAINS)[number];
+
+/**
+ * Native USDC contract addresses per chain. These are Circle's official
+ * USDC contracts (not bridged USDC.e variants — those are deprecated).
+ *
+ * - Base:      https://basescan.org/token/0x833589fcd6edb6e08f4c7c32d4f71b54bda02913
+ * - Optimism:  https://optimistic.etherscan.io/token/0x0b2c639c533813f4aa9d7837caf62653d097ff85
+ * - Arbitrum:  https://arbiscan.io/token/0xaf88d065e77c8cc2239327c5edb3a432268e5831
+ * - Mainnet:   https://etherscan.io/token/0xa0b86a33e6d63b3a3a3ad4a8b3a8d7f86dad1c3d  (Circle USDC)
+ */
+export const USDC_CONTRACTS: Record<PayoutChain, `0x${string}`> = {
+  base: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  optimism: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+  arbitrum: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+  mainnet: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+} as const;
+
+/** USDC has 6 decimals (not 18). 1 USDC = 1_000_000 atomic units. */
+export const USDC_DECIMALS = 6 as const;
+
+// EVM address regex. Matches Postgres CHECK constraint
+// `users_payout_address_format` exactly.
+export const EVM_ADDRESS_REGEX = /^0x[0-9a-fA-F]{40}$/;
+
+// ── Payout Status (D37) ─────────────────────────────────────
+export const PAYOUT_STATUS = {
+  PENDING: "pending",
+  QUEUED: "queued",
+  SENT: "sent",
+  CONFIRMED: "confirmed",
+  FAILED: "failed",
+  REFUNDED: "refunded",
+} as const;
+export type PayoutStatus = (typeof PAYOUT_STATUS)[keyof typeof PAYOUT_STATUS];
+
+// Stake Charge Status (D37 path A) — REMOVED 2026-05-07. The stake table
+// (stake_charges) and enum (stake_charge_status) remain in the DB schema as
+// dead artifacts of migration 040; no code path mints or reads them anymore.

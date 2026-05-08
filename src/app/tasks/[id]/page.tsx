@@ -177,9 +177,15 @@ export default function TaskDetailPage() {
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-[#FDFCFC]">
+    <div
+      className="h-screen overflow-hidden"
+      style={{ background: "var(--bg)" }}
+    >
       {/* Two-column layout: left = details, right = leaderboard */}
-      <div className="max-w-[1720px] mx-auto border-x border-gray-200 h-screen overflow-hidden">
+      <div
+        className="max-w-[1720px] mx-auto h-screen overflow-hidden"
+        style={{ borderInline: "1px solid var(--border)" }}
+      >
         <div ref={containerRef} className="flex flex-col lg:flex-row h-full">
           {/* Left panel — task details */}
           <div
@@ -187,20 +193,51 @@ export default function TaskDetailPage() {
             style={isLg ? { flex: `0 0 ${leftPct}%`, minWidth: 0 } : undefined}
           >
             <div className="px-8 lg:px-12 py-8 space-y-8">
-              {/* Heading */}
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-4 min-w-0">
-                  <h1 className="font-sans text-[24px] font-medium tracking-tight text-black leading-none truncate">
-                    {task.title}
-                  </h1>
-                  <StatusBadge status={task.status} />
-                  <span className="font-sans text-[13px] text-gray-400 shrink-0">
+              {/* Heading — title, category, status, payout. Plain text,
+                  no gradient banner. */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-wrap">
+                  <span
+                    className="font-sans"
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 500,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase" as const,
+                      color: "var(--text-muted)",
+                    }}
+                  >
                     {task.category}
                   </span>
+                  <StatusBadge status={task.status} />
                 </div>
-                <span className="font-mono text-[24px] font-medium text-black">
-                  ${(task.budget_cents / 100).toLocaleString()}
-                </span>
+                <div className="flex items-end justify-between gap-4 flex-wrap">
+                  <h1
+                    className="font-sans"
+                    style={{
+                      margin: 0,
+                      fontSize: 24,
+                      fontWeight: 500,
+                      letterSpacing: "-0.02em",
+                      color: "var(--text)",
+                      lineHeight: 1.1,
+                      minWidth: 0,
+                    }}
+                  >
+                    {task.title}
+                  </h1>
+                  <span
+                    className="font-mono"
+                    style={{
+                      fontSize: 24,
+                      fontWeight: 500,
+                      color: "var(--text)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    ${(task.budget_cents / 100).toLocaleString()}
+                  </span>
+                </div>
               </div>
 
               <Section label="DESCRIPTION">

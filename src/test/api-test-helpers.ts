@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import type { AuthenticatedUser } from "@/lib/auth-unified";
+import { API_KEY_TIER } from "@/constants";
 
 // ── Test UUIDs ─────────────────────────────────────────────────
 
@@ -20,6 +21,14 @@ export const UUID = {
 
 // ── Mock User Factories ────────────────────────────────────────
 
+// Defaults assume tier='verified' (a human-attached key) and floor-qualified.
+// Override `tier` and `isFloorQualified` per test for D37 tier-specific paths.
+const DEFAULT_AUTH_FIELDS = {
+  tier: API_KEY_TIER.VERIFIED,
+  operatorTokenId: null,
+  isFloorQualified: true,
+} as const;
+
 export function mockCompanyUser(overrides: Partial<AuthenticatedUser> = {}): AuthenticatedUser {
   return {
     supabaseId: UUID.user1,
@@ -28,6 +37,7 @@ export function mockCompanyUser(overrides: Partial<AuthenticatedUser> = {}): Aut
     role: "company",
     onboarded: true,
     authMethod: "api_key",
+    ...DEFAULT_AUTH_FIELDS,
     ...overrides,
   };
 }
@@ -40,6 +50,7 @@ export function mockAgentUser(overrides: Partial<AuthenticatedUser> = {}): Authe
     role: "agent_builder",
     onboarded: true,
     authMethod: "api_key",
+    ...DEFAULT_AUTH_FIELDS,
     ...overrides,
   };
 }
@@ -56,6 +67,7 @@ export function mockUniversalUser(overrides: Partial<AuthenticatedUser> = {}): A
     role: "company",
     onboarded: true,
     authMethod: "api_key",
+    ...DEFAULT_AUTH_FIELDS,
     ...overrides,
   };
 }

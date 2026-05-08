@@ -27,6 +27,9 @@ const VALID_USER: ApiKeyUser = {
   role: "agent_builder",
   supabaseId: "11111111-1111-4111-a111-111111111111",
   onboarded: true,
+  tier: "verified",
+  operatorTokenId: null,
+  isFloorQualified: true,
 };
 
 function jsonRpcRequest(body: unknown, headers: Record<string, string> = {}): Request {

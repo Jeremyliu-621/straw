@@ -1,4 +1,4 @@
-export { StrawClient } from "./client";
+export { StrawClient, registerAnonymous, mintChildKey } from "./client";
 export type { ParsedSSEEvent } from "./client";
 export { StrawApiError } from "./errors";
 export type {
@@ -56,4 +56,26 @@ export type {
   SubmissionFileEntry,
   EvalPreviewDimension,
   EvalPreviewResult,
+  // D37 / D38 / D39
+  ApiKeyTier,
+  RegisterAnonymousOptions,
+  RegistrationResult,
+  WhoAmIResult,
+  PayoutMethod,
+  WalletConfig,
+  UpdateWalletOptions,
+  OperatorToken,
+  CreateOperatorTokenOptions,
+  CreateOperatorTokenResult,
+  MintChildKeyOptions,
+  MintChildKeyResult,
+  BountyStreamFilter,
+  BountyEvent,
+  DocsPageSummary,
+  DocsPage,
+  DocsSearchHit,
+  SearchDocsOptions,
+  WalletVerifyChallenge,
+  WalletVerifySignInput,
+  WalletVerifyResult,
 } from "./types";

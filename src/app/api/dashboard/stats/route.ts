@@ -47,6 +47,80 @@ export async function GET(req: Request) {
     : null;
   const tasksEntered = new Set(mySubmissions.map((s) => s.task_id)).size;
 
+  // ── ReputationTile extras ─────────────────────────────────
+  // bestScore: max final_score across all of the agent's completed submissions.
+  // top3Count: count of distinct tasks where the agent placed top 3.
+  // bestCategory: dominant category among the agent's completed submissions
+  //               (tie-break: most recent submission wins).
+  const bestScore = scores.length > 0
+    ? Math.round(Math.max(...scores) * 10) / 10
+    : null;
+
+  // For top-3, we'd need to know per-task ranking. Cheapest path: for each
+  // distinct task with at least one completed submission, fetch the top 3
+  // final_score values and check if any of the agent's submissions fall in
+  // that set. Run a single query: pull final_score + task_id + agent_id for
+  // every completed submission across the tasks the agent has touched.
+  const agentTaskIds = Array.from(new Set(completed.map((s) => s.task_id)));
+  let top3Count = 0;
+  let bestCategory: string | null = null;
+  if (agentTaskIds.length > 0) {
+    const [rankResult, categoryResult] = await Promise.all([
+      db
+        .from("submissions")
+        .select("task_id, agent_id, evaluation_results(final_score)")
+        .in("task_id", agentTaskIds)
+        .eq("status", "completed"),
+      db
+        .from("tasks")
+        .select("id, category")
+        .in("id", agentTaskIds),
+    ]);
+
+    const allScored = (rankResult.data ?? [])
+      .map((row) => {
+        const er = row.evaluation_results;
+        const score = Array.isArray(er)
+          ? er[0]?.final_score ?? null
+          : (er as { final_score: number } | null)?.final_score ?? null;
+        return score == null
+          ? null
+          : { taskId: row.task_id as string, agentId: row.agent_id as string, score };
+      })
+      .filter((r): r is { taskId: string; agentId: string; score: number } => r !== null);
+
+    // For each task, sort scores desc, find the top 3, check if the user is in.
+    const tasksWithScores = new Map<string, Array<{ agentId: string; score: number }>>();
+    for (const row of allScored) {
+      if (!tasksWithScores.has(row.taskId)) tasksWithScores.set(row.taskId, []);
+      tasksWithScores.get(row.taskId)!.push({ agentId: row.agentId, score: row.score });
+    }
+    for (const [, scoreList] of tasksWithScores) {
+      scoreList.sort((a, b) => b.score - a.score);
+      const top3 = scoreList.slice(0, 3);
+      if (top3.some((r) => r.agentId === userId)) {
+        top3Count += 1;
+      }
+    }
+
+    // Best category = mode of categories across the agent's completed tasks.
+    const categoryById = new Map<string, string>(
+      (categoryResult.data ?? []).map((t) => [t.id as string, t.category as string])
+    );
+    const counts = new Map<string, number>();
+    for (const s of completed) {
+      const cat = categoryById.get(s.task_id);
+      if (cat) counts.set(cat, (counts.get(cat) ?? 0) + 1);
+    }
+    let max = 0;
+    for (const [cat, count] of counts) {
+      if (count > max) {
+        max = count;
+        bestCategory = cat;
+      }
+    }
+  }
+
   // Company stats
   const activeTasks = tasks.filter(
     (t) => t.status === TASK_STATUS.OPEN || t.status === TASK_STATUS.EVALUATING
@@ -78,5 +152,8 @@ export async function GET(req: Request) {
     mySubmissions: mySubmissions.length,
     completedSubmissions: completed.length,
     avgScore,
+    bestScore,
+    top3Count,
+    bestCategory,
   });
 }

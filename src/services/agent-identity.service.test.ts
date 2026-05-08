@@ -1,0 +1,319 @@
+import { describe, it, expect } from "vitest";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import {
+  syntheticEmail,
+  syntheticAuthProviderId,
+  sanitizeDisplayName,
+  registerAnonymous,
+  mintOperatorChildKey,
+} from "./agent-identity.service";
+import { generateOperatorToken } from "./operator-token.service";
+import { API_KEY_TIER } from "@/constants";
+
+// ── Pure helpers ─────────────────────────────────────────────
+
+describe("syntheticEmail", () => {
+  it("uses .invalid TLD (RFC 6761 reserved)", () => {
+    expect(syntheticEmail(API_KEY_TIER.ANONYMOUS, "abc")).toContain(".invalid");
+  });
+
+  it("includes the tier prefix for grep-able audits", () => {
+    expect(syntheticEmail(API_KEY_TIER.ANONYMOUS, "x")).toMatch(/^anonymous-/);
+    expect(syntheticEmail(API_KEY_TIER.OPERATOR_CHILD, "z")).toMatch(/^operator_child-/);
+  });
+});
+
+describe("syntheticAuthProviderId", () => {
+  it("starts with straw_<tier>_", () => {
+    expect(syntheticAuthProviderId(API_KEY_TIER.ANONYMOUS, "abc")).toBe(
+      "straw_anonymous_abc",
+    );
+  });
+
+  it("two different idents give two different ids", () => {
+    expect(syntheticAuthProviderId(API_KEY_TIER.ANONYMOUS, "abc")).not.toBe(
+      syntheticAuthProviderId(API_KEY_TIER.ANONYMOUS, "def"),
+    );
+  });
+});
+
+describe("sanitizeDisplayName", () => {
+  it("returns the hint when valid", () => {
+    expect(sanitizeDisplayName("MyAgent", API_KEY_TIER.ANONYMOUS)).toBe("MyAgent");
+  });
+
+  it("strips control characters and whitespace", () => {
+    // Note: sanitizeDisplayName strips a small whitespace-y character class
+    // (including spaces). With "Bad Name" all the spacing is removed.
+    const result = sanitizeDisplayName("Bad Name", API_KEY_TIER.ANONYMOUS);
+    expect(result).toBe("BadName");
+  });
+
+  it("caps length at 60 chars", () => {
+    const long = "A".repeat(200);
+    expect(sanitizeDisplayName(long, API_KEY_TIER.ANONYMOUS).length).toBe(60);
+  });
+
+  it("falls back to per-tier default for empty hint", () => {
+    expect(sanitizeDisplayName("", API_KEY_TIER.ANONYMOUS)).toBe("Anonymous Agent");
+    expect(sanitizeDisplayName(undefined, API_KEY_TIER.OPERATOR_CHILD)).toBe("Operator Agent");
+    expect(sanitizeDisplayName("   ", API_KEY_TIER.ANONYMOUS)).toBe("Anonymous Agent");
+  });
+});
+
+// ── DB-backed flows ──────────────────────────────────────────
+//
+// Inline chainable Supabase mock — keeps the test file self-contained
+// without a shared harness.
+
+interface MockResponse {
+  data?: unknown;
+  error?: { message: string } | null;
+  count?: number | null;
+}
+
+describe("registerAnonymous (unrestricted)", () => {
+  it("happy path returns plaintext + tier + floor=true (gate removed)", async () => {
+    let userInsertPayload: Record<string, unknown> | null = null;
+    let keyInsertPayload: Record<string, unknown> | null = null;
+    let logInsertPayload: Record<string, unknown> | null = null;
+    const fakeUserId = "user-uuid";
+    const fakeKeyId = "key-uuid";
+
+    const db = {
+      from(table: string) {
+        const chain: { insertPayload?: Record<string, unknown> } = {};
+        const builder: Record<string, unknown> = {};
+
+        const terminal = (): Promise<MockResponse> => {
+          if (table === "anonymous_register_log") {
+            if (chain.insertPayload) {
+              logInsertPayload = chain.insertPayload;
+              return Promise.resolve({ data: { id: "log-uuid" }, error: null });
+            }
+            return Promise.resolve({ count: 0, error: null });
+          }
+          if (table === "users") {
+            userInsertPayload = chain.insertPayload ?? null;
+            expect(chain.insertPayload?.is_floor_qualified).toBe(true);
+            expect(chain.insertPayload?.role).toBe("agent_builder");
+            return Promise.resolve({ data: { id: fakeUserId }, error: null });
+          }
+          if (table === "api_keys") {
+            keyInsertPayload = chain.insertPayload ?? null;
+            expect(chain.insertPayload?.tier).toBe("anonymous");
+            return Promise.resolve({ data: { id: fakeKeyId }, error: null });
+          }
+          return Promise.resolve({ data: null, error: null });
+        };
+
+        const passthrough = () => builder;
+        Object.assign(builder, {
+          select: passthrough,
+          insert: (payload: Record<string, unknown>) => {
+            chain.insertPayload = payload;
+            return builder;
+          },
+          update: passthrough,
+          delete: passthrough,
+          eq: passthrough,
+          gte: passthrough,
+          is: passthrough,
+          order: passthrough,
+          limit: passthrough,
+          single: () => terminal(),
+          then: (resolve: (v: MockResponse) => void) => terminal().then(resolve),
+        });
+        return builder;
+      },
+    } as unknown as SupabaseClient;
+
+    const result = await registerAnonymous(db, {
+      sourceIp: "9.9.9.9",
+      uaFingerprint: "fp-abc",
+      displayName: "TestBot",
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.result.tier).toBe("anonymous");
+      expect(result.result.isFloorQualified).toBe(true);
+      expect(result.result.userId).toBe(fakeUserId);
+      expect(result.result.apiKeyId).toBe(fakeKeyId);
+      expect(result.result.displayName).toBe("TestBot");
+      expect(result.result.plaintextKey).toMatch(/^straw_sk_/);
+      expect(result.result.prefix.length).toBe(16);
+    }
+
+    expect(userInsertPayload).not.toBeNull();
+    expect(keyInsertPayload).not.toBeNull();
+    expect(logInsertPayload).toMatchObject({
+      source_ip: "9.9.9.9",
+      ua_fingerprint: "fp-abc",
+      user_id: fakeUserId,
+      api_key_id: fakeKeyId,
+      rejected: false,
+    });
+  });
+});
+
+describe("mintOperatorChildKey", () => {
+  function mockSupabase(handlers: Record<string, () => MockResponse>): SupabaseClient {
+    return {
+      from(table: string) {
+        const builder: Record<string, unknown> = {};
+        const terminal = () => {
+          const handler = handlers[table];
+          return Promise.resolve(handler ? handler() : { data: null, error: null });
+        };
+        const passthrough = () => builder;
+        Object.assign(builder, {
+          select: passthrough,
+          insert: passthrough,
+          update: passthrough,
+          delete: passthrough,
+          eq: passthrough,
+          gte: passthrough,
+          is: passthrough,
+          order: passthrough,
+          limit: passthrough,
+          single: () => terminal(),
+          then: (resolve: (v: MockResponse) => void) => terminal().then(resolve),
+        });
+        return builder;
+      },
+    } as unknown as SupabaseClient;
+  }
+
+  it("rejects an invalid operator token format", async () => {
+    const db = mockSupabase({});
+    const r = await mintOperatorChildKey(db, {
+      operatorTokenPlaintext: "not-a-real-token",
+    });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error.kind).toBe("operator_token_invalid");
+  });
+
+  it("rejects a valid-format token that doesn't exist in DB", async () => {
+    const valid = generateOperatorToken().plaintext;
+    const db = mockSupabase({
+      operator_tokens: () => ({ data: null, error: { message: "no rows" } }),
+    });
+    const r = await mintOperatorChildKey(db, {
+      operatorTokenPlaintext: valid,
+    });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error.kind).toBe("operator_token_invalid");
+  });
+
+  it("rejects a revoked operator token", async () => {
+    const valid = generateOperatorToken().plaintext;
+    const db = mockSupabase({
+      operator_tokens: () => ({
+        data: {
+          id: "op-1",
+          operator_user_id: "u-1",
+          token_hash: "h",
+          prefix: "p",
+          label: null,
+          monthly_quota_submissions: 1000,
+          used_quota_submissions: 0,
+          child_quota_pct: 100,
+          revoked_at: "2026-01-01T00:00:00Z",
+          revoked_reason: "test",
+          last_used_at: null,
+          created_at: "2026-01-01T00:00:00Z",
+          updated_at: "2026-01-01T00:00:00Z",
+        },
+        error: null,
+      }),
+    });
+    const r = await mintOperatorChildKey(db, {
+      operatorTokenPlaintext: valid,
+    });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error.kind).toBe("operator_token_revoked");
+  });
+
+  it("happy path mints a child key with operator_token_id set", async () => {
+    const valid = generateOperatorToken().plaintext;
+    const captured: { user?: Record<string, unknown>; key?: Record<string, unknown> } = {};
+
+    const db = {
+      from(table: string) {
+        const chain: { insertPayload?: Record<string, unknown> } = {};
+        const builder: Record<string, unknown> = {};
+
+        const terminal = (): Promise<MockResponse> => {
+          if (table === "operator_tokens") {
+            return Promise.resolve({
+              data: {
+                id: "op-1",
+                operator_user_id: "u-1",
+                token_hash: "h",
+                prefix: "p",
+                label: null,
+                monthly_quota_submissions: 1000,
+                used_quota_submissions: 0,
+                child_quota_pct: 100,
+                revoked_at: null,
+                revoked_reason: null,
+                last_used_at: null,
+                created_at: "2026-01-01T00:00:00Z",
+                updated_at: "2026-01-01T00:00:00Z",
+              },
+              error: null,
+            });
+          }
+          if (table === "users") {
+            captured.user = chain.insertPayload;
+            return Promise.resolve({ data: { id: "child-user-1" }, error: null });
+          }
+          if (table === "api_keys") {
+            captured.key = chain.insertPayload;
+            return Promise.resolve({ data: { id: "child-key-1" }, error: null });
+          }
+          return Promise.resolve({ data: null, error: null });
+        };
+
+        const passthrough = () => builder;
+        Object.assign(builder, {
+          select: passthrough,
+          insert: (payload: Record<string, unknown>) => {
+            chain.insertPayload = payload;
+            return builder;
+          },
+          update: passthrough,
+          delete: passthrough,
+          eq: passthrough,
+          gte: passthrough,
+          is: passthrough,
+          order: passthrough,
+          limit: passthrough,
+          single: () => terminal(),
+          then: (resolve: (v: MockResponse) => void) => terminal().then(resolve),
+        });
+        return builder;
+      },
+    } as unknown as SupabaseClient;
+
+    const r = await mintOperatorChildKey(db, {
+      operatorTokenPlaintext: valid,
+      displayName: "FleetWorker1",
+    });
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.result.tier).toBe("operator_child");
+      expect(r.result.isFloorQualified).toBe(true);
+      expect(r.result.userId).toBe("child-user-1");
+      expect(r.result.apiKeyId).toBe("child-key-1");
+      expect(r.result.displayName).toBe("FleetWorker1");
+      expect(r.operatorToken.id).toBe("op-1");
+    }
+
+    expect(captured.user?.role).toBe("agent_builder");
+    expect(captured.user?.is_floor_qualified).toBe(true);
+    expect(captured.key?.tier).toBe("operator_child");
+    expect(captured.key?.operator_token_id).toBe("op-1");
+  });
+});

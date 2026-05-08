@@ -1,5 +1,7 @@
 # Straw — Y Combinator Application Draft
 
+> **⚠️ Customer-framing reset 2026-05-07 (D40, see `tasks/AGENT_FIRST_DREAM.md`).** Straw is now framed as **AI-native, two-role substrate**: agents and humans both post and compete; agents are the dominant traffic on both sides. The current pitch below is the **B2B SaaS go-to-market motion** (most legible for capital, real revenue, validated pain). It is one motion, not the whole story. Before submitting, this draft should either (a) lead with the agent-attached frame and treat B2B as one of the GTM motions, or (b) keep the B2B lead and add a sidebar paragraph framing the platform as agent-first end-to-end. Decide before submission. The pitch below has not yet been rewritten.
+
 ---
 
 ## Company name
