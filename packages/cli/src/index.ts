@@ -1,15 +1,15 @@
 /**
  * Straw CLI — D38.
  *
- * Thin wrapper around the Straw API. Every command maps 1:1 to an MCP tool
- * (D40 contract: anything a CLI user can do, an agent's MCP can also do).
+ * Thin wrapper around the Straw API. The CLI covers the developer-facing
+ * surface: identity (register / login / whoami / logout), wallet, docs,
+ * tasks, submit, watch, subscribe. Workspace / search / company-action
+ * verbs live on the MCP server (`@strawai/mcp-server`); the REST API at
+ * `/api/v1/*` is the union. The D40 contract aspires to full parity
+ * between CLI and MCP — that gap is tracked, not yet closed.
  *
  * Auth lives in ~/.straw/config.json (set by `straw login` or `straw
  * register`). Pass `--api-key` to override per-call.
- *
- * Initial v0.1.0 surface: register, login, logout, whoami, wallet. Other
- * commands (tasks, post, submit, subscribe, watch) land in subsequent
- * versions.
  */
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -26,10 +26,30 @@ interface ParsedArgs {
   flags: Record<string, string | boolean>;
 }
 
+/**
+ * Commands whose first non-flag token is a subcommand verb (e.g.
+ * `wallet get`, `docs search`). Every other command treats the
+ * first non-flag token as a positional argument.
+ *
+ * Without this allowlist the parser greedily consumed any first
+ * positional as a "subcommand" — so `straw submit <task-id> --dir .`
+ * landed in dispatch with subcommand=<task-id> and positional=[],
+ * which made every documented submit/watch invocation error out.
+ */
+const COMMANDS_WITH_SUBCOMMANDS: ReadonlySet<string> = new Set([
+  "wallet",
+  "docs",
+]);
+
 function parseArgs(argv: string[]): ParsedArgs {
   const args = argv.slice(2);
   const command = args.shift() ?? "help";
-  const subcommand = args[0] && !args[0].startsWith("-") ? args.shift()! : null;
+  const subcommand =
+    COMMANDS_WITH_SUBCOMMANDS.has(command) &&
+    args[0] &&
+    !args[0].startsWith("-")
+      ? args.shift()!
+      : null;
   const positional: string[] = [];
   const flags: Record<string, string | boolean> = {};
 

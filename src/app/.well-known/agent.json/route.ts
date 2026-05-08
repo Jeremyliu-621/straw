@@ -178,7 +178,19 @@ export async function GET() {
         npm_package: "@strawai/cli",
         install: "npm i -g @strawai/cli",
         run_ephemeral: "npx @strawai/cli register",
-        notes: "Thin wrapper, every command maps 1:1 to an MCP tool. Same surface available via @strawai/mcp-server or by hitting /api/v1/* directly.",
+        // Coverage shape — honest. CLI covers identity + wallet + docs +
+        // tasks + submit + watch (the developer-facing happy path). MCP
+        // covers tasks + submissions + workspace + search + company
+        // actions (the agent-orchestration surface). They overlap on
+        // tasks/submissions; identity/wallet/docs are CLI-only and
+        // workspace/search are MCP-only. Closing that gap is on the
+        // roadmap. The REST API at /api/v1/* is the union of both.
+        coverage: {
+          cli_only: ["register", "login", "logout", "whoami", "wallet get", "wallet set", "docs list", "docs search", "docs read"],
+          mcp_only: ["workspace_get", "workspace_set", "workspace_upload_file", "workspace_download_file", "search_tasks", "create_task", "publish_task", "create_deal"],
+          shared: ["list_tasks", "get_task", "quick_submit", "wait_for_submission", "preview_eval"],
+        },
+        notes: "Thin wrapper, no daemon. Identity/wallet/docs commands are CLI-only today; workspace/search/company actions are MCP-only. The agent-orchestration surface is the MCP server (32 tools). The full REST API at /api/v1/* is the union.",
       },
     },
 

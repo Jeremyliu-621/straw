@@ -16,7 +16,7 @@ The cron prompt picks the next un-probed facet from this list, then
 crosses it off. When all are crossed, restart from the top.
 
 - [x] **Compete-side journey**: register → discover → quick-submit → poll. Bash + curl. _(iter 1)_
-- [ ] **CLI dogfood**: `npx @strawai/cli` end-to-end. The customer agent acts as a developer.
+- [x] **CLI dogfood**: `npx @strawai/cli` end-to-end. The customer agent acts as a developer. _(iter 2)_
 - [ ] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`.
 - [ ] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect.
 - [ ] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap.
@@ -63,6 +63,51 @@ the eval step. **Top three findings shipped this iteration:**
   blob. Could detect `Accept: text/html` and render.
 - Anonymous-tier rate-limit copy contradicts `/api/docs` general
   60/min/IP cap.
+
+### Iter 2 — 2026-05-08 (CLI dogfood)
+
+Customer subagent installed `npx @strawai/cli` and walked register →
+whoami → wallet set → tasks → submit → watch as a developer would.
+**Top finding shipped this iteration:**
+
+- **Argument parser greedy-consumed every first positional as a
+  "subcommand"**, so the documented `straw submit <task-id> --dir .`
+  errored with `Usage: ...` and `straw watch <id>` was unreachable.
+  Root cause: `parseArgs` always shifted the first non-flag token
+  into `subcommand`. Only `wallet` and `docs` actually have
+  subcommands. Added a `COMMANDS_WITH_SUBCOMMANDS` allowlist; the
+  parser now leaves the first positional alone for `submit`,
+  `watch`, `tasks`, `register`, `login`, `subscribe`, etc. Smoke-
+  tested locally — `watch <id>` and `submit <id> --dir .` now reach
+  the API instead of bouncing on the parser. Plus dropped the false
+  "every command maps 1:1 to an MCP tool" claim from agent.json,
+  the CLI's package.json description, and the index.ts file
+  docstring; replaced with an honest coverage map (CLI-only,
+  MCP-only, shared).
+
+**Caveat**: the parser fix lives in `packages/cli/src/index.ts` and
+ships to users only via an `npm publish @strawai/cli` (Jeremy's 2FA).
+The agent.json + package.json copy fixes ship to prod immediately on
+merge. Add to wakeup-summary follow-ups: `npm publish` the CLI to
+0.3.2 in the morning so external users get the parser fix.
+
+**Findings deferred (added to backlog):**
+
+- `wallet verify` (F4 round-trip) absent from CLI and from MCP tool
+  list — D37 selling point inaccessible from either ergonomic
+  surface. Adding requires the CLI to embed viem + design a
+  key-source UX (env var? stdin? file path?). Bigger scope; bump
+  to its own iteration when the F4 facet comes up in rotation.
+- MCP server is missing identity (register/whoami/login/logout),
+  wallet, and docs tools. Adding them needs an mcp-server bump
+  (publish required).
+- Subcommand `--help` is broken (`wallet --help` runs `wallet get`,
+  `submit --help` errors). Add a centralized help dispatch.
+- `npx @strawai/cli@0.3.1 --version` prints `0.3.0`. Confirm
+  dist-tags + bin entry on the 0.3.1 tarball before users notice.
+- `straw register` doesn't show plaintext key per agent.json's
+  promise — only saves it to `~/.straw/config.json`. Add a "save
+  this!" banner.
 
 ---
 
