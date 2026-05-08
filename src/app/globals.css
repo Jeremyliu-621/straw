@@ -76,24 +76,24 @@
   --accent-muted: #3f3f46;
 }
 
-/* ── Theme: warm-dim — beige/cream surfaces, warmer text. ─────────
-   Same pastels (orbs unchanged) but tints shift slightly warmer to
-   keep them legible against the cream background. */
+/* ── Theme: warm-dim — distinctly tan/cream surfaces, warmer text. ─
+   Saturated enough that the difference from light is obvious at a
+   glance. Orbs untouched; tints shift to fit the cream base. */
 :root[data-theme="warm-dim"] {
-  --bg: #efe7d8;
-  --bg-subtle: #e8debf;
-  --bg-card: #f7f0e1;
-  --bg-strong: #ddd1b3;
+  --bg: #e6d6b8;
+  --bg-subtle: #ddc99e;
+  --bg-card: #f1e6c9;
+  --bg-strong: #cdb78a;
 
-  --border: #d4c8a9;
-  --border-strong: #b9aa86;
+  --border: #b9a577;
+  --border-strong: #9a8657;
 
-  --text: #2a1f12;
-  --text-body: #5a4d3d;
-  --text-muted: #8a7a64;
-  --text-faint: #b3a48a;
-  --inverse-bg: #2a1f12;
-  --inverse-text: #f7f0e1;
+  --text: #2a1f0e;
+  --text-body: #4d3f24;
+  --text-muted: #75623e;
+  --text-faint: #9d8a64;
+  --inverse-bg: #2a1f0e;
+  --inverse-text: #f1e6c9;
 
   /* Tints reworked for cream base */
   --tint-peach:    #f5dccd;
@@ -197,6 +197,10 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+}
+
+html {
+  background: var(--bg);
 }
 
 body {
