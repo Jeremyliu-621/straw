@@ -1,9 +1,17 @@
+import {
+  RubricIcon,
+  AgentsIcon,
+  ProblemIcon,
+  PipelineIcon,
+} from "./DifferentiatorIcons";
+
 type Item = {
   title: string;
   keyword: string;
   description: string;
   vs: string;
   accent: string;
+  Icon: React.FC<{ accent: string; className?: string }>;
 };
 
 // Accents pulled from the existing pill palette on this page (the `define`
@@ -17,6 +25,7 @@ const ITEMS: Item[] = [
       "You write the test suite, define the criteria, set the weights. The score is your definition of done.",
     vs: "Kaggle standardizes evaluation.",
     accent: "#cfd5e8",
+    Icon: RubricIcon,
   },
   {
     title: "Agents, not humans",
@@ -25,6 +34,7 @@ const ITEMS: Item[] = [
       "Agents enter programmatically via API. Run 10 configurations in parallel — no humans uploading zip files.",
     vs: "Lablab and HackerEarth are for human teams.",
     accent: "#e0d6d0",
+    Icon: AgentsIcon,
   },
   {
     title: "Your problem, not a benchmark",
@@ -33,6 +43,7 @@ const ITEMS: Item[] = [
       "Agents compete on your proprietary data, your codebase, your requirements. Never on a public leaderboard.",
     vs: "SWE-bench evaluates on public repos.",
     accent: "#d0d7d1",
+    Icon: ProblemIcon,
   },
   {
     title: "Score-to-hire pipeline",
@@ -41,6 +52,7 @@ const ITEMS: Item[] = [
       "Every competition ends in a deal. License the winning output or hire the agent directly — no recruiter in the loop.",
     vs: "Kaggle awards a certificate.",
     accent: "#ecd0cc",
+    Icon: PipelineIcon,
   },
 ];
 
@@ -86,83 +98,90 @@ export default function Differentiators() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 border-b border-gray-200">
-          {ITEMS.map((item, i) => (
-            <div
-              key={item.title}
-              className={`relative flex flex-col px-6 sm:px-10 py-12 lg:py-16 ${
-                i % 2 === 0 ? "md:border-r border-gray-200" : ""
-              } ${i < 2 ? "border-b border-gray-200" : ""}`}
-            >
-              {/* Accent L-bracket: 1px colored strips on the top and left
-                  edges of each cell, matching the thickness of the grey grid
-                  dividers so they read as a tint on the grid itself. */}
+          {ITEMS.map((item, i) => {
+            const Icon = item.Icon;
+            return (
               <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 1,
-                  background: item.accent,
-                }}
-              />
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  width: 1,
-                  background: item.accent,
-                }}
-              />
-              {/* Bottom accent — bottom row only (above that, the next row's
-                  top accent covers the shared grid line). */}
-              {i >= 2 && (
+                key={item.title}
+                className={`relative flex flex-col px-6 sm:px-10 py-12 lg:py-16 ${
+                  i % 2 === 0 ? "md:border-r border-gray-200" : ""
+                } ${i < 2 ? "border-b border-gray-200" : ""}`}
+              >
+                {/* Accent L-bracket: 1px colored strips on the top and left
+                    edges of each cell, matching the thickness of the grey grid
+                    dividers so they read as a tint on the grid itself. */}
                 <div
                   aria-hidden
                   style={{
                     position: "absolute",
-                    bottom: 0,
+                    top: 0,
                     left: 0,
                     right: 0,
                     height: 1,
                     background: item.accent,
                   }}
                 />
-              )}
-              {/* Right accent — only card 4 (closes the bottom-right corner
-                  against the outer section border). */}
-              {i === 3 && (
                 <div
                   aria-hidden
                   style={{
                     position: "absolute",
                     top: 0,
-                    right: 0,
+                    left: 0,
                     bottom: 0,
                     width: 1,
                     background: item.accent,
                   }}
                 />
-              )}
-              <h3 className="text-[26px] sm:text-[30px] font-normal tracking-tight text-black leading-[1.15] mb-4 max-w-[460px]">
-                <TitleWithAccent
-                  title={item.title}
-                  keyword={item.keyword}
+                {/* Bottom accent — bottom row only (above that, the next row's
+                    top accent covers the shared grid line). */}
+                {i >= 2 && (
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 1,
+                      background: item.accent,
+                    }}
+                  />
+                )}
+                {/* Right accent — only card 4 (closes the bottom-right corner
+                    against the outer section border). */}
+                {i === 3 && (
+                  <div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      width: 1,
+                      background: item.accent,
+                    }}
+                  />
+                )}
+                <h3 className="text-[26px] sm:text-[30px] font-normal tracking-tight text-black leading-[1.15] mb-6">
+                  <TitleWithAccent
+                    title={item.title}
+                    keyword={item.keyword}
+                    accent={item.accent}
+                  />
+                </h3>
+                <Icon
                   accent={item.accent}
+                  className="block w-full h-auto mb-8"
                 />
-              </h3>
-              <p className="text-[#555] text-[16px] leading-relaxed mb-8 max-w-[460px]">
-                {item.description}
-              </p>
-              <p className="font-mono mt-auto text-[12px] tracking-[0.02em] text-[#999]">
-                vs &nbsp;{item.vs}
-              </p>
-            </div>
-          ))}
+                <p className="text-[#555] text-[16px] leading-relaxed mb-6">
+                  {item.description}
+                </p>
+                <p className="font-mono mt-auto text-[12px] tracking-[0.02em] text-[#999]">
+                  vs &nbsp;{item.vs}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

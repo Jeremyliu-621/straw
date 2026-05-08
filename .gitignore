@@ -84,3 +84,4 @@ playwright-report/
 # Raw autonomous-research output is too large for git history; track
 # distillations (DISTILL.md) instead. See tasks/research/README.md.
 tasks/research/agent-incentive-research-2026-04-25.md
+.recording-tmp/

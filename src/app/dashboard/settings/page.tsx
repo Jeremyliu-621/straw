@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { User, Code2, Bell, AlertTriangle, LogOut } from "lucide-react";
 import { Section } from "@/components/dashboard/section";
+import { Button } from "@/components/ui/button";
 
 /**
  * /dashboard/settings — single hub for account, notifications, and
@@ -144,30 +145,14 @@ export default function SettingsPage() {
               </p>
             </div>
           </div>
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="font-sans transition-colors"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "7px 14px",
-              borderRadius: "var(--radius)",
-              fontSize: "13px",
-              fontWeight: 500,
-              background: "transparent",
-              color: "var(--text)",
-              border: "1px solid var(--border)",
-              cursor: "pointer",
-              flexShrink: 0,
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+            leadingIcon={<LogOut size={13} strokeWidth={2} aria-hidden="true" />}
           >
-            <LogOut size={13} strokeWidth={2} aria-hidden="true" />
             Sign out
-          </button>
+          </Button>
         </div>
       </Section>
     </div>
