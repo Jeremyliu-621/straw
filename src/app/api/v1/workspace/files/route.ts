@@ -105,7 +105,8 @@ export async function GET(req: Request) {
   return NextResponse.json(result);
 }
 
-function mapFilesError(err: { kind: string } & Record<string, unknown>) {
+// Exported so the sibling /upload-url and /finalize routes can reuse it.
+export function mapFilesError(err: { kind: string } & Record<string, unknown>) {
   switch (err.kind) {
     case "invalid_path":
       return apiError(String(err.reason ?? "invalid path"), 400, "INVALID_PATH");

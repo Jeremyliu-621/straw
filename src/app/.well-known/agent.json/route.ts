@@ -135,6 +135,7 @@ export async function GET() {
           preview: "POST /api/v1/eval/preview  # non-binding score, no quota used",
           workspace_kv: "GET|PUT|DELETE /api/v1/workspace/kv/{key}",
           workspace_files: "GET|POST|DELETE /api/v1/workspace/files/{path}",
+          workspace_files_large: "POST /api/v1/workspace/files/upload-url → PUT to signed URL → POST /api/v1/workspace/files/finalize  # bypasses Vercel function body cap, supports up to 25MB per file",
         },
       },
       ui_internal: {

@@ -285,6 +285,227 @@ export async function uploadWorkspaceFile(
   return data as WorkspaceFileMetadata;
 }
 
+// ── Presigned upload (post-iter-6 BLOCKER fix) ──────────────────
+//
+// Vercel's body parser caps function-proxied uploads at ~4.5MB even
+// though our application-layer cap is 25MB. The presigned-URL flow
+// bypasses the function entirely: client gets a one-shot signed PUT
+// URL pointing directly at Supabase Storage, pushes bytes there, then
+// calls /finalize to write the metadata row. The function never sees
+// the bytes — Storage's only cap is the bucket's `file_size_limit`
+// (25MB by default; raise the bucket if you need bigger).
+
+export interface MintUploadUrlInput {
+  path: string;
+  expected_size_bytes?: number;
+  content_type?: string;
+}
+
+export interface MintUploadUrlResult {
+  upload_url: string;
+  upload_method: "PUT";
+  path: string;
+  storage_ref: string;
+  expires_at: string;
+  // How the client should call /finalize once the PUT lands.
+  finalize_url: string;
+  finalize_method: "POST";
+}
+
+/**
+ * Phase 1 of the presigned upload flow. Validates path, runs an
+ * advisory quota preflight if `expected_size_bytes` is provided
+ * (non-binding — the real check happens at finalize against the
+ * actually-uploaded byte count), and mints a signed PUT URL.
+ */
+export async function mintWorkspaceFileUploadUrl(
+  db: SupabaseClient,
+  agentId: string,
+  input: MintUploadUrlInput
+): Promise<MintUploadUrlResult | WorkspaceFilesError> {
+  const pathCheck = validatePath(input.path);
+  if (!pathCheck.ok) return { kind: "invalid_path", reason: pathCheck.reason };
+
+  if (typeof input.expected_size_bytes === "number") {
+    if (input.expected_size_bytes > WORKSPACE_FILES_MAX_PER_FILE_BYTES) {
+      return {
+        kind: "file_too_large",
+        size_bytes: input.expected_size_bytes,
+        limit: WORKSPACE_FILES_MAX_PER_FILE_BYTES,
+      };
+    }
+
+    const { data: quotaRows, error } = await db
+      .from("agent_workspace_files")
+      .select("size_bytes, path")
+      .eq("agent_id", agentId);
+    if (error) return { kind: "internal" };
+
+    const existing = (quotaRows ?? []).find((r) => r.path === input.path);
+    const currentFiles = (quotaRows ?? []).length;
+    const currentBytes = (quotaRows ?? []).reduce(
+      (acc, r) => acc + (r.size_bytes ?? 0),
+      0
+    );
+    const wouldBeBytes =
+      currentBytes - (existing?.size_bytes ?? 0) + input.expected_size_bytes;
+
+    if (!existing && currentFiles >= WORKSPACE_FILES_MAX_FILES_PER_AGENT) {
+      return {
+        kind: "file_quota_exceeded",
+        current: currentFiles,
+        limit: WORKSPACE_FILES_MAX_FILES_PER_AGENT,
+      };
+    }
+    if (wouldBeBytes > WORKSPACE_FILES_MAX_TOTAL_BYTES_PER_AGENT) {
+      return {
+        kind: "byte_quota_exceeded",
+        current: currentBytes,
+        would_be: wouldBeBytes,
+        limit: WORKSPACE_FILES_MAX_TOTAL_BYTES_PER_AGENT,
+      };
+    }
+  }
+
+  const storageRef = storageRefFor(agentId, input.path);
+
+  const { data, error } = await db.storage
+    .from(WORKSPACE_FILES_BUCKET)
+    .createSignedUploadUrl(storageRef);
+
+  if (error || !data) {
+    return { kind: "storage_error", reason: error?.message ?? "failed to mint upload url" };
+  }
+
+  // Supabase signed upload URLs are valid for ~2 hours by default. We
+  // surface an explicit ISO timestamp so the client can retry the mint
+  // if their upload is slower than that.
+  const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString();
+
+  return {
+    upload_url: data.signedUrl,
+    upload_method: "PUT",
+    path: input.path,
+    storage_ref: storageRef,
+    expires_at: expiresAt,
+    finalize_url: "/api/v1/workspace/files/finalize",
+    finalize_method: "POST",
+  };
+}
+
+/**
+ * Phase 2 of the presigned upload flow. Inspects the actually-uploaded
+ * blob in Storage to get its real size, runs all caps + quota checks
+ * against the real number, then writes the metadata row. If any check
+ * fails, the orphan blob is removed best-effort.
+ */
+export async function finalizeWorkspaceFileUpload(
+  db: SupabaseClient,
+  agentId: string,
+  input: { path: string; content_type?: string }
+): Promise<WorkspaceFileMetadata | WorkspaceFilesError> {
+  const pathCheck = validatePath(input.path);
+  if (!pathCheck.ok) return { kind: "invalid_path", reason: pathCheck.reason };
+
+  const storageRef = storageRefFor(agentId, input.path);
+
+  // Inspect the uploaded blob via Storage list. The SDK's `.list(folder)`
+  // takes a folder + a `search` filter; we slice the storage_ref to get
+  // those.
+  const lastSlash = storageRef.lastIndexOf("/");
+  const folder = lastSlash >= 0 ? storageRef.slice(0, lastSlash) : "";
+  const filename = lastSlash >= 0 ? storageRef.slice(lastSlash + 1) : storageRef;
+
+  const { data: files, error: listError } = await db.storage
+    .from(WORKSPACE_FILES_BUCKET)
+    .list(folder, { limit: 100, search: filename });
+
+  if (listError) return { kind: "storage_error", reason: listError.message };
+
+  const blob = (files ?? []).find((f) => f.name === filename);
+  if (!blob) {
+    // Either the client never PUT, or the URL expired.
+    return { kind: "not_found" };
+  }
+
+  const actualSize = blob.metadata?.size ?? 0;
+  if (actualSize <= 0) {
+    // Zero-byte file — treat as a botched upload. Don't write metadata.
+    await db.storage.from(WORKSPACE_FILES_BUCKET).remove([storageRef]).catch(() => {});
+    return { kind: "storage_error", reason: "uploaded blob is empty" };
+  }
+
+  if (actualSize > WORKSPACE_FILES_MAX_PER_FILE_BYTES) {
+    await db.storage.from(WORKSPACE_FILES_BUCKET).remove([storageRef]).catch(() => {});
+    return {
+      kind: "file_too_large",
+      size_bytes: actualSize,
+      limit: WORKSPACE_FILES_MAX_PER_FILE_BYTES,
+    };
+  }
+
+  const { data: existing } = await db
+    .from("agent_workspace_files")
+    .select("size_bytes")
+    .eq("agent_id", agentId)
+    .eq("path", input.path)
+    .maybeSingle();
+
+  const { data: quotaRows, error: quotaError } = await db
+    .from("agent_workspace_files")
+    .select("size_bytes")
+    .eq("agent_id", agentId);
+  if (quotaError) return { kind: "internal" };
+
+  const currentFiles = (quotaRows ?? []).length;
+  const currentBytes = (quotaRows ?? []).reduce(
+    (acc, r) => acc + (r.size_bytes ?? 0),
+    0
+  );
+
+  if (!existing && currentFiles >= WORKSPACE_FILES_MAX_FILES_PER_AGENT) {
+    await db.storage.from(WORKSPACE_FILES_BUCKET).remove([storageRef]).catch(() => {});
+    return {
+      kind: "file_quota_exceeded",
+      current: currentFiles,
+      limit: WORKSPACE_FILES_MAX_FILES_PER_AGENT,
+    };
+  }
+
+  const wouldBeBytes = currentBytes - (existing?.size_bytes ?? 0) + actualSize;
+  if (wouldBeBytes > WORKSPACE_FILES_MAX_TOTAL_BYTES_PER_AGENT) {
+    await db.storage.from(WORKSPACE_FILES_BUCKET).remove([storageRef]).catch(() => {});
+    return {
+      kind: "byte_quota_exceeded",
+      current: currentBytes,
+      would_be: wouldBeBytes,
+      limit: WORKSPACE_FILES_MAX_TOTAL_BYTES_PER_AGENT,
+    };
+  }
+
+  const contentType =
+    input.content_type ?? blob.metadata?.mimetype ?? "application/octet-stream";
+
+  const { data, error: dbError } = await db
+    .from("agent_workspace_files")
+    .upsert(
+      {
+        agent_id: agentId,
+        path: input.path,
+        storage_ref: storageRef,
+        size_bytes: actualSize,
+        content_type: contentType,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "agent_id,path" }
+    )
+    .select("path, size_bytes, content_type, created_at, updated_at")
+    .single();
+
+  if (dbError || !data) return { kind: "internal" };
+  return data as WorkspaceFileMetadata;
+}
+
 /**
  * Delete a workspace file. Idempotent.
  * Response: `{ deleted: true, was_present: boolean }` (iter 6 — see KV
