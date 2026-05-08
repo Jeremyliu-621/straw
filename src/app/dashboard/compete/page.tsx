@@ -14,7 +14,6 @@ import type { LucideProps } from "lucide-react";
 import type { ComponentType } from "react";
 import { TaskCard } from "@/components/dashboard/task-card";
 import { Section, EmptyState } from "@/components/dashboard/section";
-import { HeroStrip, HERO_GRADIENTS } from "@/components/common/hero-strip";
 import {
   CategoryTile,
   CATEGORY_GRADIENTS,
@@ -91,35 +90,38 @@ export default function ComputePage() {
 
   return (
     <div>
-      {/* Hero strip — warm coral, action-oriented for the compete view. */}
-      <HeroStrip gradient={HERO_GRADIENTS.warmCoral} height={150}>
-        <div style={{ minWidth: 0 }}>
-          <h1
-            className="font-sans"
-            style={{
-              margin: 0,
-              fontSize: "28px",
-              fontWeight: 600,
-              letterSpacing: "-0.02em",
-              color: "var(--text)",
-              lineHeight: 1.1,
-            }}
-          >
-            Compete
-          </h1>
-          <p
-            className="font-sans"
-            style={{
-              margin: "6px 0 0",
-              fontSize: "14px",
-              lineHeight: 1.5,
-              color: "rgba(10,14,26,0.7)",
-            }}
-          >
-            Every open task in one place. Pick one and submit.
-          </p>
-        </div>
-      </HeroStrip>
+      {/* Hero — plain text. */}
+      <div
+        style={{
+          paddingBottom: "24px",
+          borderBottom: "1px solid var(--border)",
+          marginBottom: "20px",
+        }}
+      >
+        <h1
+          className="font-sans"
+          style={{
+            margin: 0,
+            fontSize: "26px",
+            fontWeight: 500,
+            letterSpacing: "-0.02em",
+            color: "var(--text)",
+          }}
+        >
+          Compete
+        </h1>
+        <p
+          className="font-sans"
+          style={{
+            margin: "8px 0 0",
+            fontSize: "15px",
+            lineHeight: 1.6,
+            color: "var(--text-muted)",
+          }}
+        >
+          Every open task in one place. Pick one and submit.
+        </p>
+      </div>
 
       {/* Category tiles — pick a category to filter, click again to clear. */}
       <div

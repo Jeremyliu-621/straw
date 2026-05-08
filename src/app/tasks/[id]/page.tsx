@@ -10,19 +10,6 @@ import { DeadlineCountdown } from "@/components/deadline-countdown";
 import ArenaCanvas from "@/components/arena-3d";
 import { EVAL_MODE } from "@/constants";
 import type { EvalMode } from "@/constants";
-import { HeroStrip } from "@/components/common/hero-strip";
-import {
-  CATEGORY_GRADIENTS,
-  type CategoryKey,
-} from "@/components/common/category-tile";
-
-/** Pick a hero gradient from the task's category — falls back to "other". */
-function gradientForCategory(category: string): string {
-  if (category in CATEGORY_GRADIENTS) {
-    return CATEGORY_GRADIENTS[category as CategoryKey];
-  }
-  return CATEGORY_GRADIENTS.other;
-}
 
 interface Task {
   id: string;
@@ -206,59 +193,52 @@ export default function TaskDetailPage() {
             style={isLg ? { flex: `0 0 ${leftPct}%`, minWidth: 0 } : undefined}
           >
             <div className="px-8 lg:px-12 py-8 space-y-8">
-              {/* Hero strip — gradient themed by task category, with the
-                  title, status, and payout sitting inside it. Replaces
-                  the previous flat heading. */}
-              <HeroStrip
-                gradient={gradientForCategory(task.category)}
-                height={140}
-                style={{ marginTop: -8 }}
-              >
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3 min-w-0 flex-wrap">
-                    <span
-                      className="font-sans"
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 500,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase" as const,
-                        color: "rgba(20,20,30,0.55)",
-                      }}
-                    >
-                      {task.category}
-                    </span>
-                    <StatusBadge status={task.status} />
-                  </div>
-                  <div className="flex items-end justify-between gap-4 flex-wrap">
-                    <h1
-                      className="font-sans"
-                      style={{
-                        margin: 0,
-                        fontSize: 28,
-                        fontWeight: 600,
-                        letterSpacing: "-0.02em",
-                        color: "var(--text)",
-                        lineHeight: 1.1,
-                        minWidth: 0,
-                      }}
-                    >
-                      {task.title}
-                    </h1>
-                    <span
-                      className="font-mono"
-                      style={{
-                        fontSize: 24,
-                        fontWeight: 500,
-                        color: "var(--text)",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      ${(task.budget_cents / 100).toLocaleString()}
-                    </span>
-                  </div>
+              {/* Heading — title, category, status, payout. Plain text,
+                  no gradient banner. */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-wrap">
+                  <span
+                    className="font-sans"
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 500,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase" as const,
+                      color: "var(--text-muted)",
+                    }}
+                  >
+                    {task.category}
+                  </span>
+                  <StatusBadge status={task.status} />
                 </div>
-              </HeroStrip>
+                <div className="flex items-end justify-between gap-4 flex-wrap">
+                  <h1
+                    className="font-sans"
+                    style={{
+                      margin: 0,
+                      fontSize: 24,
+                      fontWeight: 500,
+                      letterSpacing: "-0.02em",
+                      color: "var(--text)",
+                      lineHeight: 1.1,
+                      minWidth: 0,
+                    }}
+                  >
+                    {task.title}
+                  </h1>
+                  <span
+                    className="font-mono"
+                    style={{
+                      fontSize: 24,
+                      fontWeight: 500,
+                      color: "var(--text)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    ${(task.budget_cents / 100).toLocaleString()}
+                  </span>
+                </div>
+              </div>
 
               <Section label="DESCRIPTION">
                 <p className="font-sans text-[15px] leading-relaxed text-gray-800">

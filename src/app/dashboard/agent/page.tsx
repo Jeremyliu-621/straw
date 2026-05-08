@@ -13,7 +13,6 @@ import { JoinedCompetitionCard } from "@/components/dashboard/joined-competition
 import { SubmissionHeatmap } from "@/components/dashboard/submission-heatmap";
 import { WorkspaceUsage } from "@/components/dashboard/workspace-usage";
 import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
-import { HeroStrip, HERO_GRADIENTS } from "@/components/common/hero-strip";
 import { ToolCard } from "@/components/common/tool-card";
 import { FeatureOnboarding } from "@/components/common/feature-onboarding";
 import {
@@ -182,83 +181,73 @@ export default function AgentDashboard() {
 
   return (
     <div>
-      {/* Hero strip — pastel gradient with subtle grain. Holds the
-          greeting + an Edit-profile pill on the right. */}
-      <HeroStrip gradient={HERO_GRADIENTS.warmCoral} height={180}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: "24px",
-            height: "100%",
-          }}
-        >
-          <div style={{ minWidth: 0 }}>
-            <p
-              className="font-sans"
-              style={{
-                margin: 0,
-                fontSize: "12px",
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase" as const,
-                color: "rgba(10,14,26,0.55)",
-              }}
-            >
-              Your workspace
-            </p>
-            <h1
-              className="font-sans"
-              style={{
-                margin: "6px 0 4px",
-                fontSize: "32px",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-                color: "var(--text)",
-                lineHeight: 1.1,
-              }}
-            >
-              Welcome back, {firstName}
-            </h1>
-            <p
-              className="font-sans"
-              style={{
-                margin: 0,
-                fontSize: "15px",
-                lineHeight: 1.5,
-                color: "rgba(10,14,26,0.7)",
-              }}
-            >
-              Pick an open task, ship a submission, climb the board.
-            </p>
-          </div>
-          <Link
-            href="/dashboard/profile"
+      {/* Hero — plain text greeting. The colored gradient banner was
+          removed at Jeremy's request — title sits flat on the page. */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: "24px",
+          paddingBottom: "20px",
+          borderBottom: "1px solid var(--border)",
+          marginBottom: "20px",
+        }}
+      >
+        <div style={{ minWidth: 0 }}>
+          <h1
             className="font-sans"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              fontSize: "13px",
+              margin: 0,
+              fontSize: "26px",
               fontWeight: 500,
+              letterSpacing: "-0.02em",
               color: "var(--text)",
-              textDecoration: "none",
-              padding: "8px 14px",
-              background: "rgba(255,255,255,0.78)",
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)",
-              border: "1px solid rgba(0,0,0,0.06)",
-              borderRadius: "999px",
-              flexShrink: 0,
-              whiteSpace: "nowrap",
             }}
           >
-            <Settings size={14} strokeWidth={2} />
-            Edit profile
-          </Link>
+            Welcome back, {firstName}
+          </h1>
+          <p
+            className="mt-2 font-sans"
+            style={{
+              margin: "8px 0 0",
+              fontSize: "15px",
+              lineHeight: 1.6,
+              color: "var(--text-muted)",
+            }}
+          >
+            Pick an open task, ship a submission, climb the board.
+          </p>
         </div>
-      </HeroStrip>
+        <Link
+          href="/dashboard/profile"
+          className="font-sans"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "13px",
+            color: "var(--text-muted)",
+            textDecoration: "none",
+            padding: "6px 12px",
+            border: "1px solid var(--border)",
+            borderRadius: "999px",
+            transition: "background-color 0.15s ease, color 0.15s ease",
+            whiteSpace: "nowrap",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = "var(--bg-subtle)";
+            e.currentTarget.style.color = "var(--text)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "var(--text-muted)";
+          }}
+        >
+          <Settings size={14} strokeWidth={2} />
+          Edit profile
+        </Link>
+      </div>
 
       {/* Tool cards — six quick-jump tiles. Each card runs a different
           tint so the row reads as a colorful mosaic, not a uniform
