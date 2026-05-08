@@ -241,12 +241,36 @@ export async function fetchSubmissionDetail(
 /**
  * Terminal submission statuses — once a submission reaches one of these, the
  * SSE stream can close because nothing further will change.
+ *
+ * NOTE: `COMPLETED` here is *necessary but not sufficient* — a row can be
+ * `status='completed'` with `evaluated=false` while the eval pipeline is
+ * still queued. SSE consumers must use `isSubmissionFullyTerminal` instead
+ * of this set directly; otherwise the `terminal` event fires before the
+ * score is written, and downstream `wait_for_*` helpers return a stale row.
  */
 export const TERMINAL_SUBMISSION_STATUSES: ReadonlySet<string> = new Set([
   SUBMISSION_STATUS.COMPLETED,
   SUBMISSION_STATUS.FAILED,
   SUBMISSION_STATUS.EVALUATION_FAILED,
 ]);
+
+/**
+ * Stricter terminal check that respects the two-field contract documented
+ * in `/api/docs` (`status` AND `evaluated` are independent). A submission
+ * is fully terminal when:
+ *   - status is `failed` or `evaluation_failed`, OR
+ *   - status is `completed` AND evaluated is true (i.e. score is written).
+ *
+ * Used by the SSE stream and any other "wait until done" code path.
+ */
+export function isSubmissionFullyTerminal(
+  detail: Pick<SubmissionDetail, "status" | "evaluated">,
+): boolean {
+  if (detail.status === SUBMISSION_STATUS.FAILED) return true;
+  if (detail.status === SUBMISSION_STATUS.EVALUATION_FAILED) return true;
+  if (detail.status === SUBMISSION_STATUS.COMPLETED && detail.evaluated) return true;
+  return false;
+}
 
 /**
  * Compute a stable hash of the fields the SSE stream should re-emit on.

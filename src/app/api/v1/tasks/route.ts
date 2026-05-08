@@ -32,10 +32,17 @@ export async function GET(req: Request) {
 
   const db = createServiceClient();
 
+  // Filter out expired tasks at the query layer. The doc claim in /api/docs
+  // and llms.txt promises this; without it, the very first row a fresh agent
+  // sees is often a long-closed task because they're sorted by deadline asc
+  // and the cron that flips `status=closed` runs hourly, not real-time.
+  const nowIso = new Date().toISOString();
+
   let query = db
     .from("tasks")
     .select("id, title, description, category, deadline, budget_cents, eval_mode, created_at")
     .eq("status", TASK_STATUS.OPEN)
+    .gt("deadline", nowIso)
     .order("deadline", { ascending: true })
     .limit(limit + 1);
 

@@ -1,7 +1,75 @@
-# Handoff — feat/overnight-2026-05-07 (current)
+# Handoff — feat/overnight-elevate-2026-05-08 (current)
 
-> **You are here.** Below this section is the older handoff from
-> `feat/collab-philosophy` (2026-04-24) — kept for context but historical.
+> **You are here.** Autonomous elevation loop. Driven by a cron every 2h
+> while Jeremy sleeps. Each iteration spawns a "naive agent customer"
+> subagent against `https://straw.wiki`, collects friction, fixes the
+> top item, and ships if `npm run build` passes.
+
+**Worktree:** `C:/Users/jerem/code2026/personal-projects/mop-elevate`
+**Branch:** `feat/overnight-elevate-2026-05-08`
+**Loop policy:** broken builds stay on this branch and are documented;
+master only fast-forwards on green.
+
+## Mission rotation
+
+The cron prompt picks the next un-probed facet from this list, then
+crosses it off. When all are crossed, restart from the top.
+
+- [x] **Compete-side journey**: register → discover → quick-submit → poll. Bash + curl. _(iter 1)_
+- [ ] **CLI dogfood**: `npx @strawai/cli` end-to-end. The customer agent acts as a developer.
+- [ ] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`.
+- [ ] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect.
+- [ ] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap.
+- [ ] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps.
+- [ ] **Wallet F4 round-trip**: a fresh agent declares an address, signs the challenge with viem, submits the proof.
+- [ ] **Docs surface from an agent's POV**: feed `/llms.txt` + `/docs/llms.txt` to a fresh model, ask "given this, write a working agent that competes on a python bounty." Audit what it generates.
+
+## Iteration log
+
+(Cron prompts append a new entry to the **bottom** of this list. Each
+entry: timestamp, facet, top finding, fix shipped, follow-ups bumped to
+the rotation list above.)
+
+### Iter 1 — 2026-05-08 (compete-side journey)
+
+Subagent ran the full external loop with `curl` + `npx @strawai/cli`. Got
+from URL → registered → wallet → submitted artifact, then stalled at
+the eval step. **Top three findings shipped this iteration:**
+
+1. **SSE `terminal` fired before `evaluated:true`** (BLOCKER for daemons).
+   `wait_for_submission` would return a "done" signal pointing at a row
+   with no scores. Added `isSubmissionFullyTerminal()` in
+   `submission.service.ts` that respects the two-field contract; SSE
+   route now uses it. Terminal payload also now carries `evaluated`.
+2. **`GET /api/v1/tasks` returned expired tasks** (every fresh agent's
+   first pick is a dead task). Added `.gt("deadline", now)` in
+   `src/app/api/v1/tasks/route.ts` — doc claim "Tasks past their
+   deadline are filtered out automatically" is now true.
+3. **Wallet endpoints absent from `/api/docs`**. Added GET/PUT
+   `/wallet`, POST `/wallet/verify/{challenge,sign}` with full request
+   shapes + error codes — the customer agent had to discover the
+   `payout_method` enum by trial-and-error.
+
+**Findings deferred (added to the rotation tail):**
+
+- Eval pipeline doesn't finish — submissions stuck in
+  `running` indefinitely. Out of scope tonight (worker not deployed,
+  needs Hetzner per memory `project_only_vercel_deployed`).
+- `register-anonymous` silently strips non-alphanumerics from
+  `display_name` (no warning surfaced).
+- `quick-submit` POST response uses ambiguous `status: "completed"`
+  while internally the submission is still queued.
+- `/api/docs` returns JSON only — a browser visit gets an unformatted
+  blob. Could detect `Accept: text/html` and render.
+- Anonymous-tier rate-limit copy contradicts `/api/docs` general
+  60/min/IP cap.
+
+---
+
+# Historical handoff — feat/overnight-2026-05-07
+
+> Older handoff from `feat/collab-philosophy` (2026-04-24) — kept for
+> context but historical.
 
 **Started:** 2026-05-07, afternoon
 **Last commit:** 2026-05-07, evening

@@ -5,7 +5,7 @@ import { makeSSEResponse } from "@/lib/sse";
 import {
   fetchSubmissionDetail,
   submissionStateFingerprint,
-  TERMINAL_SUBMISSION_STATUSES,
+  isSubmissionFullyTerminal,
 } from "@/services/submission.service";
 
 /**
@@ -50,8 +50,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     let lastFingerprint = submissionStateFingerprint(initial);
     emit({ event: "submission", id: String(Date.now()), data: initial });
 
-    if (TERMINAL_SUBMISSION_STATUSES.has(initial.status)) {
-      emit({ event: "terminal", data: { status: initial.status } });
+    if (isSubmissionFullyTerminal(initial)) {
+      emit({
+        event: "terminal",
+        data: { status: initial.status, evaluated: initial.evaluated },
+      });
       return;
     }
 
@@ -69,8 +72,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         emit({ event: "submission", id: String(Date.now()), data: next });
       }
 
-      if (TERMINAL_SUBMISSION_STATUSES.has(next.status)) {
-        emit({ event: "terminal", data: { status: next.status } });
+      if (isSubmissionFullyTerminal(next)) {
+        emit({
+          event: "terminal",
+          data: { status: next.status, evaluated: next.evaluated },
+        });
         return;
       }
     }

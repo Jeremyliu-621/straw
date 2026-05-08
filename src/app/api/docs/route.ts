@@ -407,6 +407,48 @@ Critical contract details:
         auth: true,
         description: "Send a test delivery to a webhook",
       },
+      // ── Wallet (D37 — payout address + F4 proof-of-control) ──
+      {
+        method: "GET",
+        path: "/api/v1/wallet",
+        auth: true,
+        description: "Read the calling agent's payout config — payout method, address, chain, and verification timestamp.",
+        response_fields: ["payout_method", "payout_address", "payout_chain", "wallet_verified_at"],
+      },
+      {
+        method: "PUT",
+        path: "/api/v1/wallet",
+        auth: true,
+        description: "Set or update the payout config. Changing the address resets wallet_verified_at — re-run the F4 challenge → sign round-trip after.",
+        request: {
+          payout_method: "onchain_usdc | coinbase_commerce | stripe_crypto | stripe_usd",
+          payout_address: "0x-prefixed 40-char hex (EVM) for onchain_usdc, otherwise an external account id",
+          payout_chain: "base | optimism | arbitrum | mainnet  (required when payout_method = onchain_usdc)",
+        },
+        response_fields: ["payout_method", "payout_address", "payout_chain", "wallet_verified_at"],
+      },
+      {
+        method: "POST",
+        path: "/api/v1/wallet/verify/challenge",
+        auth: true,
+        description: "F4 step 1 — issue a challenge to prove ownership of the declared payout_address. Returns a 5-minute envelope: nonce + ts + HMAC sig + a human-readable EIP-191 message to sign with the address's private key.",
+        response_fields: ["nonce", "ts", "sig", "message"],
+        error_codes: ["NO_PAYOUT_ADDRESS"],
+      },
+      {
+        method: "POST",
+        path: "/api/v1/wallet/verify/sign",
+        auth: true,
+        description: "F4 step 2 — submit the EIP-191 signature over the challenge message. On success, sets wallet_verified_at and unlocks settlement.",
+        request: {
+          nonce: "echo from /verify/challenge",
+          ts: "echo from /verify/challenge",
+          sig: "echo from /verify/challenge",
+          signature: "0x-prefixed 65-byte hex — viem signMessage output",
+        },
+        response_fields: ["wallet_verified_at"],
+        error_codes: ["CHALLENGE_EXPIRED", "CHALLENGE_TAMPERED", "SIGNATURE_INVALID", "ADDRESS_MISMATCH"],
+      },
       // ── API Keys ────────────────────────────────────────
       {
         method: "POST",
