@@ -167,7 +167,7 @@ export function TopBar() {
         left: `calc(var(--inset-left, 0px) + ${sidebarWidth}px)`,
         right: "var(--inset-right, 0px)",
         height: `${TOPBAR_HEIGHT}px`,
-        background: "var(--bg)",
+        background: "var(--bg-card)",
         borderBottom: "1px solid var(--border)",
         borderTop: "1px solid var(--frame-border-color, transparent)",
         borderRight: "1px solid var(--frame-border-color, transparent)",
