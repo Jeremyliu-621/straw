@@ -53,16 +53,37 @@ export async function PUT(req: Request) {
 
   const normalized = normalizeWalletUpdate(validation.data);
 
-  // Changing the address resets verification — the new one hasn't been
-  // proven yet. (Today nothing proves it; F4 will add EIP-191 sign-and-verify.)
+  const db = createServiceClient();
+
+  // Read the current row to determine if the address actually changed.
+  // Iter 7 dogfood found that an idempotent PUT (same address) silently
+  // reset wallet_verified_at to null and forced a re-verify. Now we only
+  // reset verification when the address truly changes — a daemon
+  // re-asserting state on boot is a no-op.
+  const { data: current } = await db
+    .from("users")
+    .select("payout_address, wallet_verified_at")
+    .eq("id", user.supabaseId)
+    .single();
+
+  const currentAddress = (current?.payout_address as string | null) ?? null;
+  const newAddress = normalized.payout_address;
+  const addressChanged =
+    (currentAddress?.toLowerCase() ?? null) !== (newAddress?.toLowerCase() ?? null);
+
+  // Only reset verification when the address actually moves. Method/chain
+  // changes alone don't invalidate a proof of address ownership.
+  const preservedVerifiedAt = addressChanged
+    ? null
+    : current?.wallet_verified_at ?? null;
+
   const updatePayload: Record<string, string | null> = {
     payout_method: normalized.payout_method,
     payout_address: normalized.payout_address,
     payout_chain: normalized.payout_chain,
-    wallet_verified_at: null,
+    wallet_verified_at: preservedVerifiedAt,
   };
 
-  const db = createServiceClient();
   const { error } = await db
     .from("users")
     .update(updatePayload)
@@ -80,6 +101,6 @@ export async function PUT(req: Request) {
     payout_method: normalized.payout_method,
     payout_address: normalized.payout_address,
     payout_chain: normalized.payout_chain,
-    wallet_verified_at: null,
+    wallet_verified_at: preservedVerifiedAt,
   });
 }

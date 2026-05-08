@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const db = createServiceClient();
   const { data: row, error } = await db
     .from("users")
-    .select("payout_address")
+    .select("payout_address, wallet_verified_at")
     .eq("id", user.supabaseId)
     .single();
   if (error) return apiError("Failed to read wallet", 500);
@@ -44,6 +44,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const challenge = buildChallenge(user.supabaseId, row.payout_address);
+  // wallet_verified_at is baked into the HMAC so a successful verify
+  // invalidates the original challenge — single-use without a nonce
+  // table. See wallet-verify.service for the contract.
+  const challenge = buildChallenge(
+    user.supabaseId,
+    row.payout_address,
+    row.wallet_verified_at ?? null,
+  );
   return NextResponse.json(challenge);
 }

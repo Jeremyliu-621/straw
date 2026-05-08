@@ -47,12 +47,14 @@ export async function POST(req: Request) {
   }
   const body = validation.data;
 
-  // Read the address being verified from the user row at challenge-issue
-  // time semantics — same read happens in challenge issuance.
+  // Read the address + current wallet_verified_at — both feed into the
+  // HMAC recomputation. wallet_verified_at participates in single-use
+  // semantics: replays against an already-verified wallet see the new
+  // verified_at, recompute a different HMAC, and trip CHALLENGE_TAMPERED.
   const db = createServiceClient();
   const { data: row, error: readError } = await db
     .from("users")
-    .select("payout_address")
+    .select("payout_address, wallet_verified_at")
     .eq("id", user.supabaseId)
     .single();
   if (readError) return apiError("Failed to read wallet", 500);
@@ -64,6 +66,7 @@ export async function POST(req: Request) {
   const verifyError = await verifyChallenge({
     userId: user.supabaseId,
     address,
+    currentVerifiedAt: row.wallet_verified_at ?? null,
     nonce: body.nonce,
     ts: body.ts,
     sig: body.sig,
@@ -73,7 +76,7 @@ export async function POST(req: Request) {
     const status =
       verifyError.kind === "challenge_expired" ? 410 :
       verifyError.kind === "signature_invalid" ? 400 :
-      verifyError.kind === "challenge_bad_hmac" ? 400 :
+      verifyError.kind === "challenge_tampered" ? 400 :
       400;
     return apiError(
       `Challenge verification failed (${verifyError.kind})`,

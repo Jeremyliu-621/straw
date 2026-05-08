@@ -21,7 +21,7 @@ crosses it off. When all are crossed, restart from the top.
 - [x] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect. _(iter 4)_
 - [x] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap. _(iter 5)_
 - [x] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps. _(iter 6)_
-- [ ] **Wallet F4 round-trip**: a fresh agent declares an address, signs the challenge with viem, submits the proof.
+- [x] **Wallet F4 round-trip**: a fresh agent declares an address, signs the challenge with viem, submits the proof. _(iter 7)_
 - [ ] **Docs surface from an agent's POV**: feed `/llms.txt` + `/docs/llms.txt` to a fresh model, ask "given this, write a working agent that competes on a python bounty." Audit what it generates.
 
 ## Iteration log
@@ -462,7 +462,63 @@ you can":
    `eval_mode: 'external'` lets bounties close end-to-end as soon
    as a poster brings their own judge.
 
-   Commit: `<filled in by the commit step>`
+   Commits: `e3e4c90` (presigned uploads), `cc257e9` (external eval).
+
+### Iter 7 — 2026-05-08 (wallet F4 round-trip)
+
+Customer subagent ran the F4 sign-and-verify flow end-to-end with
+viem (raw fetch + the SDK helpers). Happy path worked. Top three
+findings ranked: (1) MAJOR replay protection missing — same envelope
+re-verifies within 5 min; (2) MAJOR llms.txt silent on F4 (wrong by
+omission, plus a stale "F4 not yet enforced" line); (3) MAJOR/MINOR
+documented `ADDRESS_MISMATCH` is unreachable AND the actual
+HMAC-mismatch code is `CHALLENGE_BAD_HMAC` not the documented
+`CHALLENGE_TAMPERED`.
+
+**Shipped:**
+
+1. **Replay protection without a schema migration.** The HMAC over
+   each challenge now includes the user's `wallet_verified_at`
+   alongside `(nonce, ts, userId, address)`. `buildChallenge` reads
+   the current value at issue time; `verifyChallenge` recomputes
+   HMAC against the CURRENT value at verify time. After a successful
+   verify the value moves forward; a replay's HMAC over the OLD
+   value no longer matches → `CHALLENGE_TAMPERED`. Single-use semantic
+   for free. New unit test asserts this against a synthetic post-verify
+   state.
+2. **Renamed `challenge_bad_hmac` → `challenge_tampered`** to match
+   the code documented in /api/docs. Same condition, honest name —
+   it now also covers the replay rejection in (1).
+3. **PUT /wallet idempotency.** Re-PUTting the same address used to
+   silently reset `wallet_verified_at` to null — daemons re-asserting
+   state on boot were forced to re-verify. Now the route reads the
+   current address and only resets verification when the address
+   actually changed (case-insensitive compare). Method/chain changes
+   alone don't invalidate proof of address ownership.
+4. **llms.txt F4 section.** Replaced the stale "F4 — not yet
+   enforced" line with the actual two-step flow including the
+   single-use note + SDK helper names. An LLM-only agent
+   bootstrapping from llms.txt will now learn about verification
+   on first read.
+
+**Findings deferred (added to backlog):**
+
+- **`ADDRESS_MISMATCH` documented in /api/docs is unreachable** —
+  the recovered-address check in viem's `verifyMessage` handles it
+  upstream as `SIGNATURE_INVALID`. Either remove from /api/docs or
+  document that it covers the TOCTOU case where the user PUTs a
+  different address between challenge and sign. Trivial doc fix;
+  defer.
+- **Returned addresses are lowercased, never EIP-55 checksummed.**
+  Cosmetic — viem's `verifyMessage` is case-insensitive so this
+  doesn't break anything. UI displays look unprofessional. Run
+  `getAddress()` on read in the wallet repository.
+- **Timestamp format inconsistency** — `/verify/sign` returns
+  `Z`-suffixed ISO; `/wallet` and `/whoami` return Postgres
+  `+00:00` form. Normalize via `toISOString()` in the read path.
+- **No SIWE-style origin pinning** in the challenge message. Server-
+  side HMAC sig already binds it, but interop with SIWE-aware tools
+  would benefit from including the URI/chainId/version per EIP-4361.
 
 ---
 

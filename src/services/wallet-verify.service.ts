@@ -2,18 +2,23 @@
  * Wallet proof-of-control — F4 mitigation.
  *
  * Two-step EIP-191 sign-and-verify flow:
- *   1. Client requests a challenge: nonce + timestamp + HMAC.
+ *   1. Client requests a challenge: nonce + timestamp + HMAC over
+ *      (nonce, ts, userId, address, current_verified_at).
  *   2. Client signs the human-readable challenge message with the EVM key
  *      that controls the declared payout address.
- *   3. Client posts the signature back. Server verifies the HMAC (so the
- *      challenge wasn't crafted client-side), checks freshness (≤ 5 min),
+ *   3. Client posts the signature back. Server recomputes the HMAC against
+ *      the *current* `wallet_verified_at`, checks freshness (≤ 5 min),
  *      verifies the EIP-191 signature recovers to the declared address,
- *      and sets `users.wallet_verified_at`.
+ *      and sets `users.wallet_verified_at` to a NEW timestamp.
  *
- * No DB state for the nonce — the HMAC is the integrity check, the
- * timestamp is the freshness check. Reuses AUTH_SECRET as the keying
- * material; if you ever rotate that secret, in-flight challenges become
- * invalid.
+ * Replay protection (iter 7): the HMAC includes the user's
+ * `wallet_verified_at` value at challenge issue time. After a successful
+ * verify the value changes; a replay sees the new value, recomputes the
+ * HMAC, mismatches the original sig — rejected as `challenge_tampered`.
+ * No nonce-store table needed.
+ *
+ * Reuses AUTH_SECRET as the keying material; if you ever rotate that
+ * secret, in-flight challenges become invalid.
  */
 
 import { createHmac, randomBytes, timingSafeEqual } from "crypto";
@@ -48,7 +53,12 @@ export interface Challenge {
 
 export type VerifyError =
   | { kind: "challenge_invalid_format" }
-  | { kind: "challenge_bad_hmac" }
+  // Renamed from `challenge_bad_hmac` (iter 7) to match the
+  // CHALLENGE_TAMPERED code documented in /api/docs. Same condition:
+  // the HMAC didn't match what the server would have computed —
+  // either someone forged the envelope, mutated a field, or replayed
+  // a previously-consumed challenge (post-iter-7, replays trip this).
+  | { kind: "challenge_tampered" }
   | { kind: "challenge_expired" }
   | { kind: "address_mismatch" }
   | { kind: "signature_invalid" }
@@ -58,14 +68,19 @@ export type VerifyError =
   | { kind: "internal"; detail?: string };
 
 /**
- * Issue a fresh challenge. The `address` arg is the lowercased EVM hex of
- * the agent's *declared* payout address (read by the route from
- * `users.payout_address` before calling).
+ * Issue a fresh challenge. Pass the user's CURRENT `wallet_verified_at`
+ * (or `null` if never verified) so it gets baked into the HMAC; this
+ * gives single-use semantics for free — after a successful verify the
+ * value changes and the original HMAC no longer matches.
  */
-export function buildChallenge(userId: string, address: string): Challenge {
+export function buildChallenge(
+  userId: string,
+  address: string,
+  verifiedAt: string | null,
+): Challenge {
   const nonce = randomBytes(NONCE_BYTES).toString("hex");
   const ts = Date.now();
-  const sig = computeHmac(nonce, ts, userId, address);
+  const sig = computeHmac(nonce, ts, userId, address, verifiedAt);
   const message = formatMessage(address, nonce, ts);
   return { nonce, ts, sig, message };
 }
@@ -82,9 +97,19 @@ function formatMessage(address: string, nonce: string, ts: number): string {
   ].join("\n");
 }
 
-function computeHmac(nonce: string, ts: number, userId: string, address: string): string {
+function computeHmac(
+  nonce: string,
+  ts: number,
+  userId: string,
+  address: string,
+  verifiedAt: string | null,
+): string {
+  // verifiedAt is included to give the challenge single-use semantics.
+  // null is normalized to the empty string so a never-verified wallet
+  // has a stable HMAC input.
+  const verifiedAtStr = verifiedAt ?? "";
   return createHmac("sha256", authSecret())
-    .update(`${nonce}|${ts}|${userId}|${address}`)
+    .update(`${nonce}|${ts}|${userId}|${address}|${verifiedAtStr}`)
     .digest("hex");
 }
 
@@ -101,6 +126,10 @@ export interface VerifyInput {
   userId: string;
   /** EVM address being verified (lowercased). */
   address: string;
+  /** The user's `wallet_verified_at` AS OF NOW. Read by the route just
+   *  before calling. Used in the HMAC recomputation so a replay against
+   *  an already-verified wallet trips `challenge_tampered`. */
+  currentVerifiedAt: string | null;
   nonce: string;
   ts: number;
   /** HMAC handed back from buildChallenge. */
@@ -126,10 +155,17 @@ export async function verifyChallenge(input: VerifyInput): Promise<VerifyError |
     return { kind: "challenge_invalid_format" };
   }
 
-  // 1. HMAC integrity — proves we issued this challenge.
-  const expectedHmac = computeHmac(input.nonce, input.ts, input.userId, input.address);
+  // 1. HMAC integrity — proves we issued this challenge AND that
+  //    wallet_verified_at hasn't moved since (single-use semantic).
+  const expectedHmac = computeHmac(
+    input.nonce,
+    input.ts,
+    input.userId,
+    input.address,
+    input.currentVerifiedAt,
+  );
   if (!timingEqualHex(expectedHmac, input.sig)) {
-    return { kind: "challenge_bad_hmac" };
+    return { kind: "challenge_tampered" };
   }
 
   // 2. Freshness.
