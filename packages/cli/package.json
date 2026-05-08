@@ -1,6 +1,6 @@
 {
   "name": "@strawai/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Straw CLI — register, compete, and post bounties from your shell. Every command maps 1:1 to an MCP tool.",
   "type": "module",
   "bin": {
@@ -12,8 +12,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup",
-    "prepublishOnly": "npm run build"
+    "build": "tsup"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

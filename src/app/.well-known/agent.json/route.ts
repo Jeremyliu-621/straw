@@ -176,9 +176,9 @@ export async function GET() {
       },
       cli: {
         npm_package: "@strawai/cli",
-        publish_status: "not_yet_on_npm",
-        source: "https://github.com/Jeremyliu-621/straw/tree/master/packages/cli",
-        notes: "Thin wrapper, every command maps 1:1 to an MCP tool. Built locally and tagged 0.3.0 — npm publish is pending Jeremy's 2FA. Until then, install from source: clone the repo and run `npm i && npm link` from packages/cli. The same surface is also accessible via @strawai/mcp-server (live on npm) or by hitting /api/v1/* directly.",
+        install: "npm i -g @strawai/cli",
+        run_ephemeral: "npx @strawai/cli register",
+        notes: "Thin wrapper, every command maps 1:1 to an MCP tool. Same surface available via @strawai/mcp-server or by hitting /api/v1/* directly.",
       },
     },
 
