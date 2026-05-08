@@ -14,8 +14,12 @@ interface SearchHit {
 /**
  * Cmd+K search dialog. Top-of-docs button + global keyboard listener.
  * Fetches /api/docs/search?q=... on each keystroke (debounced).
+ *
+ * `openInNewTab` controls how a result click navigates. From the
+ * dashboard, true → a new tab so the user keeps their dashboard state.
+ * From the docs site itself, false (default) → same-tab navigation.
  */
-export function DocsSearch() {
+export function DocsSearch({ openInNewTab = false }: { openInNewTab?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<SearchHit[]>([]);
@@ -115,6 +119,7 @@ export function DocsSearch() {
           setActiveIdx={setActiveIdx}
           onClose={() => setOpen(false)}
           inputRef={inputRef}
+          openInNewTab={openInNewTab}
         />
       )}
     </>
@@ -130,6 +135,7 @@ function SearchDialog({
   setActiveIdx,
   onClose,
   inputRef,
+  openInNewTab,
 }: {
   query: string;
   setQuery: (q: string) => void;
@@ -139,6 +145,7 @@ function SearchDialog({
   setActiveIdx: (i: number) => void;
   onClose: () => void;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  openInNewTab: boolean;
 }) {
   return (
     <div
@@ -184,7 +191,13 @@ function SearchDialog({
                 setActiveIdx(Math.max(0, activeIdx - 1));
               }
               if (e.key === "Enter" && hits[activeIdx]) {
-                window.location.href = `/docs/${hits[activeIdx].slug}`;
+                const target = `/docs/${hits[activeIdx].slug}`;
+                if (openInNewTab) {
+                  window.open(target, "_blank", "noopener,noreferrer");
+                  onClose();
+                } else {
+                  window.location.href = target;
+                }
               }
             }}
             placeholder="Search docs…"
@@ -218,21 +231,17 @@ function SearchDialog({
             </p>
           )}
           <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-            {hits.map((h, i) => (
-              <li key={h.slug}>
-                <Link
-                  href={`/docs/${h.slug}`}
-                  onClick={onClose}
-                  className="font-sans"
-                  style={{
-                    display: "block",
-                    padding: "12px 16px",
-                    borderBottom: "1px solid var(--border)",
-                    textDecoration: "none",
-                    color: "var(--text)",
-                    background: i === activeIdx ? "var(--bg-subtle)" : "transparent",
-                  }}
-                >
+            {hits.map((h, i) => {
+              const sharedItemStyle = {
+                display: "block" as const,
+                padding: "12px 16px",
+                borderBottom: "1px solid var(--border)",
+                textDecoration: "none" as const,
+                color: "var(--text)",
+                background: i === activeIdx ? "var(--bg-subtle)" : "transparent",
+              };
+              const inner = (
+                <>
                   <div style={{ fontSize: "14px", fontWeight: 500, marginBottom: "2px" }}>
                     {h.title}
                   </div>
@@ -244,9 +253,37 @@ function SearchDialog({
                   <div style={{ fontSize: "12px", color: "var(--text-muted)", lineHeight: 1.5 }}>
                     {h.snippet}
                   </div>
-                </Link>
-              </li>
-            ))}
+                </>
+              );
+              if (openInNewTab) {
+                return (
+                  <li key={h.slug}>
+                    <a
+                      href={`/docs/${h.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={onClose}
+                      className="font-sans"
+                      style={sharedItemStyle}
+                    >
+                      {inner}
+                    </a>
+                  </li>
+                );
+              }
+              return (
+                <li key={h.slug}>
+                  <Link
+                    href={`/docs/${h.slug}`}
+                    onClick={onClose}
+                    className="font-sans"
+                    style={sharedItemStyle}
+                  >
+                    {inner}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

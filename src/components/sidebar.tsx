@@ -15,8 +15,6 @@ import {
   User,
   Inbox,
   ChevronsUpDown,
-  Building2,
-  Bot,
   Code2,
   BookOpen,
   Compass,
@@ -36,6 +34,11 @@ interface NavItem {
   label: string;
   href: string;
   icon: typeof ClipboardList;
+  /** When true, renders as a regular <a target="_blank"> instead of a
+   *  Next.js <Link>. Used for entries that should open in a new tab so
+   *  the user keeps their dashboard state (e.g., the docs site, which has
+   *  its own full-width layout). */
+  external?: boolean;
 }
 
 interface NavSectionHeader {
@@ -56,7 +59,7 @@ const COMPANY_NAV: NavEntry[] = [
   { label: "Deals", href: "/dashboard/company/deals", icon: Handshake },
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
-  { label: "Docs", href: "/dashboard/docs", icon: BookOpen },
+  { label: "Docs", href: "/docs", icon: BookOpen, external: true },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
@@ -71,32 +74,34 @@ const AGENT_NAV: NavEntry[] = [
   { label: "Workspace", href: "/dashboard/workspace", icon: Database },
   { kind: "section", label: "Developer" },
   { label: "API", href: "/dashboard/api", icon: Code2 },
-  { label: "Docs", href: "/dashboard/docs", icon: BookOpen },
+  { label: "Docs", href: "/docs", icon: BookOpen, external: true },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 interface WorkspaceOption {
   id: string;
   label: string;
-  description: string;
-  icon: typeof Building2;
   href: string;
+  // Pastel gradient pulled from the Differentiators cards on the
+  // landing page. One warm pair, one cool pair, so the two workspaces
+  // are immediately distinguishable by color alone.
+  gradient: string;
 }
 
 const WORKSPACES: WorkspaceOption[] = [
   {
     id: "company",
     label: "Post Tasks",
-    description: "Create and manage competitions",
-    icon: Building2,
     href: "/dashboard/company",
+    // Warm: coral → beige
+    gradient: "linear-gradient(135deg, #ecd0cc 0%, #e0d6d0 100%)",
   },
   {
     id: "builder",
     label: "Compete",
-    description: "Find tasks and submit solutions",
-    icon: Bot,
     href: "/dashboard/agent",
+    // Cool: blue → sage
+    gradient: "linear-gradient(135deg, #cfd5e8 0%, #d0d7d1 100%)",
   },
 ];
 
@@ -106,8 +111,42 @@ const WORKSPACES: WorkspaceOption[] = [
 // extending past the rail edge.
 const ICON_BOX = 32;
 const NAV_ICON = 18;
-const WORKSPACE_ICON = 16;
 const ACTIVE_BG = "rgba(0,0,0,0.07)";
+
+// Workspace avatar: a small pastel-gradient dot sitting inside a
+// circular white container with a thin gray ring — same visual idiom
+// the ElevenLabs workspace switcher uses. The outer 32x32 slot is
+// transparent; it exists only so the avatar's x-position lines up with
+// the nav icon-boxes below.
+function WorkspaceAvatar({ gradient }: { gradient: string }) {
+  return (
+    <div
+      className="flex items-center justify-center"
+      style={{ width: ICON_BOX, height: ICON_BOX, flexShrink: 0 }}
+      aria-hidden="true"
+    >
+      <div
+        className="flex items-center justify-center"
+        style={{
+          width: 28,
+          height: 28,
+          borderRadius: "50%",
+          background: "var(--bg)",
+          border: "1px solid rgba(0,0,0,0.08)",
+        }}
+      >
+        <div
+          style={{
+            width: 20,
+            height: 20,
+            borderRadius: "50%",
+            background: gradient,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 const HOVER_BG = "rgba(0,0,0,0.04)";
 
 // In collapsed mode we want the icon-box rail-centered: with rail=64 and
@@ -148,28 +187,32 @@ function NavLink({
         : "transparent"
     : "transparent";
 
-  return (
-    <Link
-      href={entry.href}
-      title={collapsed ? entry.label : undefined}
-      aria-label={collapsed ? entry.label : undefined}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="flex items-center gap-3 font-sans"
-      style={{
-        padding: `${ROW_PAD_Y}px ${
-          collapsed ? ROW_PAD_X_COLLAPSED : ROW_PAD_X_EXPANDED
-        }px`,
-        fontSize: "14px",
-        fontWeight: isActive ? 500 : 400,
-        color: isActive || hovered ? "var(--text)" : "var(--text-muted)",
-        textDecoration: "none",
-        background: linkBg,
-        borderRadius: "var(--radius)",
-        transition:
-          "color 0.15s ease, background 0.15s ease, padding 0.18s ease",
-      }}
-    >
+  // External entries (e.g. /docs, which has its own full-width layout)
+  // open in a new tab so the user keeps their dashboard state. Same
+  // styling as in-app entries.
+  const sharedProps = {
+    title: collapsed ? entry.label : undefined,
+    "aria-label": collapsed ? entry.label : undefined,
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+    className: "flex items-center gap-3 font-sans",
+    style: {
+      padding: `${ROW_PAD_Y}px ${
+        collapsed ? ROW_PAD_X_COLLAPSED : ROW_PAD_X_EXPANDED
+      }px`,
+      fontSize: "14px",
+      fontWeight: (isActive ? 500 : 400) as 500 | 400,
+      color: isActive || hovered ? "var(--text)" : "var(--text-muted)",
+      textDecoration: "none",
+      background: linkBg,
+      borderRadius: "var(--radius)",
+      transition:
+        "color 0.15s ease, background 0.15s ease, padding 0.18s ease",
+    },
+  } as const;
+
+  const inner = (
+    <>
       <span
         style={{
           width: ICON_BOX,
@@ -194,6 +237,25 @@ function NavLink({
       >
         {entry.label}
       </span>
+    </>
+  );
+
+  if (entry.external) {
+    return (
+      <a
+        href={entry.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...sharedProps}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={entry.href} {...sharedProps}>
+      {inner}
     </Link>
   );
 }
@@ -207,7 +269,6 @@ export function Sidebar() {
   const isCompanyView = pathname.startsWith("/dashboard/company") || pathname.startsWith("/tasks/new");
   const navItems = isCompanyView ? COMPANY_NAV : AGENT_NAV;
   const activeWorkspace = isCompanyView ? WORKSPACES[0] : WORKSPACES[1];
-  const ActiveIcon = activeWorkspace.icon;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -323,19 +384,7 @@ export function Sidebar() {
               "background 0.15s ease, box-shadow 0.18s ease, padding 0.18s ease",
           }}
         >
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: ICON_BOX,
-              height: ICON_BOX,
-              borderRadius: "var(--radius)",
-              background: "var(--accent)",
-              color: "var(--inverse-text)",
-              flexShrink: 0,
-            }}
-          >
-            <ActiveIcon size={WORKSPACE_ICON} strokeWidth={1.5} />
-          </div>
+          <WorkspaceAvatar gradient={activeWorkspace.gradient} />
           {/* Label + chevron stay in the markup so screen readers can
               still read the workspace name; they're just clipped out
               of view when the rail is 64px. */}
@@ -377,7 +426,6 @@ export function Sidebar() {
             }}
           >
             {WORKSPACES.map((ws) => {
-              const WsIcon = ws.icon;
               const isCurrent = ws.id === activeWorkspace.id;
               return (
                 <button
@@ -389,8 +437,9 @@ export function Sidebar() {
                   className="flex items-center gap-3 transition-colors"
                   style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    fontSize: "13px",
+                    padding: "6px 8px",
+                    fontSize: "14px",
+                    fontWeight: 500,
                     color: "var(--text)",
                     background: isCurrent ? "var(--bg-subtle)" : "transparent",
                     border: "none",
@@ -408,32 +457,8 @@ export function Sidebar() {
                     }
                   }}
                 >
-                  <div
-                    className="flex items-center justify-center"
-                    style={{
-                      width: "28px",
-                      height: "28px",
-                      borderRadius: "6px",
-                      background: isCurrent ? "var(--accent)" : "var(--accent-subtle)",
-                      color: isCurrent ? "var(--inverse-text)" : "var(--accent)",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <WsIcon size={14} strokeWidth={1.5} />
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 500, lineHeight: "1.3" }}>{ws.label}</div>
-                    <div
-                      style={{
-                        fontSize: "11px",
-                        color: "var(--text-faint)",
-                        lineHeight: "1.3",
-                        marginTop: "1px",
-                      }}
-                    >
-                      {ws.description}
-                    </div>
-                  </div>
+                  <WorkspaceAvatar gradient={ws.gradient} />
+                  <span className="truncate">{ws.label}</span>
                 </button>
               );
             })}

@@ -26,6 +26,7 @@ import { NotificationsPanel, SEEN_STORAGE_KEY } from "./notifications-panel";
 import { useAskRail } from "./ask-rail-context";
 import { FeedbackDropdown } from "./feedback-dialog";
 import { ThemePicker } from "@/components/theme/theme-picker";
+import { DocsSearch } from "@/components/docs/docs-search";
 
 /**
  * Title + optional crumb resolved from the current pathname. The dashboard
@@ -273,6 +274,9 @@ export function TopBar() {
           />
           {feedbackOpen && <FeedbackDropdown onClose={() => setFeedbackOpen(false)} />}
         </div>
+        {/* Docs search — ⌘K opens the modal, results open /docs in a new
+            tab so the user keeps their dashboard state. */}
+        <DocsSearch openInNewTab />
         <TopBarPill
           icon={
             <span style={{ color: "#6878a8", display: "inline-flex" }}>
@@ -280,7 +284,8 @@ export function TopBar() {
             </span>
           }
           label="Docs"
-          href="/dashboard/docs"
+          href="/docs"
+          external
         />
         {/* Ask — toggles the global AskRail (rendered by DashboardShell). */}
         <button
@@ -567,42 +572,61 @@ function TopBarPill({
   icon,
   label,
   href,
+  external,
 }: {
   icon: React.ReactNode;
   label: string;
   href: string;
+  /** Open in a new tab. Used for /docs so the user keeps dashboard state. */
+  external?: boolean;
 }) {
+  const sharedStyle = {
+    display: "inline-flex" as const,
+    alignItems: "center" as const,
+    gap: "5px",
+    height: "30px",
+    padding: "0 11px",
+    border: "1px solid var(--border)",
+    borderRadius: "var(--radius)",
+    background: "var(--bg-card)",
+    color: "var(--text-muted)",
+    fontSize: "12px",
+    fontWeight: 500 as const,
+    textDecoration: "none" as const,
+    whiteSpace: "nowrap" as const,
+    transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
+  };
+  const handlers = {
+    onMouseOver: (e: React.MouseEvent<HTMLElement>) => {
+      e.currentTarget.style.background = "var(--bg-subtle)";
+      e.currentTarget.style.color = "var(--text)";
+      e.currentTarget.style.borderColor = "var(--text-faint)";
+    },
+    onMouseOut: (e: React.MouseEvent<HTMLElement>) => {
+      e.currentTarget.style.background = "var(--bg-card)";
+      e.currentTarget.style.color = "var(--text-muted)";
+      e.currentTarget.style.borderColor = "var(--border)";
+    },
+  };
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-sans"
+        style={sharedStyle}
+        {...handlers}
+      >
+        {icon}
+        <span>{label}</span>
+      </a>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      className="font-sans"
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "5px",
-        height: "30px",
-        padding: "0 11px",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius)",
-        background: "var(--bg-card)",
-        color: "var(--text-muted)",
-        fontSize: "12px",
-        fontWeight: 500,
-        textDecoration: "none",
-        whiteSpace: "nowrap",
-        transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.background = "var(--bg-subtle)";
-        e.currentTarget.style.color = "var(--text)";
-        e.currentTarget.style.borderColor = "var(--text-faint)";
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.background = "var(--bg-card)";
-        e.currentTarget.style.color = "var(--text-muted)";
-        e.currentTarget.style.borderColor = "var(--border)";
-      }}
-    >
+    <Link href={href} className="font-sans" style={sharedStyle} {...handlers}>
       {icon}
       <span>{label}</span>
     </Link>
