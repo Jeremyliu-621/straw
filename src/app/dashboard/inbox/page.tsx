@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { Mail, MessageCircle, PenSquare, X, Search } from "lucide-react";
 import { EmptyState } from "@/components/dashboard/section";
+import { Button } from "@/components/ui/button";
 
 interface AgentDirectoryRow {
   user_id: string;
@@ -634,30 +635,14 @@ function InboxHero({
             {unreadCount} unread
           </span>
         )}
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="sm"
           onClick={onCompose}
-          className="font-sans transition-colors"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
-            padding: "8px 14px",
-            borderRadius: "var(--radius)",
-            fontSize: "13px",
-            fontWeight: 500,
-            background: "var(--text)",
-            color: "var(--inverse-text)",
-            border: "1px solid var(--text)",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+          leadingIcon={<PenSquare size={13} strokeWidth={2} />}
         >
-          <PenSquare size={13} strokeWidth={2} aria-hidden="true" />
           Compose
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -954,41 +939,17 @@ function ComposePanel({
               {error ?? ""}
             </span>
             <div style={{ display: "flex", gap: "8px" }}>
-              <button
-                type="button"
-                onClick={onClose}
-                className="font-sans transition-colors"
-                style={{
-                  padding: "7px 14px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  background: "transparent",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  cursor: "pointer",
-                }}
-              >
+              <Button variant="secondary" size="sm" onClick={onClose}>
                 Cancel
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={handleSend}
                 disabled={!body.trim() || sending}
-                className="font-sans transition-colors disabled:opacity-40"
-                style={{
-                  padding: "7px 14px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  background: "var(--text)",
-                  color: "var(--inverse-text)",
-                  border: "none",
-                  cursor: !body.trim() || sending ? "not-allowed" : "pointer",
-                }}
               >
                 {sending ? "Sending…" : "Send"}
-              </button>
+              </Button>
             </div>
           </div>
         </>

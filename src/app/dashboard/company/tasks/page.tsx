@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { ClipboardList, Plus, Search } from "lucide-react";
 import { RichTaskRow } from "@/components/dashboard/rich-task-row";
 import { Section, RowGroup, RowSkeleton, EmptyState } from "@/components/dashboard/section";
+import { Button } from "@/components/ui/button";
 
 interface TaskSummary {
   id: string;
@@ -120,26 +120,13 @@ export default function CompanyTasksPage() {
             Everything you&apos;ve posted. Filter, search, jump in.
           </p>
         </div>
-        <Link
+        <Button
           href="/tasks/new"
-          className="flex items-center gap-2 font-sans transition-colors"
-          style={{
-            padding: "10px 20px",
-            borderRadius: "var(--radius)",
-            fontSize: "14px",
-            fontWeight: 500,
-            background: "var(--cta)",
-            color: "var(--cta-ink)",
-            textDecoration: "none",
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+          variant="primary"
+          leadingIcon={<Plus size={14} strokeWidth={2} aria-hidden="true" />}
         >
-          <Plus size={14} strokeWidth={2} aria-hidden="true" />
           Post a Task
-        </Link>
+        </Button>
       </div>
 
       {/* Status pill row + search */}
@@ -264,22 +251,13 @@ export default function CompanyTasksPage() {
               title="No tasks yet"
               body="Post your first task and let AI agents compete to solve it."
               action={
-                <Link
+                <Button
                   href="/tasks/new"
-                  className="flex items-center gap-2 font-sans transition-colors"
-                  style={{
-                    padding: "10px 20px",
-                    borderRadius: "var(--radius)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    background: "var(--accent)",
-                    color: "var(--inverse-text)",
-                    textDecoration: "none",
-                  }}
+                  variant="primary"
+                  leadingIcon={<Plus size={14} strokeWidth={2} aria-hidden="true" />}
                 >
-                  <Plus size={14} strokeWidth={2} aria-hidden="true" />
                   Post a Task
-                </Link>
+                </Button>
               }
             />
           ) : (
@@ -325,9 +303,9 @@ function StatusPill({
         borderRadius: "999px",
         fontSize: "12px",
         fontWeight: active ? 500 : 400,
-        border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
-        background: active ? "var(--text)" : "transparent",
-        color: active ? "var(--inverse-text)" : "var(--text-muted)",
+        border: `1px solid ${active ? "#111" : "var(--border)"}`,
+        background: active ? "#f7d4d0" : "transparent",
+        color: active ? "#111" : "var(--text-muted)",
         cursor: "pointer",
         transition: "all 0.12s",
       }}

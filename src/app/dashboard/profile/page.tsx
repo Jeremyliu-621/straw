@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { CATEGORY_OPTIONS } from "@/constants";
+import { Button } from "@/components/ui/button";
 
 interface Profile {
   display_name: string;
@@ -107,61 +108,28 @@ export default function DashboardProfilePage() {
       {/* Hero */}
       <div
         style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
           paddingBottom: "24px",
           borderBottom: "1px solid var(--border)",
           marginBottom: "24px",
-          gap: "16px",
         }}
       >
-        <div style={{ minWidth: 0 }}>
-          <h1
-            className="font-sans"
-            style={{
-              fontSize: "28px",
-              fontWeight: 500,
-              letterSpacing: "-0.02em",
-              color: "var(--text)",
-            }}
-          >
-            Your profile
-          </h1>
-          <p
-            className="mt-2 font-sans"
-            style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
-          >
-            How you appear to companies on the leaderboard and in deals.
-          </p>
-        </div>
-        {session?.user?.supabaseId && (
-          <Link
-            href={`/agents/${session.user.supabaseId}`}
-            className="font-sans"
-            style={{
-              fontSize: "13px",
-              color: "var(--text-muted)",
-              textDecoration: "none",
-              flexShrink: 0,
-              padding: "6px 10px",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius)",
-              whiteSpace: "nowrap",
-              transition: "background-color 0.12s ease, border-color 0.12s ease",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = "var(--bg-subtle)";
-              e.currentTarget.style.borderColor = "var(--text-faint)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.borderColor = "var(--border)";
-            }}
-          >
-            View public profile →
-          </Link>
-        )}
+        <h1
+          className="font-sans"
+          style={{
+            fontSize: "28px",
+            fontWeight: 500,
+            letterSpacing: "-0.02em",
+            color: "var(--text)",
+          }}
+        >
+          Your profile
+        </h1>
+        <p
+          className="mt-2 font-sans"
+          style={{ fontSize: "15px", lineHeight: 1.6, color: "var(--text-muted)" }}
+        >
+          How you appear to companies on the leaderboard and in deals.
+        </p>
       </div>
 
       {loading ? (
@@ -183,7 +151,7 @@ export default function DashboardProfilePage() {
           >
             {/* ── Identity card ────────────────────────────── */}
             <Card label="Identity">
-              {/* Avatar */}
+              {/* Avatar + preview link */}
               <div
                 style={{
                   display: "flex",
@@ -224,6 +192,64 @@ export default function DashboardProfilePage() {
                   >
                     {initials}
                   </div>
+                )}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase" as const,
+                      color: "var(--text-muted)",
+                      margin: 0,
+                      marginBottom: "4px",
+                    }}
+                  >
+                    Avatar
+                  </p>
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontSize: "12px",
+                      color: "var(--text-muted)",
+                      margin: 0,
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    Pulled from your sign-in provider.
+                  </p>
+                </div>
+                {session?.user?.supabaseId && (
+                  <Link
+                    href={`/agents/${session.user.supabaseId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-sans"
+                    style={{
+                      fontSize: "12.5px",
+                      color: "var(--text-muted)",
+                      textDecoration: "none",
+                      flexShrink: 0,
+                      padding: "6px 10px",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius)",
+                      whiteSpace: "nowrap",
+                      transition: "background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = "var(--bg-subtle)";
+                      e.currentTarget.style.borderColor = "var(--text-faint)";
+                      e.currentTarget.style.color = "var(--text)";
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.borderColor = "var(--border)";
+                      e.currentTarget.style.color = "var(--text-muted)";
+                    }}
+                  >
+                    Preview public profile ↗
+                  </Link>
                 )}
               </div>
 
@@ -298,9 +324,9 @@ export default function DashboardProfilePage() {
                         borderRadius: "999px",
                         fontSize: "12px",
                         fontWeight: active ? 500 : 400,
-                        border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
-                        background: active ? "var(--text)" : "transparent",
-                        color: active ? "var(--inverse-text)" : "var(--text-muted)",
+                        border: `1px solid ${active ? "#111" : "var(--border)"}`,
+                        background: active ? "#f7d4d0" : "transparent",
+                        color: active ? "#111" : "var(--text-muted)",
                         cursor: "pointer",
                         transition: "all 0.12s",
                       }}
@@ -324,19 +350,31 @@ export default function DashboardProfilePage() {
             </Card>
           </div>
 
-          {/* ── Save row ─────────────────────────────────────── */}
+          {/* ── Sticky save bar ──────────────────────────────────
+              Sits at the bottom of the form. Becomes sticky when
+              the form scrolls so primary actions are always
+              reachable; on shorter viewports it's already in view. */}
           <div
             style={{
+              position: "sticky",
+              bottom: "16px",
+              marginTop: "8px",
+              padding: "12px 16px",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius)",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-end",
               gap: "12px",
-              minHeight: "20px",
+              zIndex: 5,
             }}
           >
-            {error && (
+            {error ? (
               <p
                 className="font-sans"
+                role="alert"
                 style={{
                   fontSize: "13px",
                   color: "var(--error)",
@@ -346,41 +384,34 @@ export default function DashboardProfilePage() {
               >
                 {error}
               </p>
+            ) : (
+              <p
+                className="font-sans"
+                style={{
+                  fontSize: "12px",
+                  color: "var(--text-muted)",
+                  margin: 0,
+                  marginRight: "auto",
+                }}
+              >
+                {displayName ? "Ready to save." : "Add a display name to continue."}
+              </p>
             )}
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="md"
               onClick={() => router.push("/dashboard/agent")}
-              className="font-sans transition-colors"
-              style={{
-                padding: "9px 18px",
-                borderRadius: "var(--radius)",
-                fontSize: "14px",
-                fontWeight: 500,
-                background: "transparent",
-                color: "var(--text)",
-                border: "1px solid var(--border)",
-                cursor: "pointer",
-              }}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
+              variant="primary"
+              size="md"
               disabled={saving || !displayName}
-              className="font-sans transition-colors disabled:opacity-40"
-              style={{
-                padding: "9px 18px",
-                borderRadius: "var(--radius)",
-                fontSize: "14px",
-                fontWeight: 500,
-                background: "var(--text)",
-                color: "var(--inverse-text)",
-                border: "none",
-                cursor: saving || !displayName ? "not-allowed" : "pointer",
-              }}
             >
               {saving ? "Saving…" : "Save profile"}
-            </button>
+            </Button>
           </div>
         </form>
       )}

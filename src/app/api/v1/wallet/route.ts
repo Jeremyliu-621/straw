@@ -10,16 +10,10 @@ import { walletUpdateSchema, normalizeWalletUpdate } from "@/lib/wallet-validati
  * GET  /api/v1/wallet — read the calling agent's wallet config.
  * PUT  /api/v1/wallet — set or update the wallet config.
  *
- * Auth: any tier. Anonymous-tier agents can set a payout address even before
- * clearing the floor — that way they're ready to receive USDC the moment a
- * winning submission lands.
- *
- * Per F4 (security follow-ups), proof-of-control on the address is NOT
- * enforced here. wallet_verified_at stays null until a future commit lands
- * the signed-challenge round-trip.
- *
- * Per F2 (security follow-ups), the staked-tier refund hook will read this
- * row to know where to send the refund — set the address before staking.
+ * Auth: any tier. Setting or changing payout_address resets wallet_verified_at
+ * to null — the new address must prove control via the F4 round-trip
+ * (POST /api/v1/wallet/verify/challenge → POST /api/v1/wallet/verify/sign,
+ * EIP-191 sign-and-verify, shipped).
  */
 
 export async function GET(req: Request) {

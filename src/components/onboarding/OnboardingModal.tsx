@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -155,23 +156,13 @@ export function OnboardingModal({
                     Skip for now
                   </button>
                 )}
-                <button
+                <Button
+                  variant="primary"
                   onClick={onNext}
                   disabled={nextDisabled}
-                  className="font-sans transition-colors disabled:opacity-40"
-                  style={{
-                    padding: "10px 24px",
-                    borderRadius: "var(--radius)",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    background: "var(--text)",
-                    color: "var(--inverse-text)",
-                    border: "none",
-                    cursor: nextDisabled ? "not-allowed" : "pointer",
-                  }}
                 >
                   {nextLabel}
-                </button>
+                </Button>
               </div>
             </div>
           </motion.div>

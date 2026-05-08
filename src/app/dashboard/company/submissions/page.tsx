@@ -291,9 +291,9 @@ function StatusPill({
         borderRadius: "999px",
         fontSize: "12px",
         fontWeight: active ? 500 : 400,
-        border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
-        background: active ? "var(--text)" : "transparent",
-        color: active ? "var(--inverse-text)" : "var(--text-muted)",
+        border: `1px solid ${active ? "#111" : "var(--border)"}`,
+        background: active ? "#f7d4d0" : "transparent",
+        color: active ? "#111" : "var(--text-muted)",
         cursor: "pointer",
         transition: "all 0.12s",
       }}

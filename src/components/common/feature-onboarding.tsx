@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 /**
  * First-visit feature-intro modal — modeled on the ElevenLabs Flows /
@@ -213,25 +214,16 @@ export function FeatureOnboarding({
               </ul>
 
               {/* CTA */}
-              <button
-                type="button"
-                onClick={handleCta}
-                className="font-sans"
-                style={{
-                  width: "100%",
-                  marginTop: 22,
-                  padding: "12px 16px",
-                  borderRadius: "var(--radius)",
-                  fontSize: 14,
-                  fontWeight: 500,
-                  background: "var(--text)",
-                  color: "var(--inverse-text)",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                {ctaLabel}
-              </button>
+              <div style={{ marginTop: 22 }}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  onClick={handleCta}
+                >
+                  {ctaLabel}
+                </Button>
+              </div>
             </div>
           </motion.div>
         </>

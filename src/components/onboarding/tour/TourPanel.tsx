@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useTour } from "./TourContext";
 import type { TourStep } from "./TourTypes";
+import { Button } from "@/components/ui/button";
 
 interface TourPanelProps {
   step: TourStep;
@@ -153,23 +154,14 @@ export function TourPanel({ step, stepNumber, totalSteps }: TourPanelProps) {
           >
             Skip tour
           </button>
-          <button
+          <Button
+            variant="primary"
+            size="sm"
             onClick={goNext}
-            className="flex items-center gap-1.5 font-sans transition-colors"
-            style={{
-              padding: "6px 14px",
-              borderRadius: "var(--radius)",
-              fontSize: "13px",
-              fontWeight: 500,
-              background: "var(--text)",
-              color: "var(--inverse-text)",
-              border: "none",
-              cursor: "pointer",
-            }}
+            trailingIcon={stepNumber < totalSteps ? <ChevronRight size={14} /> : undefined}
           >
-            <span>{step.nextLabel}</span>
-            {stepNumber < totalSteps && <ChevronRight size={14} />}
-          </button>
+            {step.nextLabel}
+          </Button>
         </div>
       </div>
     </div>

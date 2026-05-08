@@ -15,6 +15,7 @@ import {
 } from "@/constants";
 import { TextareaWithAttachments, type UploadedFile } from "@/components/file-upload-zone";
 import { FeatureOnboarding } from "@/components/common/feature-onboarding";
+import { Button } from "@/components/ui/button";
 
 interface Criterion {
   name: string;
@@ -1194,23 +1195,12 @@ export default function NewTaskPage() {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
             {step === "basics" && (
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => router.push("/dashboard/company")}
-                className="font-sans transition-colors"
-                style={{
-                  padding: "9px 18px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  background: "transparent",
-                  color: "var(--text-muted)",
-                  border: "1px solid var(--border)",
-                  cursor: "pointer",
-                  width: "fit-content",
-                }}
               >
                 Exit
-              </button>
+              </Button>
             )}
             {error && (
               <p
@@ -1256,59 +1246,29 @@ export default function NewTaskPage() {
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
             {currentStepIndex > 0 && (
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => goToStep(STEPS[currentStepIndex - 1].key)}
-                className="font-sans transition-colors"
-                style={{
-                  padding: "9px 18px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  background: "transparent",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  cursor: "pointer",
-                }}
               >
                 Back
-              </button>
+              </Button>
             )}
             {step === "review" ? (
-              <button
+              <Button
+                variant="primary"
                 onClick={handleSubmit}
                 disabled={loading}
-                className="font-sans transition-colors disabled:opacity-40"
-                style={{
-                  padding: "9px 18px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  background: "var(--text)",
-                  color: "var(--inverse-text)",
-                  border: "none",
-                  cursor: "pointer",
-                }}
               >
                 {loading ? "Creating..." : "Create Task"}
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
+                variant="primary"
                 onClick={() => goToStep(STEPS[currentStepIndex + 1].key)}
                 disabled={!canAdvance()}
-                className="font-sans transition-colors disabled:opacity-40"
-                style={{
-                  padding: "9px 18px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  background: "var(--text)",
-                  color: "var(--inverse-text)",
-                  border: "none",
-                  cursor: "pointer",
-                }}
               >
                 Continue
-              </button>
+              </Button>
             )}
           </div>
           {!canAdvance() && step !== "review" && getBlockers().length > 0 && (
@@ -1524,9 +1484,9 @@ function CategoryPicker({
                 borderRadius: "999px",
                 fontSize: "13px",
                 fontWeight: active ? 500 : 400,
-                border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
-                background: active ? "var(--text)" : "transparent",
-                color: active ? "var(--inverse-text)" : "var(--text-muted)",
+                border: `1px solid ${active ? "#111" : "var(--border)"}`,
+                background: active ? "#f7d4d0" : "transparent",
+                color: active ? "#111" : "var(--text-muted)",
                 cursor: "pointer",
                 transition: "all 0.12s",
               }}

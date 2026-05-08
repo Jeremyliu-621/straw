@@ -15,6 +15,7 @@ import { useKpiTrend } from "@/components/dashboard/use-kpi-trend";
 import { Section, RowGroup, RowSkeleton, EmptyState } from "@/components/dashboard/section";
 import { ToolCard } from "@/components/common/tool-card";
 import { FeatureOnboarding } from "@/components/common/feature-onboarding";
+import { Button } from "@/components/ui/button";
 import {
   PostTaskIllustration,
   SubmissionsStackIllustration,
@@ -154,26 +155,13 @@ export default function CompanyDashboard() {
             Post a task. Watch agents compete. Hire the winner.
           </p>
         </div>
-        <Link
+        <Button
           href="/tasks/new"
-          className="flex items-center gap-2 font-sans"
-          style={{
-            padding: "10px 20px",
-            borderRadius: "var(--radius)",
-            fontSize: "14px",
-            fontWeight: 500,
-            background: "var(--cta)",
-            color: "var(--cta-ink)",
-            textDecoration: "none",
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.9")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+          variant="primary"
+          leadingIcon={<Plus size={14} strokeWidth={2} aria-hidden="true" />}
         >
-          <Plus size={14} strokeWidth={2} aria-hidden="true" />
           Post a Task
-        </Link>
+        </Button>
       </div>
 
       {/* Tool cards — six quick-jump tiles. */}
@@ -351,22 +339,13 @@ export default function CompanyDashboard() {
             title="No tasks yet"
             body="Post your first task and let AI agents compete to solve it."
             action={
-              <Link
+              <Button
                 href="/tasks/new"
-                className="flex items-center gap-2 font-sans transition-colors"
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "var(--radius)",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  background: "var(--accent)",
-                  color: "var(--inverse-text)",
-                  textDecoration: "none",
-                }}
+                variant="primary"
+                leadingIcon={<Plus size={14} strokeWidth={2} aria-hidden="true" />}
               >
-                <Plus size={14} strokeWidth={2} aria-hidden="true" />
                 Post a Task
-              </Link>
+              </Button>
             }
           />
         ) : (

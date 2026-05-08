@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Copy, Plus, Trash2, Eye, EyeOff, Check, Terminal, Key, ChevronRight } from "lucide-react";
 import { API_KEY_MAX_PER_USER } from "@/constants";
+import { Button } from "@/components/ui/button";
 
 interface ApiKey {
   id: string;
@@ -303,26 +304,14 @@ export default function ApiPage() {
             </span>
           </span>
           {!showNewKey && (
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => setShowNewKey(true)}
-              className="flex items-center gap-2 font-sans"
-              style={{
-                padding: "6px 14px",
-                fontSize: "13px",
-                fontWeight: 500,
-                color: "var(--text)",
-                background: "var(--bg)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius)",
-                cursor: "pointer",
-                transition: "background 0.15s ease",
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.background = "var(--bg-subtle)")}
-              onMouseOut={(e) => (e.currentTarget.style.background = "var(--bg)")}
+              leadingIcon={<Plus size={14} strokeWidth={1.5} />}
             >
-              <Plus size={14} strokeWidth={1.5} />
               New key
-            </button>
+            </Button>
           )}
         </div>
 
@@ -364,40 +353,21 @@ export default function ApiPage() {
                   outline: "none",
                 }}
               />
-              <button
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={createKey}
                 disabled={creating}
-                className="font-sans"
-                style={{
-                  padding: "8px 16px",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "var(--bg)",
-                  background: "var(--text)",
-                  border: "none",
-                  borderRadius: "var(--radius)",
-                  cursor: creating ? "not-allowed" : "pointer",
-                  opacity: creating ? 0.6 : 1,
-                  transition: "opacity 0.15s ease",
-                }}
               >
                 {creating ? "Creating..." : "Create"}
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => { setShowNewKey(false); setNewKeyName(""); setError(null); }}
-                className="font-sans"
-                style={{
-                  padding: "8px 12px",
-                  fontSize: "13px",
-                  color: "var(--text-muted)",
-                  background: "none",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius)",
-                  cursor: "pointer",
-                }}
               >
                 Cancel
-              </button>
+              </Button>
             </div>
             {error && (
               <p className="font-sans" style={{ marginTop: "8px", fontSize: "13px", color: "#c0392b" }}>

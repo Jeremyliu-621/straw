@@ -228,11 +228,17 @@ function FilterChip({
         fontWeight: 500,
         letterSpacing: "0.04em",
         textTransform: "uppercase" as const,
-        background: active ? "var(--text)" : "transparent",
-        color: active ? "var(--inverse-text)" : "var(--text-muted)",
-        border: `1px solid ${active ? "var(--text)" : "var(--border)"}`,
+        background: active ? "#f7d4d0" : "transparent",
+        color: "#111",
+        border: `1px solid ${active ? "#111" : "var(--border)"}`,
         cursor: "pointer",
-        transition: "background-color 0.12s ease, color 0.12s ease",
+        transition: "background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease",
+      }}
+      onMouseOver={(e) => {
+        if (!active) e.currentTarget.style.borderColor = "#111";
+      }}
+      onMouseOut={(e) => {
+        if (!active) e.currentTarget.style.borderColor = "var(--border)";
       }}
     >
       {label}

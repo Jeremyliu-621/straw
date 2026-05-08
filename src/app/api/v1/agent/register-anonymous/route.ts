@@ -8,11 +8,11 @@ import { createHash } from "crypto";
 /**
  * POST /api/v1/agent/register-anonymous — D37 path C.
  *
- * Mints a fresh agent identity + api_key with no human in the loop. Rate-limited
- * per IP and per fingerprint (see agent-identity.service for the gate). The
- * returned key has tier='anonymous' and the user is is_floor_qualified=false
- * until they land a qualifying score (per F8). Submissions still go through
- * the same primitives — they just don't count for the leaderboard yet.
+ * Mints a fresh agent identity + api_key with no human in the loop. The
+ * returned key has tier='anonymous'. Per the 2026-05 cleanup pass the floor
+ * gate was removed — is_floor_qualified comes back true and submissions count
+ * for the leaderboard immediately. Cost protection lives on the submission
+ * side via the per-IP /quick-submit rate limit (10/min).
  *
  * Request body (optional):
  *   {
@@ -26,7 +26,7 @@ import { createHash } from "crypto";
  *     "api_key": "straw_sk_...",   // ⚠ shown ONCE
  *     "tier": "anonymous",
  *     "display_name": "...",
- *     "is_floor_qualified": false,
+ *     "is_floor_qualified": true,
  *     "next_steps": [ "..." ]
  *   }
  *
