@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import remarkGfm from "remark-gfm";
 import { readDocPage, extractHeadings } from "@/lib/docs";
 import { mdxComponents } from "@/components/docs/mdx-components";
 import { DocsToc } from "@/components/docs/docs-toc";
@@ -76,6 +77,7 @@ export default async function DocsPage({ params }: PageProps) {
           components={mdxComponents}
           options={{
             mdxOptions: {
+              remarkPlugins: [remarkGfm],
               rehypePlugins: [
                 rehypeSlug,
                 [rehypeAutolinkHeadings, { behavior: "wrap" }],
