@@ -5,21 +5,28 @@ import type { ComponentType } from "react";
 
 /**
  * Square tool card — illustration on top, label below. Modeled on
- * the ElevenLabs home tool-card row (Instant speech / Audiobook /
- * Image & Video / etc.). Either `imageSrc` (raster) or `Illustration`
- * (SVG component) drives the upper portion.
+ * the ElevenLabs home tool-card row.
  *
- * Hover animation: the whole card lifts (translateY -2) and the
- * illustration inside scales up slightly (1 → 1.06). Both transitions
- * are tuned short and ease-out so the effect reads as "alive" rather
- * than "loaded a video on my page" — matches the ElevenLabs feel.
+ * Hover animation: when both `imageSrc` and `imageHoverSrc` are
+ * provided, the two images crossfade on hover (rest opacity 1→0,
+ * hover opacity 0→1, both 300ms ease-out). This is exactly how
+ * ElevenLabs' tool cards work — the same elements just rearranged
+ * between the two states (see tasks/design/illustration-prompts.md).
+ *
+ * If only `Illustration` (an SVG component) is provided, no hover
+ * animation runs — the SVG is the rest and that's it. SVG components
+ * can implement their own internal animations using CSS group-hover
+ * if they want.
  */
 interface ToolCardProps {
   label: string;
   href: string;
-  /** Path to a raster image under /public. Mutually exclusive with `Illustration`. */
+  /** Path under /public to the rest-state raster image. */
   imageSrc?: string;
-  /** Inline SVG illustration component. Mutually exclusive with `imageSrc`. */
+  /** Path under /public to the hover-state raster image. Crossfades
+      with imageSrc on hover. Optional. */
+  imageHoverSrc?: string;
+  /** Inline SVG illustration component. Mutually exclusive with imageSrc. */
   Illustration?: ComponentType<{ className?: string }>;
   /**
    * Which tint token to use as the card's background. Defaults to
@@ -39,6 +46,7 @@ export function ToolCard({
   label,
   href,
   imageSrc,
+  imageHoverSrc,
   Illustration,
   tint = "tint-beige",
   description,
@@ -51,8 +59,6 @@ export function ToolCard({
         position: "relative",
         background: `var(--${tint})`,
         border: "1px solid var(--border)",
-        // Match the rest of the app — sidebar buttons, top-bar pills,
-        // section containers all use var(--radius). Was hardcoded 12px.
         borderRadius: "var(--radius)",
         overflow: "hidden",
         textDecoration: "none",
@@ -74,13 +80,11 @@ export function ToolCard({
         e.currentTarget.style.borderColor = "var(--border)";
       }}
     >
-      {/* Illustration area — upper 65% of the card. The inner
-          .tool-card-art element scales on parent hover via the
-          `group-hover:` Tailwind variant — keeps the animation
-          declarative and avoids ref juggling. */}
+      {/* Illustration area — upper portion of the card. */}
       <div
         style={{
           flex: 1,
+          position: "relative",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -88,30 +92,51 @@ export function ToolCard({
           minHeight: 0,
         }}
       >
-        <div
-          className="tool-card-art transition-transform duration-300 ease-out group-hover:scale-[1.06]"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {imageSrc ? (
+        {imageSrc && imageHoverSrc ? (
+          // Two-image crossfade (ElevenLabs pattern). Both images
+          // overlap; the hover one is invisible until parent :hover
+          // fires, then opacity flips on a 300ms ease-out.
+          <>
             <img
               src={imageSrc}
               alt=""
+              className="transition-opacity duration-300 ease-out group-hover:opacity-0"
               style={{
-                maxWidth: "82%",
-                maxHeight: "82%",
+                position: "absolute",
+                inset: 16,
+                width: "calc(100% - 32px)",
+                height: "calc(100% - 32px)",
+                objectFit: "contain",
+                opacity: 1,
+              }}
+            />
+            <img
+              src={imageHoverSrc}
+              alt=""
+              className="transition-opacity duration-300 ease-out opacity-0 group-hover:opacity-100"
+              style={{
+                position: "absolute",
+                inset: 16,
+                width: "calc(100% - 32px)",
+                height: "calc(100% - 32px)",
                 objectFit: "contain",
               }}
             />
-          ) : Illustration ? (
-            <Illustration className="w-[70%] h-auto max-h-[70%]" />
-          ) : null}
-        </div>
+          </>
+        ) : imageSrc ? (
+          // Single raster — no hover animation.
+          <img
+            src={imageSrc}
+            alt=""
+            style={{
+              maxWidth: "82%",
+              maxHeight: "82%",
+              objectFit: "contain",
+            }}
+          />
+        ) : Illustration ? (
+          <Illustration className="w-[70%] h-auto max-h-[70%]" />
+        ) : null}
       </div>
       {/* Label area — lower portion, slightly pushed-back background */}
       <div
