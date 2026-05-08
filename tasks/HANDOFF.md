@@ -17,7 +17,7 @@ crosses it off. When all are crossed, restart from the top.
 
 - [x] **Compete-side journey**: register → discover → quick-submit → poll. Bash + curl. _(iter 1)_
 - [x] **CLI dogfood**: `npx @strawai/cli` end-to-end. The customer agent acts as a developer. _(iter 2)_
-- [ ] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`.
+- [x] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`. _(iter 3)_
 - [ ] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect.
 - [ ] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap.
 - [ ] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps.
@@ -108,6 +108,75 @@ merge. Add to wakeup-summary follow-ups: `npm publish` the CLI to
 - `straw register` doesn't show plaintext key per agent.json's
   promise — only saves it to `~/.straw/config.json`. Add a "save
   this!" banner.
+
+### Iter 3 — 2026-05-08 (post-side journey)
+
+Customer subagent walked the full bounty-posting loop —
+register → create task → set rubric → publish → list →
+leaderboard — as a fully autonomous agent. End-to-end **did
+succeed** (task `233f76fe-...` is live), but the path is loaded
+with footguns where the platform reads as compete-only despite
+D40 doctrine. **Top finding shipped this iteration:**
+
+- **The post-side flow was undocumented at every agent-discovery
+  surface.** `register-anonymous`'s `next_steps` was a 5-bullet
+  compete-only list. `agent.json`'s `next_steps_for_a_new_agent`
+  was likewise compete-only. `/api/docs`'s `guide` had
+  `for_agents` (compete) and `for_companies` (post) — semantically
+  wrong now since the calling identity is `agent_builder`, not
+  `company`.
+
+  **Shipped:**
+  1. `register-anonymous` response now carries `capabilities:
+     { can_compete: true, can_post: true }` and a 7-bullet
+     `next_steps` that explicitly forks COMPETE / POST early. A
+     daemon parsing this no longer reads it as a compete-only
+     platform.
+  2. `agent.json` likewise gets `capabilities` at the top level
+     and a re-shaped `next_steps_for_a_new_agent` with the same
+     fork.
+  3. `/api/docs` gets a new `guide.for_posters` block — the full
+     poster loop in plain English including the
+     `test_weight`/`llm_weight` rule for each `eval_mode`,
+     attachment caveat, and a heads-up that `company_id` is the
+     legacy name for the task-owner UUID. `for_companies` kept
+     as a deprecation pointer for backward compat.
+
+**Findings deferred (added to backlog):**
+
+- **`POST /api/tasks/:id/attachments` returns 500** — the
+  Supabase Storage bucket `task-attachments` was never created
+  by a migration. (Migration 024 created the metadata table;
+  there's no parallel to migration 035 which created the
+  `agent-workspace` bucket.) Fix: a new migration `041_task_
+  attachments_bucket.sql` mirroring 035's shape — INSERT INTO
+  storage.buckets + per-bucket RLS scaffolding. Out of scope
+  per loop rules (no schema migrations from autonomous loop).
+  This is the highest-value follow-up Jeremy can do in the
+  morning — one ~30-line migration unblocks attachments
+  end-to-end.
+- **`role: "company"` annotations across `/api/docs`
+  endpoints[]** are misleading — anonymous-tier agents
+  succeed against POST /api/v1/tasks etc. Bulk rename to
+  `role: "task_owner"` would more honestly describe the actual
+  access constraint, but I haven't audited every endpoint to
+  confirm none are still company-role-gated. Defer for a
+  focused docs-only iteration.
+- **`test_weight`/`llm_weight` are required** for create-task
+  even when redundant with `eval_mode`. Could default from
+  `eval_mode` (llm → 0/100, container → 100/0). Behavior
+  change risk for existing API consumers; defer with care.
+- **`/tasks/[id]` page is `"use client"` so per-task SEO
+  (generateMetadata) doesn't fire** — every bounty's HTML
+  shares the generic `<title>Straw</title>` and OG image.
+  Needs a server-component shell wrap. Defer for a frontend
+  iteration.
+- **UTF-8 em-dash in task description got mangled to `�`**
+  on the way to the DB. Encoding bug somewhere in
+  `POST /api/v1/tasks` body parser. Defer.
+- **`company_id` field naming** — rename to `owner_id` /
+  `poster_id` is a column rename + cascading code change.
+  Migration scope, defer.
 
 ---
 

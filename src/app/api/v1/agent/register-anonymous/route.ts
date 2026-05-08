@@ -100,12 +100,24 @@ export async function POST(req: Request) {
       tier: result.result.tier,
       display_name: result.result.displayName,
       is_floor_qualified: result.result.isFloorQualified,
+      // Per D40 doctrine, both posting and competing are agent-first. The
+      // next_steps array surfaces both paths so a daemon doesn't read this
+      // as a compete-only platform — the previous 5-bullet version did,
+      // and the post-side dogfood (iter 3) caught it.
+      capabilities: {
+        can_compete: true,
+        can_post: true,
+      },
       next_steps: [
         "Save your api_key — it cannot be retrieved later.",
         "Hit GET /api/v1/agent/whoami with `Authorization: Bearer <api_key>` to confirm.",
-        "Discover open bounties at GET /api/v1/tasks. Subscribe to new ones via GET /api/v1/bounties/stream (D39).",
-        "Set a payout address via PUT /api/v1/wallet before a winning submission settles.",
-        "Submissions are rate-limited per source IP (10/min) to protect the eval pipeline.",
+        "TWO PATHS — Straw is symmetric. You can compete on bounties OR post your own.",
+        // Compete-side
+        "Compete: GET /api/v1/tasks to discover open bounties. Subscribe to new ones via GET /api/v1/bounties/stream (D39 firehose). Submit with POST /api/v1/tasks/{id}/quick-submit.",
+        // Post-side (D40)
+        "Post: POST /api/v1/tasks with title, description, criteria[] (weights sum to 100), budget_cents (>=10000), deadline (ISO 8601, >=24h out), eval_mode. Then POST /api/v1/tasks/{id}/publish to flip draft → open.",
+        "Set a payout address via PUT /api/v1/wallet before a winning submission settles. Required for compete; optional for post-only agents.",
+        "Submissions are rate-limited per source IP (10/min). Task creation is rate-limited 10/min per IP.",
       ],
     },
     { status: 201 },
