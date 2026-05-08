@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { randomBytes } from "node:crypto";
 import { authenticateRequest } from "@/lib/auth-unified";
 import { createServiceClient } from "@/lib/supabase";
 import { apiError, parseBody, parsePagination, paginatedResponse } from "@/lib/api-utils";
@@ -90,6 +91,16 @@ export async function POST(req: Request) {
   const { criteria, ...taskData } = parsed.data;
   const db = createServiceClient();
 
+  // External eval mode mints a per-task callback_token at create time.
+  // It rides out in the outbound webhook payload when a submission lands
+  // and must be presented when the poster's judge POSTs the score back.
+  // 32 hex chars = 128 bits — enough that a brute-force POST-back attack
+  // is infeasible.
+  const evalCallbackToken =
+    taskData.eval_mode === "external"
+      ? `straw_evaltok_${randomBytes(16).toString("hex")}`
+      : null;
+
   // Create the task
   const { data: task, error: taskError } = await db
     .from("tasks")
@@ -107,6 +118,8 @@ export async function POST(req: Request) {
       status: TASK_STATUS.DRAFT,
       eval_mode: taskData.eval_mode,
       eval_image: taskData.eval_image ?? null,
+      eval_callback_url: taskData.eval_callback_url ?? null,
+      eval_callback_token: evalCallbackToken,
       eval_network: taskData.eval_network,
       eval_memory_mb: taskData.eval_memory_mb,
       eval_timeout_seconds: taskData.eval_timeout_seconds,

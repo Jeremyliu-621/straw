@@ -396,6 +396,74 @@ happened. Both KV and Files. One stale test updated.
 - **Vercel-native error envelope on file upload 413** —
   bundle with the file-cap fix; both go away when (b) lands.
 
+### User-directed work (post-iter-6) — 2026-05-08 morning
+
+Jeremy woke up, asked for two things "give agents as much power as
+you can":
+
+1. **Workspace presigned-PUT (the deferred BLOCKER from iter 6).**
+   Shipped `e3e4c90` — two new endpoints:
+   - `POST /api/v1/workspace/files/upload-url` — mint a one-shot
+     signed PUT URL pointing directly at Supabase Storage,
+     bypassing Vercel's 4.5MB function-body cap.
+   - `POST /api/v1/workspace/files/finalize` — inspect the
+     uploaded blob, validate caps + quota against actual size,
+     write metadata. Orphan blobs from rejected finalizes are
+     removed best-effort.
+
+   Legacy `POST /api/v1/workspace/files` (JSON+base64 / octet
+   stream) unchanged for sub-4MB convenience uploads. Build is
+   89 pages now (was 87).
+
+2. **External eval mode (D40 — bring-your-own-judge).** New
+   `eval_mode: 'external'` value alongside llm/container/hybrid.
+   The poster's own infrastructure judges; Straw fires a webhook
+   to the poster's `eval_callback_url` with a signed artifact
+   download URL + rubric criteria + per-task callback_token; the
+   poster POSTs the score back via `POST /api/v1/submissions/:id/
+   external-score`. Straw runs no judge code for these tasks —
+   works without an internal eval worker. Use cases per Jeremy:
+   OpenClaw judging bounties it posted itself, companies with
+   proprietary eval logic, evals that need GPU/internet/state.
+
+   **Schema changes (NEEDS APPLY)**: migration `042_eval_external.sql`
+   adds `tasks.eval_callback_url`, `tasks.eval_callback_token`,
+   widens the eval_mode CHECK to include 'external', drops the
+   eval_image-required check for external mode, adds the
+   callback-required check. **Run `npx supabase db push` against
+   the live DB before this code is exercised.** Without the
+   migration, task creation with eval_mode='external' will 500.
+
+   **Code changes:**
+   - `src/constants.ts` — `EVAL_MODE.EXTERNAL`.
+   - `src/lib/validation.ts` — eval_mode enum + eval_callback_url
+     field + refine.
+   - `src/app/api/v1/tasks/route.ts` — generate
+     `straw_evaltok_<32-hex>` callback_token at create time;
+     persist eval_callback_url + token columns.
+   - `src/app/api/v1/tasks/[id]/quick-submit/route.ts` — branch
+     on eval_mode === 'external': mint signed download URL,
+     fire webhook with the documented payload, mark submission
+     `running`. Standard llm/container/hybrid path is unchanged.
+   - `src/app/api/v1/submissions/[id]/external-score/route.ts`
+     (NEW) — accept `{callback_token, final_score, reasoning?,
+     dimensions?, error_message?}`; verify token with
+     timingSafeEqual; write `evaluation_results` +
+     `evaluation_dimensions`; mark submission completed +
+     evaluated:true. Idempotent on retry (returns
+     `409 ALREADY_SCORED`). 401 on bad token.
+   - `src/app/.well-known/agent.json/route.ts` + `src/app/api/
+     docs/route.ts` — surface the new mode + webhook payload
+     shape + response shape so agents can build against it.
+
+   Critical insight: external mode unblocks **part of the
+   platform without Hetzner**. While the eval-worker path
+   (llm/container/hybrid) waits for the worker to be deployed,
+   `eval_mode: 'external'` lets bounties close end-to-end as soon
+   as a poster brings their own judge.
+
+   Commit: `<filled in by the commit step>`
+
 ---
 
 # Historical handoff — feat/overnight-2026-05-07

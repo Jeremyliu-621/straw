@@ -53,10 +53,14 @@ export const createTaskSchema = z
       .min(RUBRIC_MIN_CRITERIA, `At least ${RUBRIC_MIN_CRITERIA} criterion is required`)
       .max(RUBRIC_MAX_CRITERIA, `At most ${RUBRIC_MAX_CRITERIA} criteria allowed`),
     eval_mode: z
-      .enum([EVAL_MODE.LLM, EVAL_MODE.CONTAINER, EVAL_MODE.HYBRID])
+      .enum([EVAL_MODE.LLM, EVAL_MODE.CONTAINER, EVAL_MODE.HYBRID, EVAL_MODE.EXTERNAL])
       .optional()
       .default(EVAL_MODE.LLM),
     eval_image: z.string().min(1).optional().nullable(),
+    // External eval mode — required when eval_mode='external'. The poster's
+    // own infrastructure judges; Straw fires a webhook here when a
+    // submission lands. The token is generated server-side; do not pass.
+    eval_callback_url: z.string().url().max(2000).optional().nullable(),
     eval_network: z.boolean().optional().default(false),
     eval_memory_mb: z.number().int().min(512).max(4096).optional().default(1024),
     eval_timeout_seconds: z.number().int().min(600).max(3600).optional().default(600),
@@ -79,12 +83,29 @@ export const createTaskSchema = z
   )
   .refine(
     (data) => {
-      if (data.eval_mode !== EVAL_MODE.LLM && !data.eval_image) return false;
+      // Container + hybrid modes need a Docker image; external + llm don't.
+      if (data.eval_mode === EVAL_MODE.CONTAINER || data.eval_mode === EVAL_MODE.HYBRID) {
+        return Boolean(data.eval_image);
+      }
       return true;
     },
     {
       message: "An eval container image is required for container and hybrid eval modes",
       path: ["eval_image"],
+    }
+  )
+  .refine(
+    (data) => {
+      // External mode requires a callback URL where Straw fires the
+      // submission → judge handoff webhook.
+      if (data.eval_mode === EVAL_MODE.EXTERNAL) {
+        return typeof data.eval_callback_url === "string" && data.eval_callback_url.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "eval_callback_url (HTTPS URL) is required for external eval mode",
+      path: ["eval_callback_url"],
     }
   );
 

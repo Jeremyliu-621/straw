@@ -124,7 +124,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   // ── Validate task ──────────────────────────────────────
   const { data: task, error: taskError } = await db
     .from("tasks")
-    .select("id, status, company_id, deadline, max_submissions_per_agent, input_spec, output_spec, title, submission_contract")
+    .select("id, status, company_id, deadline, max_submissions_per_agent, input_spec, output_spec, title, submission_contract, eval_mode, eval_callback_url, eval_callback_token, description")
     .eq("id", taskId)
     .single();
 
@@ -333,20 +333,91 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   // ── Update output_url ──────────────────────────────────
   await db.from("submissions").update({ output_url: storagePath }).eq("id", submission.id);
 
-  // ── Enqueue evaluation ─────────────────────────────────
-  try {
-    const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
+  // ── Drive evaluation ───────────────────────────────────
+  // External eval mode (D40) skips the Hetzner-bound eval queue entirely
+  // and fires a webhook to the poster's own infrastructure. The poster's
+  // judge POSTs the score back via /api/v1/submissions/:id/external-score.
+  if (task.eval_mode === "external" && task.eval_callback_url && task.eval_callback_token) {
+    // Mint a 2-hour signed download URL for the artifact so the poster's
+    // judge can fetch the bytes without needing a Straw api_key.
+    const { data: signedDownload } = await db.storage
+      .from(UPLOAD_STORAGE_BUCKET)
+      .createSignedUrl(storagePath, 2 * 60 * 60);
 
-    const evalJob: EvaluationJobData = {
-      submissionId: submission.id,
-      taskId,
-      outputUrl: storagePath,
+    // Pull rubric criteria for the webhook payload — saves the poster's
+    // judge a round-trip back to /api/v1/tasks/:id.
+    const { data: rubricRows } = await db
+      .from("rubric_criteria")
+      .select("name, description, weight, position")
+      .eq("task_id", taskId)
+      .order("position", { ascending: true });
+
+    // Mark running so the SSE stream + polling clients see "eval in
+    // progress" instead of "completed but no score" while the poster's
+    // judge is working.
+    await db
+      .from("submissions")
+      .update({ status: SUBMISSION_STATUS.RUNNING })
+      .eq("id", submission.id);
+
+    const webhookPayload = {
+      event: "external_eval_request",
+      submission_id: submission.id,
+      task_id: taskId,
+      agent_id: user.supabaseId,
+      callback_token: task.eval_callback_token,
+      callback_url: `${env.NEXT_PUBLIC_APP_URL ?? "https://straw.wiki"}/api/v1/submissions/${submission.id}/external-score`,
+      artifact_url: signedDownload?.signedUrl ?? null,
+      artifact_expires_at: signedDownload?.signedUrl
+        ? new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
+        : null,
+      task: {
+        id: taskId,
+        title: task.title,
+        description: task.description,
+        input_spec: task.input_spec,
+        output_spec: task.output_spec,
+        criteria: rubricRows ?? [],
+      },
+      timestamp: new Date().toISOString(),
     };
 
-    await evalQueue.add(`eval-${submission.id}`, evalJob);
-    await evalQueue.close();
-  } catch (queueError) {
-    console.error("Failed to enqueue evaluation:", queueError);
+    // Fire-and-forget. Failures are logged but don't fail the submit —
+    // the poster can manually fetch the artifact and POST a score back
+    // anytime, OR the agent can hit /request_re_eval to refire the
+    // webhook (D25 — out of scope for this commit).
+    fetch(task.eval_callback_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Straw-External-Eval/1.0",
+      },
+      body: JSON.stringify(webhookPayload),
+      // Keep this request short — the eval itself happens async on the
+      // poster's side. We just want the webhook delivered.
+      signal: AbortSignal.timeout(10_000),
+    }).catch((err) => {
+      console.error(
+        `[external-eval] webhook fire failed for submission ${submission.id}:`,
+        err,
+      );
+    });
+  } else {
+    // Standard llm/container/hybrid path — enqueue the eval worker.
+    try {
+      const evalQueue = createEvaluationQueue(buildRedisConnection(env.REDIS_URL));
+
+      const evalJob: EvaluationJobData = {
+        submissionId: submission.id,
+        taskId,
+        outputUrl: storagePath,
+      };
+
+      await evalQueue.add(`eval-${submission.id}`, evalJob);
+      await evalQueue.close();
+    } catch (queueError) {
+      console.error("Failed to enqueue evaluation:", queueError);
+    }
   }
 
   // ── Webhooks + audit (fire-and-forget) ─────────────────

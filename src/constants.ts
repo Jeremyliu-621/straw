@@ -262,6 +262,12 @@ export const EVAL_MODE = {
   LLM: "llm",
   CONTAINER: "container",
   HYBRID: "hybrid",
+  // D40 — the poster's own infrastructure judges. Straw fires a webhook
+  // to the poster's eval_callback_url with a signed download URL for
+  // the artifact + the rubric criteria + a per-task callback_token; the
+  // poster's daemon judges however it wants (its own LLM, OpenClaw, a
+  // proprietary test suite) and POSTs the score back with the token.
+  EXTERNAL: "external",
 } as const;
 export type EvalMode = (typeof EVAL_MODE)[keyof typeof EVAL_MODE];
 
