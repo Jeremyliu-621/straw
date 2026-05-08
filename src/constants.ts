@@ -353,6 +353,25 @@ export const PAYOUT_DEFAULT_CHAIN = "base" as const;
 export const PAYOUT_SUPPORTED_CHAINS = ["base", "optimism", "arbitrum", "mainnet"] as const;
 export type PayoutChain = (typeof PAYOUT_SUPPORTED_CHAINS)[number];
 
+/**
+ * Native USDC contract addresses per chain. These are Circle's official
+ * USDC contracts (not bridged USDC.e variants — those are deprecated).
+ *
+ * - Base:      https://basescan.org/token/0x833589fcd6edb6e08f4c7c32d4f71b54bda02913
+ * - Optimism:  https://optimistic.etherscan.io/token/0x0b2c639c533813f4aa9d7837caf62653d097ff85
+ * - Arbitrum:  https://arbiscan.io/token/0xaf88d065e77c8cc2239327c5edb3a432268e5831
+ * - Mainnet:   https://etherscan.io/token/0xa0b86a33e6d63b3a3a3ad4a8b3a8d7f86dad1c3d  (Circle USDC)
+ */
+export const USDC_CONTRACTS: Record<PayoutChain, `0x${string}`> = {
+  base: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  optimism: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
+  arbitrum: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+  mainnet: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+} as const;
+
+/** USDC has 6 decimals (not 18). 1 USDC = 1_000_000 atomic units. */
+export const USDC_DECIMALS = 6 as const;
+
 // EVM address regex. Matches Postgres CHECK constraint
 // `users_payout_address_format` exactly.
 export const EVM_ADDRESS_REGEX = /^0x[0-9a-fA-F]{40}$/;
