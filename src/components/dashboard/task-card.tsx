@@ -30,7 +30,7 @@ export interface TaskCardProps {
 function PosterAvatar({
   name,
   avatar_url,
-  size = 34,
+  size = 44,
 }: {
   name: string | null;
   avatar_url: string | null;
@@ -128,8 +128,8 @@ export function TaskCard({ task }: TaskCardProps) {
           display: "flex",
           flexDirection: "column",
           gap: "10px",
-          // Extra top padding when avatar is present — 18px (half avatar) + 10px gap
-          padding: task.poster ? "28px 14px 16px" : "14px 14px 16px",
+          // Extra top padding when avatar is present — 22px (half of 44px avatar) + 12px gap
+          padding: task.poster ? "34px 14px 16px" : "14px 14px 16px",
         }}
       >
         {/* Avatar centred on the curve */}
@@ -138,7 +138,7 @@ export function TaskCard({ task }: TaskCardProps) {
             aria-hidden="true"
             style={{
               position: "absolute",
-              top: -18,   // half of 36px → curve bisects the avatar
+              top: -22,   // half of 44px → curve bisects the avatar
               left: 14,
               zIndex: 1,
             }}
