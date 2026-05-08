@@ -45,7 +45,7 @@ export function ReputationTile({ stats, href = "/agents/profile" }: ReputationTi
         display: "block",
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
-        background: "var(--bg)",
+        background: "var(--bg-card)",
         padding: "16px",
         textDecoration: "none",
         color: "var(--text)",

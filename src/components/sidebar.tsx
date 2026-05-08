@@ -380,15 +380,14 @@ export function Sidebar() {
             fontSize: "14px",
             fontWeight: 500,
             color: "var(--text)",
-            // Pill carries the main-content background tone (var(--bg))
-            // against the slightly-darker sidebar (var(--bg-subtle)),
-            // matching the ElevenLabs workspace switcher.
-            // Inset box-shadow border (instead of `border: 1px solid`)
-            // so showing/hiding the outline never shifts inner content
-            // by 1px. Dropped in collapsed mode where the rail clip
-            // would make the right edge disappear awkwardly.
-            background: !collapsed ? "var(--bg)" : "transparent",
-            boxShadow: !collapsed ? "inset 0 0 0 1px var(--border)" : "none",
+            // Pill is pure white (--bg-card) so it reads as a "hole"
+            // punched through the slightly-gray sidebar (--bg-subtle).
+            // Layered shadow: thin border hairline + faint outer glow
+            // reinforce the depth without being heavy-handed.
+            background: !collapsed ? "var(--bg-card)" : "transparent",
+            boxShadow: !collapsed
+              ? "inset 0 0 0 1px var(--border), 0 1px 3px rgba(0,0,0,0.06)"
+              : "none",
             border: "none",
             borderRadius: "var(--radius)",
             cursor: "pointer",
@@ -587,8 +586,8 @@ function PromoCard({ collapsed }: { collapsed: boolean }) {
         borderRadius: "12px",
         background: "var(--bg-card)",
         boxShadow: hovered
-          ? "inset 0 0 0 1px var(--border-strong)"
-          : "inset 0 0 0 1px var(--border)",
+          ? "inset 0 0 0 1px var(--border-strong), 0 1px 4px rgba(0,0,0,0.07)"
+          : "inset 0 0 0 1px var(--border), 0 1px 3px rgba(0,0,0,0.05)",
         color: "var(--text)",
         textDecoration: "none",
         transition: "box-shadow 0.15s ease",
