@@ -132,7 +132,7 @@ export function ToolCard({
             }}
           />
         ) : Illustration ? (
-          <Illustration className="w-[92%] h-auto max-h-[92%]" />
+          <Illustration className="w-[92%] h-auto max-h-[92%] transition-transform duration-300 ease-out group-hover:scale-110" />
         ) : null}
       </div>
       {/* Label area — lower portion, slightly pushed-back background */}
