@@ -1,0 +1,72 @@
+/*
+ * Docs site responsive overrides.
+ *
+ * Three breakpoints in play:
+ * - >1024px (desktop): three-pane layout (sidebar / content / right-rail TOC)
+ * - 768-1024px: hide the right-rail TOC, keep the sidebar
+ * - <768px (mobile): hide both nav rails by default, show a hamburger that
+ *   reveals the sidebar as a slide-in drawer
+ *
+ * Targets the docs layout via a single root class so the rest of the app
+ * doesn't pick up the rules.
+ */
+
+.docs-root[data-docs-layout] {
+  --docs-sidebar-width: 240px;
+}
+
+/* Hide the right-rail TOC at <= 1024px */
+@media (max-width: 1024px) {
+  .docs-toc-rail {
+    display: none !important;
+  }
+  .docs-content {
+    max-width: 100% !important;
+  }
+}
+
+/* Mobile: collapse the sidebar to an overlay drawer triggered by the
+   topbar hamburger. */
+@media (max-width: 768px) {
+  .docs-sidebar {
+    position: fixed !important;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    width: var(--docs-sidebar-width);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-100%);
+    transition: transform 0.18s ease;
+    z-index: 40;
+    padding: 16px 20px !important;
+    overflow-y: auto;
+  }
+  .docs-sidebar[data-open="true"] {
+    transform: translateX(0);
+  }
+  .docs-sidebar-backdrop {
+    position: fixed;
+    inset: 56px 0 0 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 30;
+  }
+  .docs-content-wrapper {
+    padding: 16px !important;
+  }
+  .docs-mobile-menu-button {
+    display: inline-flex !important;
+  }
+}
+
+/* Default: hamburger hidden on desktop. */
+.docs-mobile-menu-button {
+  display: none;
+}
+
+/* Code blocks scroll horizontally on small screens instead of breaking layout */
+@media (max-width: 768px) {
+  .docs-content pre {
+    font-size: 12px !important;
+  }
+}
