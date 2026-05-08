@@ -12,6 +12,7 @@
     "test:e2e": "playwright test",
     "eval-worker": "tsx src/workers/evaluation-worker.ts",
     "webhook-worker": "tsx src/workers/webhook-worker.ts",
+    "payout-worker": "tsx src/workers/payout-worker.ts",
     "seed": "tsx src/db/seed.ts",
     "seed:competition": "tsx scripts/seed-competition.ts",
     "seed:announcements": "tsx scripts/seed-announcements.ts",
