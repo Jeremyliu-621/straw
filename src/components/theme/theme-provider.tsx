@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 
 export type Theme = "light" | "warm-dim" | "dark";
 
@@ -22,9 +23,9 @@ const VALID: readonly Theme[] = ["light", "warm-dim", "dark"];
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
+  const pathname = usePathname();
 
-  // Hydrate from localStorage on mount. Render starts as light to
-  // match server output; client effect swaps in the persisted choice.
+  // Hydrate from localStorage on mount.
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -36,17 +37,20 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Apply theme as data-theme on <html>. Light is the default, so we
-  // remove the attribute entirely rather than write data-theme="light"
-  // (matches the existing :root cascade).
+  // Apply theme as data-theme on <html>, BUT only on dashboard pages.
+  // The landing page (and every other public surface) intentionally
+  // doesn't theme — its colors are hardcoded. So we strip the
+  // attribute on any non-dashboard route, even if the user has a
+  // non-light theme stored in localStorage.
   useEffect(() => {
     if (typeof document === "undefined") return;
-    if (theme === "light") {
+    const isDashboard = pathname?.startsWith("/dashboard") ?? false;
+    if (!isDashboard || theme === "light") {
       document.documentElement.removeAttribute("data-theme");
     } else {
       document.documentElement.setAttribute("data-theme", theme);
     }
-  }, [theme]);
+  }, [theme, pathname]);
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
