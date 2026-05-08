@@ -66,16 +66,13 @@ export function ToolCard({
         display: "flex",
         flexDirection: "column",
         aspectRatio: "1 / 1",
-        transition:
-          "transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease",
+        transition: "box-shadow 0.18s ease, border-color 0.18s ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-2px)";
-        e.currentTarget.style.boxShadow = "0 10px 28px rgba(0,0,0,0.08)";
+        e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.05)";
         e.currentTarget.style.borderColor = "var(--border-strong)";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
         e.currentTarget.style.boxShadow = "none";
         e.currentTarget.style.borderColor = "var(--border)";
       }}
