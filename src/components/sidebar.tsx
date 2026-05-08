@@ -27,6 +27,7 @@ import {
   FileBox,
   Handshake,
   Settings,
+  Terminal,
 } from "lucide-react";
 
 interface NavItem {
@@ -105,17 +106,17 @@ const WORKSPACES: WorkspaceOption[] = [
   },
 ];
 
-// Common dimensions: a 32x32 square wraps every icon (workspace avatar
-// and every nav item) so they share an x-position and the active-state
-// highlight can be a clean square in collapsed mode without ever
-// extending past the rail edge.
-const ICON_BOX = 32;
-const NAV_ICON = 18;
+// Common dimensions: a 24x24 wrapper around a 20px icon — the slightly
+// larger glyph + wrapper give the nav and pill the same generous feel
+// ElevenLabs has, with the icon shifted a touch further right from the
+// sidebar's left edge.
+const ICON_BOX = 24;
+const NAV_ICON = 20;
 const ACTIVE_BG = "rgba(0,0,0,0.07)";
 
 // Workspace avatar: a small pastel-gradient dot sitting inside a
 // circular white container with a thin gray ring — same visual idiom
-// the ElevenLabs workspace switcher uses. The outer 32x32 slot is
+// the ElevenLabs workspace switcher uses. The outer ICON_BOX slot is
 // transparent; it exists only so the avatar's x-position lines up with
 // the nav icon-boxes below.
 function WorkspaceAvatar({ gradient }: { gradient: string }) {
@@ -128,8 +129,8 @@ function WorkspaceAvatar({ gradient }: { gradient: string }) {
       <div
         className="flex items-center justify-center"
         style={{
-          width: 28,
-          height: 28,
+          width: 22,
+          height: 22,
           borderRadius: "50%",
           background: "var(--bg)",
           border: "1px solid rgba(0,0,0,0.08)",
@@ -137,8 +138,8 @@ function WorkspaceAvatar({ gradient }: { gradient: string }) {
       >
         <div
           style={{
-            width: 20,
-            height: 20,
+            width: 16,
+            height: 16,
             borderRadius: "50%",
             background: gradient,
           }}
@@ -149,12 +150,20 @@ function WorkspaceAvatar({ gradient }: { gradient: string }) {
 }
 const HOVER_BG = "rgba(0,0,0,0.04)";
 
-// In collapsed mode we want the icon-box rail-centered: with rail=64 and
-// box=32, the box's left edge needs to sit at x=16. Nav has 12px outer
-// padding, so the inner Link/button needs 4px left-padding (12+4=16).
-const ROW_PAD_X_COLLAPSED = 4;
-const ROW_PAD_X_EXPANDED = 12;
+// Expanded mode: nav-pad(12) + ROW_PAD_X_EXPANDED(6) = 18px to the icon-
+// box's left edge, which puts the 20px icon at x=20 from the sidebar's
+// left — aligned with the "straw" wordmark above. The pill starts at
+// nav-pad=12 with a tight 6px before the icon.
+//
+// Collapsed mode: rail=64, box=24 → centered when the box's left edge is
+// at x=20. nav-pad(12) + ROW_PAD_X_COLLAPSED(8) = 20.
+const ROW_PAD_X_COLLAPSED = 8;
+const ROW_PAD_X_EXPANDED = 6;
 const ROW_PAD_Y = 4;
+// Vertical breathing room between nav rows. Lives on the link's
+// marginBottom (not on ROW_PAD_Y) so the pill stays compact — only the
+// gap between pills grows.
+const ROW_GAP_Y = 4;
 
 function NavLink({
   entry,
@@ -200,6 +209,7 @@ function NavLink({
       padding: `${ROW_PAD_Y}px ${
         collapsed ? ROW_PAD_X_COLLAPSED : ROW_PAD_X_EXPANDED
       }px`,
+      marginBottom: `${ROW_GAP_Y}px`,
       fontSize: "14px",
       fontWeight: (isActive ? 500 : 400) as 500 | 400,
       color: isActive || hovered ? "var(--text)" : "var(--text-muted)",
@@ -295,6 +305,9 @@ export function Sidebar() {
         left: "var(--inset-left, 0px)",
         height: "calc(100vh - var(--inset-top, 0px) - var(--inset-bottom, 0px))",
         width: `${sidebarWidth}px`,
+        // Light gray (var(--bg-subtle)) so the sidebar sits a step darker
+        // than the white content canvas to its right — same arrangement
+        // ElevenLabs uses.
         background: "var(--bg-subtle)",
         borderRight: "1px solid var(--border)",
         borderTop: "1px solid var(--frame-border-color, transparent)",
@@ -468,7 +481,7 @@ export function Sidebar() {
 
       {/* Navigation — fixed expanded layout. Width is 240px regardless
           of collapse state; the rail's `overflow: hidden` clips the
-          right-hand text. Icons stay anchored at x=24px from the rail
+          right-hand text. Icons stay anchored at x=20px from the rail
           edge whether collapsed or expanded — no "crash to centre"
           shift. ElevenLabs uses this exact pattern. */}
       <nav
@@ -514,7 +527,7 @@ export function Sidebar() {
                   marginTop: idx === 0 ? "0" : "16px",
                   marginBottom: "4px",
                   // Aligns the section caption with the x-position of the
-                  // icon-boxes below (nav-pad 12 + ROW_PAD_X_EXPANDED).
+                  // icon-boxes below (nav-pad 8 + ROW_PAD_X_EXPANDED).
                   paddingLeft: `${ROW_PAD_X_EXPANDED}px`,
                   fontSize: "10px",
                   // Lock line-height so the text block is deterministically
@@ -543,9 +556,79 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* User block intentionally removed — moved to TopBar avatar
-          dropdown so the sidebar bottom can host other content
-          (e.g. usage meter / upgrade CTA) later. */}
+      <PromoCard collapsed={collapsed} />
     </aside>
+  );
+}
+
+/**
+ * Bottom-of-sidebar CTA card, modeled on ElevenLabs' "Invite team
+ * members" promo. Tonal hierarchy (each step a touch darker):
+ *   main content / card (white)  →  sidebar (bg-subtle)  →  icon chip (bg)
+ * The card is the same white as the main content canvas, sitting on the
+ * slightly-gray sidebar — same idiom as ElevenLabs. Hidden in collapsed
+ * mode where the rail is too narrow to render legibly.
+ */
+function PromoCard({ collapsed }: { collapsed: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  if (collapsed) return null;
+  return (
+    <a
+      href="/docs"
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="font-sans"
+      style={{
+        display: "block",
+        margin: "8px 12px 16px",
+        padding: "14px",
+        borderRadius: "12px",
+        background: "var(--bg-card)",
+        boxShadow: hovered
+          ? "inset 0 0 0 1px var(--border-strong)"
+          : "inset 0 0 0 1px var(--border)",
+        color: "var(--text)",
+        textDecoration: "none",
+        transition: "box-shadow 0.15s ease",
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: "10px",
+          background: "var(--bg-subtle)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Terminal size={16} strokeWidth={1.6} style={{ color: "var(--text)" }} />
+      </div>
+      <div
+        style={{
+          marginTop: "12px",
+          fontSize: "13px",
+          fontWeight: 600,
+          lineHeight: 1.3,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        Get the CLI
+      </div>
+      <div
+        style={{
+          marginTop: "4px",
+          fontSize: "12px",
+          color: "var(--text-muted)",
+          lineHeight: 1.45,
+        }}
+      >
+        Ship submissions and post tasks from your terminal.
+      </div>
+    </a>
   );
 }

@@ -128,7 +128,10 @@ function ShellMain({
         marginTop: `calc(var(--inset-top, 0px) + ${TOPBAR_HEIGHT}px)`,
         marginRight: "var(--inset-right, 0px)",
         marginBottom: "var(--inset-bottom, 0px)",
-        background: "var(--bg)",
+        // Pure white (var(--bg-card)) so the content canvas reads as the
+        // bright surface inside the slightly-grayer sidebar/topbar
+        // chrome — same arrangement ElevenLabs uses.
+        background: "var(--bg-card)",
         borderRight: "1px solid var(--frame-border-color, transparent)",
         borderBottom: "1px solid var(--frame-border-color, transparent)",
         borderBottomRightRadius: "var(--frame-radius, 0px)",
