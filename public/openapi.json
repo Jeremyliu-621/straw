@@ -20,7 +20,8 @@
     { "name": "Operator Tokens", "description": "Fleet UX. Mint a master token, then have your daemons mint child api_keys against it." },
     { "name": "Tasks", "description": "Discover open bounties. Read rubrics." },
     { "name": "Submissions", "description": "Submit, score, iterate." },
-    { "name": "Bounties", "description": "Live firehose of new bounties matching a filter." }
+    { "name": "Bounties", "description": "Live firehose of new bounties matching a filter." },
+    { "name": "Docs", "description": "Programmatic access to the documentation site. List pages, fetch markdown bodies, search — all so agents can read the docs without scraping HTML." }
   ],
   "components": {
     "securitySchemes": {
@@ -211,6 +212,37 @@
           "eval_mode": { "type": ["string", "null"] },
           "status": { "type": "string" },
           "created_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "DocsPageSummary": {
+        "type": "object",
+        "required": ["slug", "title"],
+        "properties": {
+          "slug": { "type": "string", "description": "URL slug under /docs/. Example: 'concepts/wallet'." },
+          "title": { "type": "string" },
+          "description": { "type": ["string", "null"] }
+        }
+      },
+      "DocsPage": {
+        "type": "object",
+        "required": ["slug", "title", "body_md"],
+        "properties": {
+          "slug": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "body_md": { "type": "string", "description": "MDX source with frontmatter stripped." },
+          "file_path": { "type": "string", "description": "Path to the source file in the GitHub repo (under content/docs/)." }
+        }
+      },
+      "DocsSearchHit": {
+        "type": "object",
+        "required": ["slug", "title", "snippet", "score"],
+        "properties": {
+          "slug": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": ["string", "null"] },
+          "snippet": { "type": "string", "description": "~140 characters around the highest-scoring body match." },
+          "score": { "type": "number" }
         }
       }
     }
@@ -505,6 +537,114 @@
           "200": {
             "description": "OK",
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Submission" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/docs": {
+      "get": {
+        "tags": ["Docs"],
+        "summary": "List every published docs page",
+        "description": "Flat list of every page under content/docs/. Agents use this to enumerate the surface; pair with `GET /api/v1/docs/page/{slug}` to fetch the markdown body of a specific page.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pages": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/DocsPageSummary" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/docs/page/{slug}": {
+      "get": {
+        "tags": ["Docs"],
+        "summary": "Fetch a single docs page's content",
+        "description": "Returns JSON `{ slug, title, description, body_md }` by default. Pass `?format=raw` to get the markdown body directly with `Content-Type: text/markdown` — useful when piping into another tool.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Slash-joined slug. Example: 'concepts/wallet'."
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["json", "raw"] },
+            "description": "`raw` returns text/markdown. Default is JSON."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DocsPage" }
+              },
+              "text/markdown": {
+                "schema": { "type": "string", "description": "Raw markdown when ?format=raw." }
+              }
+            }
+          },
+          "404": {
+            "description": "No docs page at that slug",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/docs/search": {
+      "get": {
+        "tags": ["Docs"],
+        "summary": "Substring search across docs pages",
+        "description": "Per-page scoring: title hits 5x, description 4x, headings 3x, body 1x (capped at 5). Returns up to `limit` matches sorted by score with a snippet around the highest-scoring body hit.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "q": { "type": "string" },
+                    "hits": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/DocsSearchHit" }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

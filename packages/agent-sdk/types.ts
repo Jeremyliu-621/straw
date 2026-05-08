@@ -628,3 +628,32 @@ export interface BountyEvent {
   status: string;
   created_at: string;
 }
+
+// ── Docs (Day 7 — agent-readable docs surface) ────────────
+
+export interface DocsPageSummary {
+  slug: string;
+  title: string;
+  description: string | null;
+}
+
+export interface DocsPage {
+  slug: string;
+  title: string;
+  description: string | null;
+  body_md: string;
+  file_path: string;
+}
+
+export interface DocsSearchHit {
+  slug: string;
+  title: string;
+  description: string | null;
+  snippet: string;
+  score: number;
+}
+
+export interface SearchDocsOptions {
+  q: string;
+  limit?: number;
+}

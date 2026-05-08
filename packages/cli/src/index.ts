@@ -83,7 +83,7 @@ function fail(message: string, exitCode = 1): never {
 
 // ── Commands ─────────────────────────────────────────────────
 
-const HELP = `${bold("straw")} — Straw CLI ${dim("(v0.2.0)")}
+const HELP = `${bold("straw")} — Straw CLI ${dim("(v0.3.0)")}
 
 Usage: straw <command> [args]
 
@@ -102,6 +102,11 @@ Discover & compete:
   ${bold("subscribe")}                Tail the bounty firehose (D39).   --category=python --min-budget=500
   ${bold("submit")} <task-id>         Submit the current dir as a solution. --dir ./my-solution
   ${bold("watch")} <submission-id>    Block until a submission is scored, print result.
+
+Docs:
+  ${bold("docs")} list                List every page in the docs site.
+  ${bold("docs")} search <query>      Substring-search the docs.   --limit=5
+  ${bold("docs")} read <slug>         Print the markdown for a docs page.
 
 Global flags:
   --api-key <key>          Override the saved API key for this call.
@@ -534,6 +539,88 @@ async function cmdWatch(args: ParsedArgs): Promise<void> {
 
 // ── Subscribe (v0.2.0 — D39 firehose) ────────────────────────
 
+// ── Docs (v0.3.0 — agent-readable docs surface) ─────────────
+
+async function cmdDocs(args: ParsedArgs): Promise<void> {
+  const sub = args.subcommand ?? args.positional[0];
+  if (sub === "search") return cmdDocsSearch(args);
+  if (sub === "read") return cmdDocsRead(args);
+  if (sub === "list" || !sub) return cmdDocsList(args);
+  fail(
+    `Unknown docs subcommand: ${sub}. Try \`straw docs list\`, \`straw docs search <query>\`, or \`straw docs read <slug>\`.`,
+  );
+}
+
+async function cmdDocsList(args: ParsedArgs): Promise<void> {
+  const result = await apiFetch<{ pages: Array<{ slug: string; title: string; description?: string }> }>(
+    "/api/v1/docs",
+    { method: "GET" },
+    { apiKey: null },
+  );
+  if (!result.ok) fail(`docs list failed (HTTP ${result.status})`);
+  if (args.flags.json) {
+    printJson(result.body.pages);
+    return;
+  }
+  for (const page of result.body.pages) {
+    console.log(
+      `${dim(page.slug.padEnd(32))} ${bold(page.title)}${page.description ? dim(" — " + page.description) : ""}`,
+    );
+  }
+}
+
+async function cmdDocsSearch(args: ParsedArgs): Promise<void> {
+  const query = args.positional.slice(1).join(" ").trim() || (args.flags.q as string | undefined);
+  if (!query) fail("Usage: straw docs search <query>");
+
+  const params = new URLSearchParams({ q: query });
+  if (args.flags.limit) params.set("limit", String(args.flags.limit));
+
+  const result = await apiFetch<{
+    q: string;
+    hits: Array<{ slug: string; title: string; description?: string; snippet: string; score: number }>;
+  }>(`/api/v1/docs/search?${params.toString()}`, { method: "GET" }, { apiKey: null });
+  if (!result.ok) fail(`docs search failed (HTTP ${result.status})`);
+
+  if (args.flags.json) {
+    printJson(result.body.hits);
+    return;
+  }
+  if (result.body.hits.length === 0) {
+    console.log(yellow(`No matches for "${query}"`));
+    return;
+  }
+  console.log(`${result.body.hits.length} match${result.body.hits.length === 1 ? "" : "es"} for ${bold(query)}:`);
+  console.log("");
+  for (const h of result.body.hits) {
+    console.log(`  ${bold(h.title)} ${dim("(" + h.slug + ")")}`);
+    if (h.description) console.log(`    ${dim(h.description)}`);
+    console.log(`    ${dim(h.snippet)}`);
+    console.log("");
+  }
+  console.log(dim(`Read any with: straw docs read <slug>`));
+}
+
+async function cmdDocsRead(args: ParsedArgs): Promise<void> {
+  const slug = args.positional.slice(1).join("/");
+  if (!slug) fail("Usage: straw docs read <slug>");
+
+  // Use ?format=raw — gets us markdown directly without JSON parsing.
+  const cfg = loadConfig();
+  const url = `${cfg.base_url.replace(/\/$/, "")}/api/v1/docs/page/${slug}?format=raw`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    fail(`docs read failed (HTTP ${res.status}): no page at slug "${slug}"`);
+  }
+  const md = await res.text();
+
+  if (args.flags.json) {
+    printJson({ slug, body_md: md });
+    return;
+  }
+  console.log(md);
+}
+
 async function cmdSubscribe(args: ParsedArgs): Promise<void> {
   const cfg = loadConfig();
   if (!cfg.api_key) fail("Not logged in. Run `straw register` or `straw login <api_key>` first.");
@@ -638,10 +725,12 @@ async function main(): Promise<void> {
       return cmdWatch(args);
     case "subscribe":
       return cmdSubscribe(args);
+    case "docs":
+      return cmdDocs(args);
     case "version":
     case "--version":
     case "-v":
-      console.log("0.2.0");
+      console.log("0.3.0");
       return;
     default:
       console.error(red(`Unknown command: ${args.command}`));

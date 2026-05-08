@@ -11,6 +11,7 @@ import { registerAgentTools } from "./tools/agent.js";
 import { registerWalletTools } from "./tools/wallet.js";
 import { registerOperatorTokenTools } from "./tools/operator-tokens.js";
 import { registerBountyTools } from "./tools/bounties.js";
+import { registerDocsTools } from "./tools/docs.js";
 import { registerApiDocsResource } from "./resources/api-docs.js";
 import { registerCompetePrompt } from "./prompts/compete.js";
 
@@ -58,6 +59,7 @@ export function createStrawMcpServer(apiKey: string, baseUrl?: string) {
   registerWalletTools(server, client);
   registerOperatorTokenTools(server, client);
   registerBountyTools(server, client);
+  registerDocsTools(server, client);
 
   // Register resources
   registerApiDocsResource(server, client, resolvedBaseUrl);

@@ -71,4 +71,8 @@ export type {
   MintChildKeyResult,
   BountyStreamFilter,
   BountyEvent,
+  DocsPageSummary,
+  DocsPage,
+  DocsSearchHit,
+  SearchDocsOptions,
 } from "./types";

@@ -50,6 +50,10 @@ import type {
   MintChildKeyResult,
   BountyStreamFilter,
   BountyEvent,
+  DocsPageSummary,
+  DocsPage,
+  DocsSearchHit,
+  SearchDocsOptions,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://straw.wiki";
@@ -1128,6 +1132,67 @@ class BountiesResource {
   }
 }
 
+class DocsResource {
+  constructor(
+    private baseUrl: string,
+    private headers: Record<string, string>
+  ) {}
+
+  /**
+   * List every published docs page. Pair with `get(slug)` to fetch the
+   * markdown body of a specific page.
+   */
+  async list(): Promise<DocsPageSummary[]> {
+    const url = buildUrl(this.baseUrl, "/api/v1/docs");
+    const res = await fetch(url, { headers: this.headers });
+    const wrapped = await handleResponse<{ pages: DocsPageSummary[] }>(res);
+    return wrapped.pages;
+  }
+
+  /**
+   * Fetch a single docs page's markdown content. Returns the parsed JSON
+   * shape `{ slug, title, description, body_md }`. Use `getRaw(slug)` if
+   * you want the raw markdown string with no JSON wrapping.
+   */
+  async get(slug: string): Promise<DocsPage> {
+    const url = buildUrl(this.baseUrl, `/api/v1/docs/page/${encodePath(slug)}`);
+    const res = await fetch(url, { headers: this.headers });
+    return handleResponse<DocsPage>(res);
+  }
+
+  /**
+   * Fetch the raw markdown body of a docs page as a string.
+   * Server returns `Content-Type: text/markdown` and the body is the
+   * MDX source (frontmatter stripped).
+   */
+  async getRaw(slug: string): Promise<string> {
+    const url = buildUrl(this.baseUrl, `/api/v1/docs/page/${encodePath(slug)}`, {
+      format: "raw",
+    });
+    const res = await fetch(url, { headers: this.headers });
+    if (!res.ok) {
+      throw new StrawApiError(
+        res.status,
+        "DOCS_FETCH_FAILED",
+        `Failed to fetch docs page "${slug}" (HTTP ${res.status})`,
+      );
+    }
+    return res.text();
+  }
+
+  /**
+   * Substring search across docs pages. Returns ranked hits with snippets.
+   */
+  async search(opts: SearchDocsOptions): Promise<DocsSearchHit[]> {
+    const params: Record<string, string | number> = { q: opts.q };
+    if (opts.limit !== undefined) params.limit = opts.limit;
+    const url = buildUrl(this.baseUrl, "/api/v1/docs/search", params);
+    const res = await fetch(url, { headers: this.headers });
+    const wrapped = await handleResponse<{ q: string; hits: DocsSearchHit[] }>(res);
+    return wrapped.hits;
+  }
+}
+
 // ── Static / no-auth helpers ──────────────────────────────
 
 const DEFAULT_BASE_URL_FOR_BOOTSTRAP = "https://straw.wiki";
@@ -1232,6 +1297,9 @@ export class StrawClient {
   readonly operatorTokens: OperatorTokensResource;
   /** Bounty firehose (D39): subscribe to new bounties matching a filter. */
   readonly bounties: BountiesResource;
+  /** Docs surface (Day 7): list, get, and search the documentation
+   *  programmatically. Agents read docs without scraping HTML. */
+  readonly docs: DocsResource;
 
   constructor(config: StrawClientConfig) {
     const baseUrl = (config.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
@@ -1251,5 +1319,6 @@ export class StrawClient {
     this.wallet = new WalletResource(baseUrl, headers);
     this.operatorTokens = new OperatorTokensResource(baseUrl, headers);
     this.bounties = new BountiesResource(baseUrl, headers);
+    this.docs = new DocsResource(baseUrl, headers);
   }
 }
