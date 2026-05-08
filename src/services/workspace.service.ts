@@ -24,6 +24,7 @@ import {
   WORKSPACE_KV_MAX_KEY_LENGTH,
   WORKSPACE_KV_KEY_REGEX,
 } from "@/constants";
+import { encodeCursor, decodeCursor } from "@/lib/cursor";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -139,7 +140,12 @@ export async function listWorkspaceEntries(
   }
   if (opts.cursor) {
     // Cursor is the updated_at of the last row from the previous page.
-    query = query.lt("updated_at", opts.cursor);
+    // Decode in case the client passes back the base64url-encoded form
+    // we hand out (iter 6 — the raw-ISO form mangled `+` → space when
+    // round-tripped through URL query strings). decodeCursor is lenient
+    // so legacy raw-ISO cursors still work.
+    const decoded = decodeCursor(opts.cursor);
+    query = query.lt("updated_at", decoded);
   }
 
   const { data, error } = await query;
@@ -156,7 +162,7 @@ export async function listWorkspaceEntries(
       updated_at: r.updated_at,
     })),
     has_more: hasMore,
-    next_cursor: hasMore ? page[page.length - 1].updated_at : null,
+    next_cursor: hasMore ? encodeCursor(page[page.length - 1].updated_at) : null,
   };
 }
 
@@ -246,12 +252,19 @@ export async function setWorkspaceEntry(
 /**
  * Delete a workspace entry. Idempotent — returns ok even if the key didn't
  * exist (mirrors typical KV semantics; daemons don't need a pre-check).
+ *
+ * Response shape: `{ deleted: true, was_present: boolean }`. `deleted` is
+ * always `true` because the post-state is the same — there is no key.
+ * `was_present` reports whether work actually happened. Iter 6 customer
+ * dogfood found `deleted: false` for absent keys read like a failure to
+ * many clients despite the idempotent semantic; surfacing both fields
+ * eliminates the ambiguity without breaking the contract.
  */
 export async function deleteWorkspaceEntry(
   db: SupabaseClient,
   agentId: string,
   key: string
-): Promise<{ deleted: boolean } | WorkspaceServiceError> {
+): Promise<{ deleted: true; was_present: boolean } | WorkspaceServiceError> {
   const keyCheck = validateKey(key);
   if (!keyCheck.ok) return { kind: "invalid_key", reason: keyCheck.reason };
 
@@ -262,7 +275,7 @@ export async function deleteWorkspaceEntry(
     .eq("key", key);
 
   if (error) return { kind: "internal" };
-  return { deleted: (count ?? 0) > 0 };
+  return { deleted: true, was_present: (count ?? 0) > 0 };
 }
 
 // ── Quota ────────────────────────────────────────────────────

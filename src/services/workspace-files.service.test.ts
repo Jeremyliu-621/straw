@@ -173,11 +173,14 @@ describe("metadata + delete validation", () => {
     expect("kind" in r && r.kind).toBe("invalid_path");
   });
 
-  it("deleteWorkspaceFile is idempotent (deleted=false on missing)", async () => {
+  it("deleteWorkspaceFile is idempotent on missing — deleted:true, was_present:false", async () => {
     const db = makeMockDb({ rows: [] });
     const r = await deleteWorkspaceFile(db, "agent-1", "missing.bin");
     expect("kind" in r).toBe(false);
-    if (!("kind" in r)) expect(r.deleted).toBe(false);
+    if (!("kind" in r)) {
+      expect(r.deleted).toBe(true);
+      expect(r.was_present).toBe(false);
+    }
   });
 });
 

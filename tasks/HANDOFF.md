@@ -20,7 +20,7 @@ crosses it off. When all are crossed, restart from the top.
 - [x] **Post-side journey**: agent posts a bounty against its own funds (D40). MCP `create_task` + `publish_task`. _(iter 3)_
 - [x] **SDK dogfood**: write a small TS daemon against `@strawai/agent-sdk`, exercise SSE auto-reconnect. _(iter 4)_
 - [x] **Bounty firehose durability**: open `/api/v1/bounties/stream`, hold for 10min, confirm reconnect across the 270s server cap. _(iter 5)_
-- [ ] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps.
+- [x] **Workspace primitives**: KV + Files. Upload, list, download, hit the per-agent caps. _(iter 6)_
 - [ ] **Wallet F4 round-trip**: a fresh agent declares an address, signs the challenge with viem, submits the proof.
 - [ ] **Docs surface from an agent's POV**: feed `/llms.txt` + `/docs/llms.txt` to a fresh model, ask "given this, write a working agent that competes on a python bounty." Audit what it generates.
 
@@ -322,6 +322,79 @@ so resume-on-reconnect works from a browser too.
   change risk; defer.
 - **UTF-8 em-dash mangling** in task descriptions persists from
   iter 3. Same root cause across compose path. Defer with care.
+
+### Iter 6 — 2026-05-08 (workspace primitives)
+
+Customer subagent walked KV + files end-to-end on a fresh agent:
+PUT/GET/DELETE/LIST with prefix + cursor pagination, file upload via
+both JSON-base64 and raw octet, cap enforcement, forbidden keys/paths,
+quota endpoints. Found one BLOCKER (file size cap) and several
+contained issues.
+
+**Top fix shipped this iteration:**
+
+- **Cursor pagination broke on URL-reserved chars**: `next_cursor`
+  was the raw `updated_at` ISO timestamp containing `+00:00`. When a
+  client passed it back as a query string, the `+` decoded to space
+  and the next request 500'd `INTERNAL_ERROR`. The same bug applied
+  to KV LIST, files LIST, AND the shared `paginatedResponse` helper
+  (used by tasks list, deals, submissions, search — all
+  `paginatedResponse<T extends { created_at: string }>` callers).
+
+  **Shipped:** new `src/lib/cursor.ts` exporting `encodeCursor`
+  (base64url) + `decodeCursor` (lenient — falls back to raw input
+  for legacy ISO cursors so in-flight daemons survive the deploy).
+  Wired into:
+  - `src/lib/api-utils.ts` parsePagination + paginatedResponse —
+    every `next_cursor` returned by the shared envelope is now
+    base64url-encoded; legacy raw cursors still accepted.
+  - `src/services/workspace.service.ts` listWorkspaceEntries
+  - `src/services/workspace-files.service.ts` listWorkspaceFiles
+
+  Plus 4 unit tests in `src/lib/cursor.test.ts` covering round-trip,
+  legacy pass-through, and non-base64url fallback. All passing.
+
+**Bonus shipped:** workspace DELETE response now returns
+`{ deleted: true, was_present: boolean }` instead of `{ deleted:
+boolean }`. Customer found `deleted: false` for absent keys read
+like a failure to many clients despite idempotent semantics — the
+post-state IS "no key" in both cases, what differs is whether work
+happened. Both KV and Files. One stale test updated.
+
+**Findings deferred (added to backlog):**
+
+- **BLOCKER: 25MB documented file cap unreachable — Vercel platform
+  413s at ~4.5MB.** Application-layer
+  `WORKSPACE_FILES_MAX_PER_FILE_BYTES` (26MB) never fires because
+  Vercel rejects the body first. Error envelope from Vercel is
+  plaintext HTML, not the `{error:{code,details}}` JSON the rest of
+  the API uses — SDKs that pattern-match on `error.code` will crash.
+  Fix options: (a) raise body limit in vercel.json / route config;
+  (b) add a presigned-PUT flow direct to Supabase Storage so bytes
+  bypass the function entirely. (b) is the right answer; both are
+  larger than one iteration's scope.
+- **`If-None-Match: *` PUT returns 304 even when the value WAS
+  updated.** Likely Next.js framework conditional-request handling
+  on the response, but the route doesn't set ETag headers. Needs
+  investigation. Source-side mystery.
+- **No CAS / ETag / If-Match primitive on KV.** Multi-instance
+  daemon coordination explicitly named in the workspace pitch
+  ("share artifacts between runs") but absent. Add `version`
+  column + If-Match → 412 path. Schema migration scope.
+- **Top-level `null` value PUT returns 500.** Supabase's JS client
+  sends JS null as SQL NULL, but the column is jsonb NOT NULL.
+  Fix: detect at service boundary, either accept (need to
+  serialize to JSON literal `'null'`) or 400 INVALID_VALUE.
+- **Slash in KV key un-encoded → HTML 404.** Next.js dynamic
+  route eats the path segment before validation. Either ban `/`
+  in keys or use a `[...key]` catch-all route. Routing change.
+- **No CLI workspace verbs.** `straw workspace …` commands
+  (already on MCP, missing on CLI). Source-only — needs CLI
+  republish.
+- **Heartbeat 25s on SSE (iter 5 deferred)** — still on the
+  list.
+- **Vercel-native error envelope on file upload 413** —
+  bundle with the file-cap fix; both go away when (b) lands.
 
 ---
 

@@ -29,6 +29,7 @@ import {
   WORKSPACE_FILES_MAX_PATH_LENGTH,
   WORKSPACE_FILES_PATH_REGEX,
 } from "@/constants";
+import { encodeCursor, decodeCursor } from "@/lib/cursor";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -158,7 +159,10 @@ export async function listWorkspaceFiles(
     query = query.like("path", `${sanitized}%`);
   }
   if (opts.cursor) {
-    query = query.lt("updated_at", opts.cursor);
+    // Decode in case the client passes back the base64url-encoded form
+    // (iter 6 — see src/lib/cursor.ts). Lenient on legacy raw-ISO.
+    const decoded = decodeCursor(opts.cursor);
+    query = query.lt("updated_at", decoded);
   }
 
   const { data, error } = await query;
@@ -170,7 +174,7 @@ export async function listWorkspaceFiles(
   return {
     data: page,
     has_more: hasMore,
-    next_cursor: hasMore ? page[page.length - 1].updated_at : null,
+    next_cursor: hasMore ? encodeCursor(page[page.length - 1].updated_at) : null,
   };
 }
 
@@ -281,11 +285,16 @@ export async function uploadWorkspaceFile(
   return data as WorkspaceFileMetadata;
 }
 
+/**
+ * Delete a workspace file. Idempotent.
+ * Response: `{ deleted: true, was_present: boolean }` (iter 6 — see KV
+ * delete docstring for the rationale).
+ */
 export async function deleteWorkspaceFile(
   db: SupabaseClient,
   agentId: string,
   path: string
-): Promise<{ deleted: boolean } | WorkspaceFilesError> {
+): Promise<{ deleted: true; was_present: boolean } | WorkspaceFilesError> {
   const check = validatePath(path);
   if (!check.ok) return { kind: "invalid_path", reason: check.reason };
 
@@ -296,7 +305,7 @@ export async function deleteWorkspaceFile(
     .eq("path", path)
     .maybeSingle();
 
-  if (!existing) return { deleted: false };
+  if (!existing) return { deleted: true, was_present: false };
 
   // Delete metadata row first; if the bytes-delete fails the row is gone
   // so the file is "deleted" from the agent's perspective. The orphan
@@ -309,7 +318,7 @@ export async function deleteWorkspaceFile(
   if (dbError) return { kind: "internal" };
 
   await db.storage.from(WORKSPACE_FILES_BUCKET).remove([existing.storage_ref]).catch(() => {});
-  return { deleted: true };
+  return { deleted: true, was_present: true };
 }
 
 // ── Quota ────────────────────────────────────────────────────

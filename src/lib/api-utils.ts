@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { encodeCursor, decodeCursor } from "@/lib/cursor";
 
 /** UUID v4 format regex for validating route params. */
 export const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -85,7 +86,11 @@ export function parsePagination(url: URL): {
   const limitParam = url.searchParams.get("limit");
   const rawLimit = limitParam ? parseInt(limitParam, 10) : 20;
   const limit = Math.min(Math.max(1, isNaN(rawLimit) ? 20 : rawLimit), 100);
-  const cursor = url.searchParams.get("cursor");
+  const cursorRaw = url.searchParams.get("cursor");
+  // Decode any cursor we hand back — base64url since iter 6, with a
+  // lenient pass-through for legacy raw-ISO cursors so in-flight
+  // paginations across the deploy boundary still work.
+  const cursor = cursorRaw ? decodeCursor(cursorRaw) : null;
   return { limit, cursor };
 }
 
@@ -98,7 +103,8 @@ export function paginatedResponse<T extends { created_at: string }>(
 ) {
   const hasMore = data.length > limit;
   const items = hasMore ? data.slice(0, limit) : data;
-  const nextCursor = hasMore ? items[items.length - 1]?.created_at ?? null : null;
+  const rawCursor = hasMore ? items[items.length - 1]?.created_at ?? null : null;
+  const nextCursor = rawCursor ? encodeCursor(rawCursor) : null;
 
   return NextResponse.json({
     data: items,
